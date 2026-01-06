@@ -138,8 +138,22 @@
         /* 特殊布局 */
         .check-item { display: flex; align-items: center; gap: 12px; margin-bottom: 15px; font-size: 18px; color: var(--text-main); }
         .check-icon { color: var(--success); font-weight: bold; }
+                        .progress-indicator {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: rgba(0,0,0,0.6);
+    color: #fff;
+    padding: 6px 10px;
+    border-radius: 8px;
+    font-family: monospace;
+    font-size: 0.85rem;
+    z-index: 9999;
+}
+
     </style>
 </head>
+<div class="progress-indicator">extra1/33</div>
 <body>
 
     <div class="progress-container"><div class="progress-bar" id="progress"></div></div>
