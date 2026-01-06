@@ -679,7 +679,7 @@
 
 <div class="search-container" style="position: relative;">
     <span class="search-icon">🔍</span>
-    <input type="text" id="searchInput" placeholder="搜索文件或应用..." oninput="handleExactSearch(this.value)" autocomplete="off">
+    <input type="text" id="searchInput" placeholder="搜索..." oninput="handleExactSearch(this.value)" autocomplete="off">
     
     <div id="searchResults" style="display: none; position: absolute; bottom: 40px; left: 0; width: 100%; background: white; border: 1px solid #ccc; box-shadow: 0 -2px 10px rgba(0,0,0,0.2); color: #333; z-index: 1001;">
         <div style="padding: 10px; font-size: 11px; border-bottom: 1px solid #eee; background: #f9f9f9; color: #666; letter-spacing: 1px;">最佳匹配</div>
@@ -802,10 +802,10 @@ function handleExactSearch(val) {
         item.className = 'search-item';
         item.onclick = () => recordAndJump(keyword, SEARCH_MAP[keyword]);
         item.innerHTML = `
-            <img src="https://img.icons8.com/color/24/000000/search.png">
+            <img src="https://img.icons8.com/color/24/000000/light.png">
             <div class="search-item-info">
                 <div class="search-item-title">${keyword}</div>
-                <div class="search-item-type">应用</div>
+                <div class="search-item-type">灵感</div>
             </div>
         `;
         res.appendChild(item);
