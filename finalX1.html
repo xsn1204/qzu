@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>已保存为草稿</title>
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+    body {
+        margin: 0;
+        background: #0f0f0f;
+        color: #e5e5e5;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", sans-serif;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+    }
+
+/* ===== 发布中界面 ===== */
+.publish-container {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f5f5f5;
+    z-index: 2;
+    transition: opacity 1s ease;
+}
+
+.publish-box {
+    width: 360px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 12px 40px rgba(0,0,0,.15);
+    padding: 28px 24px 32px;
+    text-align: center;
+}
+
+.publish-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 18px;
+    color: #222;
+}
+
+.spinner {
+    width: 42px;
+    height: 42px;
+    border: 3px solid #e5e5e5;
+    border-top-color: #07c160;
+    border-radius: 50%;
+    margin: 0 auto 20px;
+    animation: spin 1s linear infinite;
+}
+
+.publish-status {
+    font-size: 15px;
+    color: #07c160;
+    margin-bottom: 10px;
+}
+
+.publish-desc {
+    font-size: 13px;
+    color: #888;
+    line-height: 1.6;
+}
+
+/* ===== 黑屏 + 404 ===== */
+.error-container {
+    position: absolute;
+    inset: 0;
+    background: #000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 1.5s ease;
+    z-index: 1;
+}
+
+.error-container.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.error-text {
+    color: #c0392b;
+    font-size: 64px;
+    font-weight: 900;
+    font-family: "Impact", "Arial Black", sans-serif;
+    letter-spacing: 4px;
+    text-shadow: 0 0 10px rgba(192,57,43,.6);
+    margin-bottom: 28px;
+    animation: glitchFade 2s ease forwards;
+}
+
+/* ===== 叙事文字 ===== */
+.narrative {
+    color: rgba(255,255,255,0.85);
+    font-size: 14px;
+    line-height: 1.8;
+    text-align: center;
+    max-width: 320px;
+    margin-bottom: 36px;
+    opacity: 0;
+    animation: fadeInText 2s ease forwards;
+    animation-delay: 1.2s; /* 比 404 晚出现 */
+}
+
+.narrative .hint {
+    color: rgba(255,255,255,0.55);
+    margin-top: 14px;
+    font-size: 13px;
+}
+
+/* ===== 铃铛 ===== */
+.suspense-link {
+    font-size: 32px;
+    text-decoration: none;
+    opacity: 0.6;
+    transition: transform .2s ease, opacity .2s ease;
+}
+
+.suspense-link:hover {
+    transform: scale(1.15);
+    opacity: 1;
+}
+
+/* ===== 动画 ===== */
+@keyframes spin {
+    from { transform: rotate(0); }
+    to   { transform: rotate(360deg); }
+}
+
+@keyframes glitchFade {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInText {
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+    .box {
+        max-width: 520px;
+        text-align: center;
+        line-height: 1.8;
+    }
+    .status {
+        font-size: 20px;
+        margin-bottom: 20px;
+        color: #ffd666;
+    }
+    .hint {
+        font-size: 14px;
+        color: #999;
+        margin-top: 30px;
+    }
+            .ticket-body {
+            width: 500px;
+            height: 300px;
+            background: #b8d4e9; /* 经典蓝色底纹 */
+            background: linear-gradient(180deg, #d2e1f0 0%, #b8d4e9 100%);
+            border-radius: 10px;
+            padding: 20px;
+            box-sizing: border-box;
+            font-family: "SimSun", "STSong", serif;
+            position: relative;
+            box-shadow: 5px 5px 15px rgba(0,0,0,0.2);
+            border: 1px solid #a1c4e1;
+        }
+
+        /* 顶部编号 */
+        .ticket-no { color: #d4380d; font-size: 18px; font-weight: bold; margin-bottom: 10px; }
+
+        /* 站名区 */
+        .station-section { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; }
+        .station-name { font-size: 32px; font-weight: 900; color: #000; }
+        .train-no { font-size: 24px; font-weight: bold; border-bottom: 2px solid #000; padding: 0 10px; position: relative; }
+        .train-no::after { content: '➤'; position: absolute; right: -15px; top: 5px; font-size: 14px; }
+
+        /* 时间与金额区 */
+        .info-row { display: flex; justify-content: space-between; margin-top: 15px; font-size: 18px; font-weight: bold; }
+
+        /* 乘客信息区 */
+        .passenger-info { margin-top: 40px; font-size: 18px; font-weight: bold; display: flex; justify-content: space-between; }
+
+        /* 二维码区 */
+        .qr-code { position: absolute; bottom: 20px; right: 20px; width: 85px; height: 85px; background: #000; padding: 5px; box-sizing: border-box; }
+        .qr-inner { width: 100%; height: 100%; background: #fff; display: flex; align-items: center; justify-content: center; font-size: 10px; text-align: center; }
+
+        /* 底部提示词 */
+        .footer-tips { position: absolute; bottom: 25px; left: 20px; font-size: 13px; color: #333; line-height: 1.4; }
+        .stamp { position: absolute; top: 10px; left: 220px; border: 3px solid rgba(255,0,0,0.2); border-radius: 5px; color: rgba(255,0,0,0.2); font-size: 40px; transform: rotate(-15deg); padding: 5px; font-weight: 900; pointer-events: none; }
+        /* 将 ticketBox 改为相对定位 flex 居中，不再用 absolute */
+/* 修改后的票样外层容器 */
+#ticketBox {
+    display: none; 
+    position: absolute; 
+    top: 50px; /* 距离铃铛的距离 */
+    left: 50%; 
+    transform: translateX(-50%); /* 完美的水平居中方案 */
+    z-index: 999;
+    /* 删除了原有的 width: 300px 和 background */
+}
+
+/* 确保票样内部布局正常 */
+.ticket-body {
+    width: 500px;
+    height: 300px;
+    background: linear-gradient(180deg, #d2e1f0 0%, #b8d4e9 100%);
+    border-radius: 10px;
+    padding: 20px;
+    box-sizing: border-box;
+    font-family: "SimSun", "STSong", serif;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5); /* 加深阴影使其在黑屏下更突出 */
+    border: 1px solid #a1c4e1;
+    color: #000; /* 票样文字强制黑色，不受父级影响 */
+    text-align: left; /* 票样内部文字左对齐 */
+}
+                      .progress-indicator {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: rgba(0,0,0,0.6);
+    color: #fff;
+    padding: 6px 10px;
+    border-radius: 8px;
+    font-family: monospace;
+    font-size: 0.85rem;
+    z-index: 9999;
+}
+</style>
+</head>
+<div class="progress-indicator">finalX1️⃣</div>
+<body>
+
+
+<!-- 发布中 -->
+<div class="publish-container" id="publish">
+    <div class="publish-box">
+        <div class="publish-title">公众号 · 内容保存</div>
+        <div class="spinner"></div>
+        <div class="publish-status">正在保存……</div>
+        <div class="publish-desc">
+            请勿关闭页面。<br>
+            系统正在处理你的内容。
+        </div>
+    </div>
+</div>
+
+<!-- 黑屏 + 404 -->
+<div class="error-container" id="error">
+    <div class="error-text">ERROR 404</div>
+
+<div class="box">
+    <div class="status">草稿已保存（仅自己可见）</div>
+    <p>
+        你没有删除，也没有发送。<br>
+        这些文字被留在了草稿箱里。<br><br>
+    </p>
+    <p>
+        它们安静地躺在那里，<br>
+        等待某个你，或某个时刻。
+    </p>
+    <div class="hint">
+        写出来不等于要做出决定。<br>
+        但你已经无法假装从未思考过答案。<br><br>
+    </div>
+<div style="position: relative; display: flex; flex-direction: column; align-items: center; width: fit-content; margin: 0 auto;">
+    
+       <a href="ticket.html" class="suspense-link" title="查看回执">🔔</a>
+
+</div>
+
+<script>
+const bell = document.getElementById('bell');
+const ticketBox = document.getElementById('ticketBox');
+
+bell.addEventListener('click', function(e) {
+    e.preventDefault(); // 阻止 a 标签跳转
+    // 切换显示或隐藏
+    ticketBox.style.display = ticketBox.style.display === 'block' ? 'none' : 'block';
+});
+
+// 点击页面其他地方关闭图片
+document.addEventListener('click', function(e) {
+    if (!bell.contains(e.target) && !ticketBox.contains(e.target)) {
+        ticketBox.style.display = 'none';
+    }
+});
+</script>
+
+
+
+<script>
+    // 3 秒后切换
+    setTimeout(() => {
+        document.getElementById('publish').style.opacity = '0';
+        setTimeout(() => {
+            document.getElementById('publish').style.display = 'none';
+            document.getElementById('error').classList.add('active');
+        }, 1000);
+    }, 3000);
+</script>
+</body>
+</html>

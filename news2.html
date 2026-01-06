@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+ <meta charset="UTF-8">
+    <title>新闻详情</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root { --qz-main: #003366; }
+        body { font-family: "Microsoft YaHei", sans-serif; background-color: #f5f7fa; color: #333; }
+        .nav-item::after {
+            content: ''; position: absolute; bottom: 0; left: 50%; width: 0; height: 3px;
+            background: #fff; transition: all 0.3s; transform: translateX(-50%);
+        }
+        .nav-item:hover::after { width: 100%; }
+        .article-shadow { box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
+                   /* 隐藏的签名图片 */
+        .floating-signature {
+            position: fixed;
+            right: 48px;
+            bottom:  36px; /* 挪到了上方，避免遮挡系统图标 */
+            width: 200px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+            opacity: 0.6;
+            transition: 0.3s;
+        }
+        .floating-signature:hover { opacity: 1; }
+        .floating-signature img { width: 100%; display: block; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+
+    <header class="bg-[#003366] text-white sticky top-0 z-50 shadow-md">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <div class="flex items-center space-x-4 cursor-pointer">
+          <div class="bg-white p-2 rounded-full">
+    <img 
+        src="logo1.png"
+        alt="青州大学"
+        class="w-8 h-8 object-contain"
+    />
+</div>
+                <div>
+                    <h1 class="text-xl font-bold tracking-tighter leading-none">青州大学门户网站</h1>
+                    <p class="text-[10px] opacity-70 uppercase mt-1">Qingzhou University Portal</p>
+                </div>
+            </div>
+
+            <nav class="flex h-full items-center">
+                <button onclick="switchPage('news')" class="nav-item relative px-6 h-full font-medium hover:bg-white/10 transition-all">首页新闻</button>
+                <button onclick="switchPage('service')" class="nav-item relative px-6 h-full font-medium hover:bg-white/10 transition-all">办事大厅</button>
+                <button onclick="switchPage('remind')" class="nav-item relative px-6 h-full font-medium hover:bg-white/10 transition-all">消息提醒</button>
+                <button class="nav-item relative px-6 h-full font-medium hover:bg-white/10 transition-all">个人日程</button>
+                <div class="ml-8 pl-8 border-l border-white/20 flex items-center space-x-4">
+                    <i class="fas fa-search cursor-pointer hover:scale-110"></i>
+                    <div class="flex items-center space-x-2 bg-white/10 px-3 py-1.5 rounded text-sm cursor-pointer hover:bg-white/20">
+                        <i class="fas fa-user-circle"></i>
+                        <span>江奕云</span>
+                        <i class="fas fa-caret-down text-[10px]"></i>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="max-w-5xl mx-auto w-full px-6 py-10 flex-1">
+        <div class="bg-white p-10 rounded article-shadow">
+            <div class="text-sm text-gray-400 mb-8 flex items-center space-x-2">
+                <i class="fas fa-home"></i>
+   
+                <span>首页新闻</span>
+                <span>/</span>
+                <span class="text-[#003366]">正文</span>
+            </div>
+
+            <div class="border-b pb-8 mb-8 text-center">
+                <h1 class="text-3xl font-bold leading-tight text-gray-800 mb-6">
+                    高以安教授受邀出席2026年全球软件架构巅峰论坛并作主旨演讲
+                </h1>
+                <div class="flex justify-center items-center space-x-8 text-sm text-gray-500">
+                    <span><i class="far fa-calendar-alt mr-2"></i>发布时间：2026-01-12</span>
+                    <span><i class="far fa-user mr-2"></i>来源：青州大学软件工程学院</span>
+                    <span><i class="far fa-eye mr-2"></i>阅读量：1,248</span>
+                </div>
+            </div>
+
+            <div class="article-content max-w-4xl mx-auto leading-relaxed text-gray-700 space-y-8 text-lg">
+                
+
+                <p class="indent-8">
+                    近日，2026年全球软件架构巅峰论坛（GSA Summit）在瑞士苏黎世大剧院隆重举行。青州大学软件工程学院<strong>高成安教授</strong>作为受邀的少数亚洲学者之一，出席了此次学术盛会。
+                </p>
+
+                <div class="bg-blue-50 border-l-4 border-[#003366] p-6 my-8">
+                    <p class="text-[#003366] font-medium italic">
+                        “此次会议旨在探讨后5G时代分布式系统的核心挑战。高成安教授在会上发表了题为<strong>《自适应大规模分布式算法的演进与实践》</strong>的主旨报告，向世界展示了‘青大方案’。”
+                    </p>
+                </div>
+
+                <div class="flex flex-col items-center">
+                    <img src="forum.jpg" class="rounded shadow-lg mb-3">
+                    <p class="text-sm text-gray-400 italic">高成安教授在圆桌论坛中与国际学者深入交流</p>
+                </div>
+
+                <p class="indent-8">
+                    报告详细阐述了团队近期在分布式一致性领域取得的突破性进展。据悉，该项成果已成功申请多项国家发明专利。现场反响热烈，多位来自谷歌、亚马逊的首席科学家对该算法的简洁性与高效性表示了浓厚兴趣。
+                </p>
+
+                <p class="indent-8">
+                    长期以来，我院始终坚持“人才立院、学术强院”的发展战略。高教授此次受邀，不仅是个人的荣誉，更标志着<strong>青州大学软件工程学院</strong>在国际学术版图中的影响力稳步提升。
+                </p>
+            </div>
+
+            <div class="mt-16 pt-8 border-t text-sm text-gray-400 flex justify-between">
+         
+                <span>审核：宣传部新闻中心</span>
+            </div>
+        </div>
+    </main>
+        <div class="floating-signature">
+        <img src="signature.jpg" alt="关键签名">
+    </div>
+
+    <footer class="bg-gray-800 text-gray-400 py-10 mt-12">
+        <div class="max-w-7xl mx-auto px-6 text-center text-sm">
+            <p>版权所有 © 2026 青州大学信息化建设与管理处 | 临ICP备12345678号</p>
+        </div>
+    </footer>
+
+</body>
+</html>

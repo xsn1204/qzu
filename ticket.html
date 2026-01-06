@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body {
+    margin: 0;
+    background: #0f0f0f; /* 整个页面黑色 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: "SimSun", "STSong", serif;
+    color: #0f0f0f;
+}
+        .ticket-body {
+            width: 500px;
+            height: 300px;
+            background: #b8d4e9; /* 经典蓝色底纹 */
+            background: linear-gradient(180deg, #d2e1f0 0%, #b8d4e9 100%);
+            border-radius: 10px;
+            padding: 20px;
+            box-sizing: border-box;
+            font-family: "SimSun", "STSong", serif;
+            position: relative;
+            box-shadow: 5px 5px 15px rgba(0,0,0,0.2);
+            border: 1px solid #a1c4e1;
+        }
+
+        /* 顶部编号 */
+        .ticket-no { color: #d4380d; font-size: 18px; font-weight: bold; margin-bottom: 10px; }
+
+        /* 站名区 */
+        .station-section { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; }
+        .station-name { font-size: 32px; font-weight: 900; color: #000; }
+        .train-no { font-size: 24px; font-weight: bold; border-bottom: 2px solid #000; padding: 0 10px; position: relative; }
+        .train-no::after { content: '➤'; position: absolute; right: -15px; top: 5px; font-size: 14px; }
+
+        /* 时间与金额区 */
+        .info-row { display: flex; justify-content: space-between; margin-top: 15px; font-size: 18px; font-weight: bold; }
+
+        /* 乘客信息区 */
+        .passenger-info { margin-top: 40px; font-size: 18px; font-weight: bold; display: flex; justify-content: space-between; }
+
+        /* 二维码区 */
+        .qr-code { position: absolute; bottom: 20px; right: 20px; width: 85px; height: 85px; background: #000; padding: 5px; box-sizing: border-box; }
+        .qr-inner { width: 100%; height: 100%; background: #fff; display: flex; align-items: center; justify-content: center; font-size: 10px; text-align: center; }
+
+        /* 底部提示词 */
+        .footer-tips { position: absolute; bottom: 25px; left: 20px; font-size: 13px; color: #333; line-height: 1.4; }
+        .stamp { position: absolute; top: 10px; left: 220px; border: 3px solid rgba(255,0,0,0.2); border-radius: 5px; color: rgba(255,0,0,0.2); font-size: 40px; transform: rotate(-15deg); padding: 5px; font-weight: 900; pointer-events: none; }
+    </style>
+</head>
+<body>
+
+<div class="ticket-body">
+    <div class="ticket-no">Q099454</div>
+    <div class="stamp">票 样</div>
+
+    <div class="station-section">
+        <div class="station-name">青州南站<br><small style="font-size: 14px; font-weight: normal;">Qingzhounan</small></div>
+        <div class="train-no">G124</div>
+        <div class="station-name" style="text-align: right;">临江北站<br><small style="font-size: 14px; font-weight: normal;">Linjiangbei</small></div>
+    </div>
+
+    <div class="info-row">
+        <div>2026年01月10日 07:12开</div>
+        <div>11车 13A号</div>
+    </div>
+
+    <div class="info-row">
+        <div style="font-size: 22px;">¥ 143.5元</div>
+        <div style="font-weight: normal;">二等座</div>
+    </div>
+
+    <div class="passenger-info">
+        <div>9101261991****4911 陆远航</div>
+        <div style="font-weight: normal;">网</div>
+    </div>
+
+    <div class="footer-tips">
+        买票请到12306<br>
+        中国铁路祝您旅途愉快
+    </div>
+
+<div class="qr-code">
+    <div class="qr-inner">
+        <img src="qr.png" alt="QR" style="max-width:100%; max-height:100%; display:block;">
+    </div>
+</div>
+</div>
+
+</body>
+</html>

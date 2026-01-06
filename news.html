@@ -55,6 +55,19 @@
     font-size: 0.85rem;
     z-index: 9999;
 }
+        .floating-signature {
+            position: fixed;
+            right: 48px;
+            bottom:  36px; /* 挪到了上方，避免遮挡系统图标 */
+            width: 200px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+            opacity: 0.6;
+            transition: 0.3s;
+        }
+        .floating-signature:hover { opacity: 1; }
+        .floating-signature img { width: 100%; display: block; }
     </style>
 </head>
 <div class="progress-indicator">31/33</div>
