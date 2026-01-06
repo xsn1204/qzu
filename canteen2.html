@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <title>404-此内容因违规无法查看</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system-font, Helvetica Neue, sans-serif;
+            background-color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #333;
+        }
+
+        /* 顶部操作栏模拟 */
+        .top-bar {
+            width: 100%;
+            height: 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 15px;
+            box-sizing: border-box;
+        }
+        .close-icon { font-size: 24px; color: #000; font-weight: 300; }
+        .more-icon { font-size: 20px; letter-spacing: 2px; }
+
+        /* 内容容器 */
+        .container {
+            margin-top: 80px;
+            text-align: center;
+            padding: 0 40px;
+        }
+
+        /* 红色警告图标 */
+        .icon-warn {
+            width: 100px;
+            height: 100px;
+            background-color: #f86261; /* 微信经典的提示红 */
+            border-radius: 50%;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 35px;
+        }
+        .icon-warn::after {
+            content: "!";
+            color: #fff;
+            font-size: 65px;
+            font-weight: bold;
+        }
+
+        /* 文字样式 */
+        .title {
+            font-size: 20px;
+            font-weight: 500;
+            color: #191919;
+            margin-bottom: 25px;
+        }
+        .desc {
+            font-size: 17px;
+            line-height: 1.6;
+            color: #191919;
+        }
+        .link {
+            color: #576B95;
+            text-decoration: none;
+            margin-left: 5px;
+        }
+                .progress-indicator {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: rgba(0,0,0,0.6);
+    color: #fff;
+    padding: 6px 10px;
+    border-radius: 8px;
+    font-family: monospace;
+    font-size: 0.85rem;
+    z-index: 9999;
+}
+    </style>
+</head>
+<body>
+    <div class="progress-indicator">10/35</div>
+
+    <div class="top-bar">
+        <div class="close-icon">×</div>
+        <div class="more-icon">•••</div>
+    </div>
+
+    <div class="container">
+        <div class="icon-warn"></div>
+
+        <div class="title">404: 此内容因违规无法查看</div>
+
+        <div class="desc">
+            接相关投诉，此内容违反《互联网用户公众帐号信息服务管理规定》
+        </div>
+    </div>
+
+</body>
+</html>

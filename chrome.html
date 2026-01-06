@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>Qoogle Chrome - qoogle Search</title>
+    <style>
+        :root {
+            --chrome-bg: #dee1e6;
+            --chrome-tab-active: #ffffff;
+            --chrome-toolbar: #ffffff;
+            --chrome-border: #ccced1;
+            --active-blue: #1a73e8;
+            --qoogle-gray: #f8f9fa;
+        }
+
+body {
+    margin: 0;
+    padding: 0;
+    /* 去掉居中对齐，让容器自然铺满 */
+    display: block; 
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden; /* 防止出现双滚动条 */
+}
+
+.browser-container {
+    /* 关键修改：宽高 100% */
+    width: 100%;
+    height: 100%;
+    /* 去掉圆角和阴影，模拟真实全屏浏览器窗口 */
+    border-radius: 0;
+    box-shadow: none;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+
+        /* --- Chrome 标签栏 --- */
+        .tab-strip {
+            background: var(--chrome-bg);
+            height: 40px;
+            display: flex;
+            align-items: flex-end;
+            padding: 0 8px;
+            gap: 0;
+        }
+
+        .tab {
+            height: 34px;
+            min-width: 160px;
+            max-width: 240px;
+            background: transparent;
+            border-radius: 10px 10px 0 0;
+            display: flex;
+            align-items: center;
+            padding: 0 12px;
+            font-size: 12px;
+            color: #444;
+            cursor: pointer;
+            position: relative;
+            z-index: 1;
+        }
+
+        .tab.active {
+            background: var(--chrome-tab-active);
+            z-index: 2;
+        }
+
+        .tab-icon { margin-right: 8px; font-size: 14px; }
+
+        /* --- Chrome 工具栏 --- */
+        .toolbar {
+            background: var(--chrome-toolbar);
+            height: 44px;
+            display: flex;
+            align-items: center;
+            padding: 0 10px;
+            border-bottom: 1px solid var(--chrome-border);
+            gap: 12px;
+        }
+
+        .nav-buttons { display: flex; gap: 15px; color: #5f6368; font-size: 18px; padding-right: 5px; }
+        
+        .omnibox {
+            flex-grow: 1;
+            background: #f1f3f4;
+            height: 28px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            padding: 0 15px;
+            font-size: 14px;
+            color: #202124;
+            border: 1px solid transparent;
+        }
+        .omnibox:focus-within { border-color: var(--active-blue); background: white; box-shadow: 0 0 0 2px rgba(26,115,232,0.2); }
+
+        .user-icons { display: flex; gap: 15px; color: #5f6368; padding-left: 10px; }
+
+        /* --- 主体结构 --- */
+        .main-view { display: flex; flex: 1; overflow: hidden; }
+
+        .sidebar {
+            width: 200px;
+            background: #ffffff;
+            border-right: 1px solid #eee;
+            padding: 15px 8px;
+        }
+
+        .sidebar-item {
+            padding: 8px 16px;
+            border-radius: 0 20px 20px 0;
+            cursor: pointer;
+            font-size: 13px;
+            margin-bottom: 2px;
+            transition: 0.2s;
+            color: #3c4043;
+        }
+
+        .sidebar-item:hover { background: #f1f3f4; }
+        .sidebar-item.active { background: #e8f0fe; color: var(--active-blue); font-weight: 500; }
+
+/* 调整内容区的内边距，适应更大的屏幕 */
+.content-area {
+    flex: 1;
+    background: #fff;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 10vh; /* 使用视口单位，让位置更灵活 */
+}
+        .qoogle-logo {
+            font-size: 92px;
+            font-weight: 500;
+            margin-bottom: 35px;
+            font-family: 'Product Sans', Arial, sans-serif;
+        }
+
+        .search-container {
+            width: 100%;
+            max-width: 584px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .search-box-wrapper {
+            width: 100%;
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .search-box {
+            width: 100%;
+            height: 46px;
+            border: 1px solid #dfe1e5;
+            border-radius: 24px;
+            padding: 0 45px;
+            font-size: 16px;
+            outline: none;
+        }
+
+        .search-box:hover, .search-box:focus {
+            box-shadow: 0 1px 6px rgba(32,33,36,0.28);
+            border-color: rgba(223,225,229,0);
+        }
+
+        .button-row { margin-top: 30px; display: flex; gap: 12px; }
+
+        .g-btn {
+            background-color: #f8f9fa;
+            border: 1px solid #f8f9fa;
+            border-radius: 4px;
+            color: #3c4043;
+            font-size: 14px;
+            padding: 0 16px;
+            line-height: 36px;
+            min-width: 96px;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .g-btn:hover { border: 1px solid #dadce0; color: #202124; box-shadow: 0 1px 1px rgba(0,0,0,0.1); }
+
+        .hidden { display: none !important; }
+        .history-list { width: 100%; max-width: 900px; padding: 50px; align-self: flex-start; }
+        .history-item { padding: 15px 0; border-bottom: 1px solid #f1f3f4; cursor: pointer; display: flex; align-items: center; }
+        .history-item:hover { background: #f8f9fa; }
+        .history-time { color: #70757a; width: 60px; font-size: 12px; }
+        .history-title { color: #1a0dab; text-decoration: none; }
+                .progress-indicator {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: rgba(0,0,0,0.6);
+    color: #fff;
+    padding: 6px 10px;
+    border-radius: 8px;
+    font-family: monospace;
+    font-size: 0.85rem;
+    z-index: 9999;
+}
+    </style>
+</head>
+<body>
+    
+<div class="progress-indicator">1/35</div>
+<div class="browser-container">
+    <div class="tab-strip">
+        <div class="tab active" id="tab-qoogle" onclick="switchTab('qoogle', 'https://www.qoogle.com')">
+            <span class="tab-icon">🔍</span> <span>qoogle</span>
+        </div>
+    </div>
+
+    <div class="toolbar">
+        <div class="nav-buttons">
+            <span>←</span>
+            <span>→</span>
+            <span>↻</span>
+        </div>
+        <div class="omnibox">
+            <span style="margin-right: 8px; opacity: 0.5;">🔒</span>
+            <span id="current-url">https://www.qoogle.com</span>
+        </div>
+        <div class="user-icons">
+            <span>🧩</span>
+            <span style="background: #1a73e8; color: white; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; font-size: 12px;">G</span>
+            <span>⋮</span>
+        </div>
+    </div>
+    
+
+    <div class="main-view">
+        <div class="sidebar">
+            <div class="sidebar-item active" id="side-home" onclick="showSection('home')">🏠 主页</div>
+            <div class="sidebar-item" id="side-hist" onclick="showSection('history')">📜 历史记录</div>
+            <div class="sidebar-item">📑 书签</div>
+            <div class="sidebar-item">📥 下载内容</div>
+        </div>
+
+        <div class="content-area" id="main-content">
+            <div id="section-home" class="search-container">
+                <div class="qoogle-logo">
+                    <span style="color: #4285F4">Q</span><span style="color: #EA4335">o</span><span style="color: #FBBC05">o</span><span style="color: #4285F4">g</span><span style="color: #34A853">l</span><span style="color: #EA4335">e</span>
+                </div>
+                <div class="search-box-wrapper">
+                    <span style="position: absolute; left: 15px; color: #9aa0a6;">🔍</span>
+                    <input type="text" class="search-box" placeholder="在 qoogle 上搜索" id="search-input">
+                </div>
+                <div class="button-row">
+  <div class="g-btn" onclick="handleSearch()">Qoogle搜索</div>
+    
+    <div class="g-btn" onclick="showRecommendation()">好剧推荐📺</div>
+                </div>
+            </div>
+
+            <div id="section-history" class="history-list hidden">
+                <h1 style="font-weight: 400; font-size: 22px; margin-bottom: 30px;">历史记录</h1>
+<div class="history-item" onclick="window.location.href='chufen.html'">
+    <span class="history-time">11月5日</span>
+    <span class="history-title">青州大学 - 关于 2024-2025 学年第三学期违纪学生的处分决定</span>
+</div>
+<div class="history-item" onclick="window.location.href='galaxy.html'">
+    <span class="history-time">10月24日</span>
+    <span class="history-title">Qoogle Gemini</span>
+</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function switchTab(site, url) {
+        document.getElementById('current-url').innerText = url;
+        
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.getElementById('tab-' + site).classList.add('active');
+
+        if(site === 'qoogle') {
+            showSection('home');
+        } else {
+            document.getElementById('main-content').innerHTML = `
+                <div style="text-align:center; padding-top:100px;">
+                    <div style="font-size:60px;">🌐</div>
+                    <h2 style="font-weight:400;">这是 Chrome 模拟页面</h2>
+                    <p style="color:#5f6368;">您正在访问：${url}</p>
+                    <button class="g-btn" onclick="location.reload()">返回主页</button>
+                </div>`;
+        }
+    }
+
+    function showSection(id) {
+        document.getElementById('section-home').classList.add('hidden');
+        document.getElementById('section-history').classList.add('hidden');
+        
+        if (id === 'home') {
+            document.getElementById('section-home').classList.remove('hidden');
+            document.getElementById('main-content').style.alignItems = 'center';
+            document.getElementById('main-content').style.paddingTop = '80px';
+        } else {
+            document.getElementById('section-history').classList.remove('hidden');
+            document.getElementById('main-content').style.alignItems = 'flex-start';
+            document.getElementById('main-content').style.paddingTop = '0px';
+        }
+
+        document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
+        document.getElementById(id === 'home' ? 'side-home' : 'side-hist').classList.add('active');
+    }
+
+    function handleSearch() {
+        const query = document.getElementById('search-input').value;
+        if(query) {
+            alert('404: ' + query);
+        }
+    }
+
+    document.getElementById('search-input').addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') handleSearch();
+    });
+    // Function for the "Qoogle搜索" button and Enter key
+function handleSearch() {
+    const query = document.getElementById('search-input').value.trim();
+    
+    if (query === '怪诞小镇') {
+        // Redirect to gf.html if the input matches
+        window.location.href = 'gf.html';
+    } else if (query) {
+        // Default search behavior
+        alert('404: ' + query);
+    }
+}
+
+// Function for the "好剧推荐📺" button
+function showRecommendation() {
+    // Check if the message already exists to avoid duplicates
+    if (!document.getElementById('recommend-msg')) {
+        const msg = document.createElement('div');
+        msg.id = 'recommend-msg';
+        msg.style.marginTop = '20px';
+        msg.style.color = '#5f6368';
+        msg.style.fontSize = '14px';
+        msg.innerText = '来Qoogle搜索你爱看的剧集🎈';
+        
+        // Append it under the search container
+        document.getElementById('section-home').appendChild(msg);
+    }
+}
+</script>
+
+</body>
+</html>

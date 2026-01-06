@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>回廊BBS - 帖子详情</title>
+    <style>
+        /* 基础样式复位 */
+        body, html { margin: 0; padding: 0; background-color: #000000; font-family: "lucida grande", "Segoe UI", "Tahoma", "Microsoft YaHei", sans-serif; }
+        
+        /* 顶部导航栏 */
+        .header-nav { background: #000000; height: 35px; border-bottom: 1px solid #b2b0b0; padding: 0 50px; display: flex; align-items: center; justify-content: space-between; font-size: 12px; color: #666; }
+        .breadcrumb { padding: 12px 50px; font-size: 12px; color: #b2b0b0; background:#000000; }
+
+        /* 下架提示横幅 */
+        .notice-banner { background: #fff1f0; border: 1px solid #ffa39e; color: #cf1322; padding: 8px; margin: 10px 50px; text-align: center; font-size: 13px; border-radius: 2px; }
+
+        /* 主容器 */
+        .main-container { max-width: 1100px; margin: 0 auto 50px auto; border: 1px solid #d4d4d4; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+
+        /* 分页与功能条 */
+        .pagination-bar { padding: 10px 20px; border-top: 2px solid #ff6600; border-bottom: 1px solid #eee; display: flex; align-items: center; gap: 6px; }
+        .btn-retro { padding: 3px 10px; border: 1px solid #ccc; font-size: 12px; color: #333; text-decoration: none; background: #fff; }
+        .btn-retro.active { border-color: #ff6600; color: #ff6600; font-weight: bold; }
+
+        /* 标题行 */
+        .post-title-row { padding: 15px 20px; font-size: 20px; font-weight: bold; color: #333; border-bottom: 1px solid #eee; }
+
+        /* 楼层容器：左右分栏布局 */
+        .floor-container { display: flex; border-bottom: 5px solid #f6f6f6; }
+        
+        /* 左侧：用户信息栏 */
+        .user-sidebar { width: 160px; background: #fdfdfd; border-right: 1px solid #eee; padding: 20px; flex-shrink: 0; display: flex; flex-direction: column; align-items: center; }
+        .avatar-box { width: 100px; height: 100px; background: #eee; border: 1px solid #ddd; margin-bottom: 15px; }
+        .avatar-box img { width: 100%; height: 100%; object-fit: cover; }
+        .username { color: #004a80; font-weight: bold; font-size: 13px; margin-bottom: 4px; }
+        .user-title { font-size: 12px; color: #777; margin-bottom: 15px; }
+
+        /* 右侧：正文区域 */
+        .content-area { flex: 1; padding: 20px 30px; position: relative; }
+        .floor-info { font-size: 11px; color: #999; margin-bottom: 15px; display: flex; justify-content: space-between; border-bottom: 1px dashed #eee; padding-bottom: 8px; }
+        
+        .post-text { font-size: 14px; line-height: 1.8; color: #222; word-break: break-all; }
+        
+        /* 引用样式 */
+        .quote-text { border-left: 3px solid #66c2cd; background: #f4fbfc; padding: 10px 15px; margin: 15px 0; font-size: 13px; color: #666; }
+
+        /* 底部工具条 */
+        .post-footer { margin-top: 30px; padding-top: 15px; border-top: 1px solid #f0f0f0; font-size: 12px; color: #999; display: flex; gap: 20px; }
+        .action-link { cursor: pointer; }
+        .action-link:hover { color: #ff6600; }
+        .avatar-modal {
+    display: none; /* 默认隐藏 */
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.7);
+    justify-content: center;
+    align-items: center;
+}
+
+/* 放大头像图片 */
+.avatar-modal img {
+    max-width: 90%;
+    max-height: 90%;
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    transition: transform 0.3s;
+}
+
+/* 鼠标悬停微微放大 */
+.avatar-modal img:hover {
+    transform: scale(1.05);
+}
+
+/* 光标提示可关闭 */
+.avatar-modal.closeable {
+    cursor: pointer;
+}
+    </style>
+</head>
+<body>
+
+<div class="header-nav">
+    <div style="font-weight: bold; font-size: 18px;color: #ff6600; ">回廊BBS</div>
+    <div>帮助中心</div>
+</div>
+
+<div class="breadcrumb">
+    首页 >> 版面目录 >> 三区：学术研讨 >> 提问区 >> 无题
+</div>
+
+
+<div class="main-container">
+    <div class="pagination-bar">
+        <a href="#" class="btn-retro">返回本版</a>
+        <a href="#" class="btn-retro active">1</a>
+        <a href="#" class="btn-retro">下一页 ></a>
+        <span style="font-size: 12px; color: #666; margin-left: 10px;">跳转至 <input type="text" value="1" style="width: 25px; text-align: center;"> / 1 页</span>
+    </div>
+    
+
+    <div class="post-title-row">
+        无题
+    </div>
+
+    <div class="floor-container">
+        <div class="user-sidebar">
+            <div class="avatar-box">
+                <img src="avatar1.jpg" alt="User"  class="clickable-avatar" >
+            </div>
+            <div class="username">Marvin [离线]</div>
+            <div style="font-size: 11px; color: #bbb; line-height: 1.6; text-align: center;">
+                发帖数: 4<br>积分: 20
+            </div>
+        </div>
+        <div class="content-area">
+            <div class="floor-info">
+                <span>【仅自己可见】</span>
+                <span>发表于 2025-07-10 01:12:19</span>
+            </div>
+            <div class="post-text">
+
+                我想我应该不会把这篇帖子发出去。但咨询师跟我说，至少可以写出来，让自己好过一点。<br><br>
+
+                这段时间我一直在想一件事：是不是我把陆老师拖进了更糟的处境里？<br><br>
+                
+
+                他一直夹在高老师和我们之间。方案是他盯的，学生是他带的，项目被卡的时候也是他去解释、去补材料。 但最后能不能算他的，从来不是他说了算。<br><br>
+                陆老师承受的压力，比我想象的更大。今年是他成果考核的最后一年，之前他会跟我们讨论、会解释，现在更多时候却只是一个人埋头做事。<br><br>
+                我还记得他找我谈院里的处分决定时，也是满眼的疲惫。给他看了我发的帖子内容，他只是沉默不语。<br><br>
+                让我最难受的是，我并不是旁观者。有些专利文件我看过，也签过字。智核入库的材料，是我帮忙整理的。他课题被否的时候，我很清楚问题不全在技术上，但什么都没说。我当时告诉自己，这不是我该出头的场合。<br><br>
+
+                可现在再回头看，我已经分不清这是理智，还是逃避。是不是我的配合，本身就成了默认的一部分？<br><br>
+
+                
+
+                咨询师说，写出来不等于要做出决定。<br><br><strong>我想了想，发现自己不知道答案。</strong><br><br>
+
+
+
+            </div>
+            <div class="post-footer">
+                <span class="action-link">回帖</span>
+                <span class="action-link">评分</span>
+                <span class="action-link">举报</span>
+            </div>
+        </div>
+    </div>
+    <div id="avatarModal" class="avatar-modal closeable">
+    <img src="" alt="放大头像">
+</div>
+
+
+</div>
+
+</body>
+<script>
+// 获取弹窗和图片元素
+const modal = document.getElementById('avatarModal');
+const modalImg = modal.querySelector('img');
+
+// 给所有可点击头像绑定事件
+document.querySelectorAll('.clickable-avatar').forEach(avatar => {
+    avatar.addEventListener('click', () => {
+        modal.style.display = 'flex'; // 显示弹窗
+        modalImg.src = avatar.src;    // 设置放大图片
+    });
+});
+
+// 点击弹窗背景关闭
+modal.addEventListener('click', () => {
+    modal.style.display = 'none';
+});
+</script>
+
+</html>

@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>回廊BBS - 帖子详情</title>
+    <style>
+        /* 基础样式复位 */
+        body, html { margin: 0; padding: 0; background-color: #434343; font-family: "lucida grande", "Segoe UI", "Tahoma", "Microsoft YaHei", sans-serif; }
+        
+        /* 顶部导航栏 */
+        .header-nav { background: #434343; height: 35px; border-bottom: 1px solid #b2b0b0; padding: 0 50px; display: flex; align-items: center; justify-content: space-between; font-size: 12px; color: #666; }
+        .breadcrumb { padding: 12px 50px; font-size: 12px; color: #b2b0b0; background:#434343; }
+
+        /* 下架提示横幅 */
+        .notice-banner { background: #fff1f0; border: 1px solid #ffa39e; color: #cf1322; padding: 8px; margin: 10px 50px; text-align: center; font-size: 13px; border-radius: 2px; }
+
+        /* 主容器 */
+        .main-container { max-width: 1100px; margin: 0 auto 50px auto; border: 1px solid #d4d4d4; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+
+        /* 分页与功能条 */
+        .pagination-bar { padding: 10px 20px; border-top: 2px solid #ff6600; border-bottom: 1px solid #eee; display: flex; align-items: center; gap: 6px; }
+        .btn-retro { padding: 3px 10px; border: 1px solid #ccc; font-size: 12px; color: #333; text-decoration: none; background: #fff; }
+        .btn-retro.active { border-color: #ff6600; color: #ff6600; font-weight: bold; }
+
+        /* 标题行 */
+        .post-title-row { padding: 15px 20px; font-size: 20px; font-weight: bold; color: #333; border-bottom: 1px solid #eee; }
+
+        /* 楼层容器：左右分栏布局 */
+        .floor-container { display: flex; border-bottom: 5px solid #f6f6f6; }
+        
+        /* 左侧：用户信息栏 */
+        .user-sidebar { width: 160px; background: #fdfdfd; border-right: 1px solid #eee; padding: 20px; flex-shrink: 0; display: flex; flex-direction: column; align-items: center; }
+        .avatar-box { width: 100px; height: 100px; background: #eee; border: 1px solid #ddd; margin-bottom: 15px; }
+        .avatar-box img { width: 100%; height: 100%; object-fit: cover; }
+        .username { color: #004a80; font-weight: bold; font-size: 13px; margin-bottom: 4px; }
+        .user-title { font-size: 12px; color: #777; margin-bottom: 15px; }
+
+        /* 右侧：正文区域 */
+        .content-area { flex: 1; padding: 20px 30px; position: relative; }
+        .floor-info { font-size: 11px; color: #999; margin-bottom: 15px; display: flex; justify-content: space-between; border-bottom: 1px dashed #eee; padding-bottom: 8px; }
+        
+        .post-text { font-size: 14px; line-height: 1.8; color: #222; word-break: break-all; }
+        
+        /* 引用样式 */
+        .quote-text { border-left: 3px solid #66c2cd; background: #f4fbfc; padding: 10px 15px; margin: 15px 0; font-size: 13px; color: #666; }
+
+        /* 底部工具条 */
+        .post-footer { margin-top: 30px; padding-top: 15px; border-top: 1px solid #f0f0f0; font-size: 12px; color: #999; display: flex; gap: 20px; }
+        .action-link { cursor: pointer; }
+        .action-link:hover { color: #ff6600; }
+        .avatar-modal {
+    display: none; /* 默认隐藏 */
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.7);
+    justify-content: center;
+    align-items: center;
+}
+
+/* 放大头像图片 */
+.avatar-modal img {
+    max-width: 90%;
+    max-height: 90%;
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    transition: transform 0.3s;
+}
+
+/* 鼠标悬停微微放大 */
+.avatar-modal img:hover {
+    transform: scale(1.05);
+}
+
+/* 光标提示可关闭 */
+.avatar-modal.closeable {
+    cursor: pointer;
+}
+.avatar-frosted {
+    width: 64px;       /* 根据你的需求调整 */
+    height: 64px;
+    filter: blur(3px);  /* 轻微模糊 */
+    opacity: 0.6;       /* 半透明，增强若隐若现感 */
+    pointer-events: none; /* 禁止点击/拖拽 */
+    transition: filter 0.3s, opacity 0.3s;
+}
+
+/* 可选：鼠标悬停时稍微清晰一点 */
+.avatar-frosted:hover {
+    filter: blur(1px);
+    opacity: 0.9;
+}
+    </style>
+</head>
+<body>
+
+<div class="header-nav">
+    <div style="font-weight: bold; font-size: 18px;color: #ff6600; ">回廊BBS</div>
+    <div>帮助中心</div>
+</div>
+
+<div class="breadcrumb">
+    首页 >> 版面目录 >> 三区：学术研讨 >> 提问区 >> [求助] 关于实验室经费的一些困惑
+</div>
+
+<div class="notice-banner">
+    ⚠️ 提示：该帖子内容因“违反校园网络社区管理规范”已被版主下架，当前为历史快照存档。
+</div>
+
+<div class="main-container">
+    <div class="pagination-bar">
+        <a href="#" class="btn-retro">返回本版</a>
+        <a href="#" class="btn-retro active">1</a>
+        <a href="#" class="btn-retro">下一页 ></a>
+        <span style="font-size: 12px; color: #666; margin-left: 10px;">跳转至 <input type="text" value="1" style="width: 25px; text-align: center;"> / 1 页</span>
+    </div>
+
+    <div class="post-title-row">
+        [求助] 关于实验室经费的一些困惑
+    </div>
+
+    <div class="floor-container">
+        <div class="user-sidebar">
+            <div class="avatar-box">
+                <img src="avatar1.jpg" alt="User"  class="clickable-avatar avatar-frosted" >
+            </div>
+            <div class="username">Marvin [离线]</div>
+            <div style="font-size: 11px; color: #bbb; line-height: 1.6; text-align: center;">
+                发帖数: 2<br>积分: 10
+            </div>
+        </div>
+        <div class="content-area">
+            <div class="floor-info">
+                <span>1楼</span>
+                <span>发表于 2025-01-10 02:45:12</span>
+            </div>
+            <div class="post-text">
+
+                本人是某工科实验室的直博生，前段时间在老师安排下协助整理了一部分项目经费和报销材料。因为之前没有接触过这类工作，遇到了一些自己拿不准的地方，也希望懂合规或者有经验的学长学姐能指点一下。<br><br>
+
+                举几个例子（仅限我注意到的）：<br>
+
+                - 个别采购或外协相关的报销材料中，发票内容和实际服务的对应关系不是特别直观，有点难对上。<br>
+
+                - 有些实验材料或技术服务类的支出次数比较集中，金额也不小，但在报销说明里写得比较概括，不太确定这种写法是否常见。<br>
+
+                - 少数项目支出在账目上已经完成报销，但我在整理时没能找到太完整的实验记录作为对应参考。<br>
+
+                - 偶尔会看到一些“培训”“外出会议”等支出，但材料整理得比较简单，感觉需要更详细的留档。<br><br>
+
+                我知道科研经费管理有很多内部流程和惯例，也很可能是我第一次接触这类事务，理解不到位。想请问有没有人遇到过类似情况，或者能分享一下正常操作标准参考？希望能搞清楚，不要做错事。<br><br>
+
+            </div>
+            <div class="post-footer">
+                <span class="action-link">回帖</span>
+                <span class="action-link">评分</span>
+                <span class="action-link">举报</span>
+            </div>
+        </div>
+    </div>
+    <div id="avatarModal" class="avatar-modal closeable">
+    <img src="" alt="放大头像">
+</div>
+
+
+    <div class="floor-container">
+        <div class="user-sidebar">
+            <div class="avatar-box">
+                <img src="avatar.jpg" alt="User">
+            </div>
+            <div class="username">Anonymous [离线]</div>
+        </div>
+        <div class="content-area">
+            <div class="floor-info">
+                <span>2楼</span>
+                <span>发表于 2025-01-10 10:20:45</span>
+            </div>
+            <div class="post-text">
+                <div class="quote-text">
+                    Marvin 在 ta 的帖子中提到：<br>
+                    本人是某工科实验室的直博生，前段时间在老师安排下协助整理了一部分项目经费和报销材料。因为之前...
+                </div>
+                楼主珍重，懂得都懂。三年前我就因为这事和导师闹翻了，现在在外面打工。建议速度run，这种事学校一般都和稀泥。为了以后毕业考虑，尽量留好所有原始沟通记录的备份。
+            </div>
+            <div class="post-footer">
+                <span class="action-link">回帖</span>
+                <span class="action-link">赞 (8)</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+<script>
+// 获取弹窗和图片元素
+const modal = document.getElementById('avatarModal');
+const modalImg = modal.querySelector('img');
+
+// 给所有可点击头像绑定事件
+document.querySelectorAll('.clickable-avatar').forEach(avatar => {
+    avatar.addEventListener('click', () => {
+        modal.style.display = 'flex'; // 显示弹窗
+        modalImg.src = avatar.src;    // 设置放大图片
+    });
+});
+
+// 点击弹窗背景关闭
+modal.addEventListener('click', () => {
+    modal.style.display = 'none';
+});
+</script>
+
+</html>

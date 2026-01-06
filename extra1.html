@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>江奕云-2025年度实验室总结</title>
+    <style>
+        :root {
+            --primary: #1e3a8a;
+            --accent: #3b82f6;
+            --success: #10b981;
+            --text-main: #1e293b;
+            --text-light: #64748b;
+            --slide-bg: #ffffff;
+            --bg-body: #f1f5f9;
+            --slide-w: 960px;
+            --slide-h: 540px;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg-body);
+            font-family: 'Inter', 'PingFang SC', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            transition: background 0.5s;
+        }
+
+        :fullscreen body { background-color: #0f172a; }
+
+        /* 进度条 */
+        .progress-container {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 5px;
+            background: rgba(0,0,0,0.05); z-index: 1000;
+        }
+        .progress-bar {
+            height: 100%; background: linear-gradient(to right, var(--primary), var(--accent));
+            width: 0%; transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* 容器 */
+        .slide-wrapper {
+            width: var(--slide-w);
+            height: var(--slide-h);
+            position: relative;
+        }
+
+        .slide {
+            width: 100%; height: 100%;
+            background: var(--slide-bg);
+            border-radius: 16px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+            position: absolute;
+            opacity: 0;
+            visibility: hidden;
+            transform: scale(0.98) translateY(10px);
+            transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            padding: 50px 70px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .slide.active {
+            opacity: 1; visibility: visible;
+            transform: scale(1) translateY(0);
+        }
+
+        :fullscreen .slide {
+            width: 100vw; height: 100vh; border-radius: 0; padding: 5vw 8vw;
+        }
+
+        /* 装饰背景 */
+        .slide::before {
+            content: ""; position: absolute; top: -10%; right: -10%;
+            width: 300px; height: 300px;
+            background: radial-gradient(circle, rgba(59,130,246,0.05) 0%, transparent 70%);
+            z-index: 0;
+        }
+
+        /* 通用样式 */
+        h1 { color: var(--primary); font-size: 48px; margin: 0; line-height: 1.2; font-weight: 800; }
+        h2 { 
+            color: var(--primary); font-size: 32px; margin: 0 0 40px 0;
+            display: flex; align-items: center; gap: 15px;
+        }
+        h2::after { content: ""; flex: 1; height: 1px; background: #e2e8f0; }
+
+        .content-body { position: relative; z-index: 1; flex: 1; }
+
+        /* 卡片网格 */
+        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px; }
+        .card {
+            background: #f8fafc; border: 1px solid #f1f5f9;
+            padding: 24px; border-radius: 12px;
+            transition: transform 0.3s;
+        }
+        .card:hover { transform: translateY(-5px); background: #fff; box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
+
+        .stat-value { font-size: 42px; font-weight: 800; color: var(--accent); font-family: 'Arial Black'; }
+        .stat-label { color: var(--text-light); font-size: 14px; margin-top: 5px; text-transform: uppercase; letter-spacing: 1px; }
+
+        /* 底部条 */
+        .slide-footer {
+            margin-top: auto; padding-top: 20px;
+            display: flex; justify-content: space-between; align-items: center;
+            border-top: 1px solid #f1f5f9; font-size: 13px; color: var(--text-light);
+        }
+
+        /* 导航 */
+        .nav-panel {
+            position: fixed; bottom: 30px;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            padding: 8px 16px; border-radius: 40px;
+            display: flex; align-items: center; gap: 15px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+        button {
+            border: none; background: var(--primary); color: white;
+            width: 36px; height: 36px; border-radius: 50%;
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            transition: 0.3s;
+        }
+        button:hover { background: var(--accent); transform: scale(1.1); }
+        .page-num { font-weight: 600; color: var(--text-main); font-size: 14px; min-width: 50px; text-align: center; }
+
+        .btn-fs { width: auto; border-radius: 20px; padding: 0 15px; font-size: 12px; }
+
+        /* 特殊布局 */
+        .check-item { display: flex; align-items: center; gap: 12px; margin-bottom: 15px; font-size: 18px; color: var(--text-main); }
+        .check-icon { color: var(--success); font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <div class="progress-container"><div class="progress-bar" id="progress"></div></div>
+
+    <div class="slide-wrapper">
+        <section class="slide active" id="slide-1">
+            <div class="content-body" style="text-align: center; display: flex; flex-direction: column; justify-content: center;">
+                <div style="text-transform: uppercase; color: var(--accent); font-weight: 700; letter-spacing: 4px; margin-bottom: 20px;">Annual Report 2025</div>
+                <h1>实验室年度汇报总结</h1>
+                <div style="width: 60px; height: 4px; background: var(--accent); margin: 30px auto;"></div>
+                <div style="font-size: 20px; color: var(--text-main);">
+                    <strong>江奕云</strong> · 软件工程学院
+                </div>
+                <div style="color: var(--text-light); margin-top: 10px;">2026年1月4日</div>
+            </div>
+        </section>
+
+        <section class="slide" id="slide-2">
+            <h2>01. 关于科研成果</h2>
+            <div class="content-body">
+                <div class="grid">
+                    <div class="card">
+                        <div class="stat-value">58</div>
+                        <div class="stat-label">文献研读 (篇)</div>
+                        <p style="font-size: 14px; color: var(--text-light); margin-top: 15px;">只要头发掉得快，SOTA就追不上我</p>
+                    </div>
+                    <div class="card">
+                        <div class="stat-value">21</div>
+                        <div class="stat-label">方案迭代 (次)</div>
+                        <p style="font-size: 14px; color: var(--text-light); margin-top: 15px;">得到评价“还是第一版最顺眼”</p>
+                    </div>
+                    <div class="card" style="grid-column: span 2; display: flex; justify-content: space-around; align-items: center; background: linear-gradient(to right, #f8fafc, #eff6ff);">
+                        <div style="text-align: center;">
+                            <div class="stat-value" style="color: var(--primary);">36</div>
+                            <div class="stat-label">参与组会</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div class="stat-value" style="color: var(--primary);">25</div>
+                            <div class="stat-label">PPT汇报</div>
+                        </div>
+                                                <div style="text-align: center;">
+                            <div class="stat-value" style="color: var(--primary);">1</div>
+                            <div class="stat-label">发明专利申请</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <section class="slide" id="slide-3">
+            <h2>02. 关于历练</h2>
+            <div class="content-body">
+                <div style="display: flex; gap: 30px; height: 100%;">
+                    <div style="flex: 1; background: #fff5f5; border-radius: 16px; padding: 30px; border-top: 5px solid #f87171;">
+                        <h3 style="color: #991b1b; margin-top: 0;">🏆 荣誉获奖</h3>
+                        <p style="font-size: 24px; font-weight: 700; color: #b91c1c;">卓越之星一等奖</p>
+                        <p style="color: #7f1d1d; line-height: 1.6;">作为大二本科生，成功在众大佬中“虎口夺食”。</p>
+                    </div>
+                    <div style="flex: 1; display: flex; flex-direction: column; gap: 20px;">
+                        <div class="card" style="background: #f0f9ff;">
+                            <h4 style="margin: 0; color: #0369a1;">💼 企业实习</h4>
+                            <p style="margin: 10px 0 0 0; font-size: 14px;">为期3个月，小心翼翼闯了很多祸</p>
+                        </div>
+                        <div class="card" style="background: #fdfaf1;">
+                            <h4 style="margin: 0; color: #92400e;">🍪 学术会议</h4>
+                            <p style="margin: 10px 0 0 0; font-size: 14px;">会议上的小饼干真的很好吃！</p>
+                        </div>
+                         <div class="card" style="background: #eaf4e6;">
+                            <h4 style="margin: 0; color: #68a139;">✍️ 文章科普</h4>
+                            <p style="margin: 10px 0 0 0; font-size: 14px;">共计发布五篇没人看的科普向文章</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="slide" id="slide-4">
+            <h2>03. 关于生活</h2>
+            <div class="content-body">
+                <div class="grid" style="grid-template-columns: 1.2fr 0.8fr;">
+                    <div class="card" style="display: flex; flex-direction: column; justify-content: center;">
+                        <h3 style="margin: 0 0 20px 0;">🎮 独立开发：AI网页解密游戏</h3>
+                        <div style="display: flex; gap: 40px;">
+                            <div>
+                                <div class="stat-value">40W+</div>
+                                <div class="stat-label">总浏览量</div>
+                            </div>
+                            <div>
+                                <div class="stat-value">1W+</div>
+                                <div class="stat-label">体验用户</div>
+                            </div>
+                        </div>
+                        <p style="margin-top: 20px; color: var(--text-light);">实验室全员充当测试工程师👍</p>
+                    </div>
+                    <div class="card" style="background: var(--primary); color: white;">
+                        <h3 style="margin: 0 0 15px 0; color: #bfdbfe;">🚴 户外与运动</h3>
+                        <div style="font-size: 28px; font-weight: 800;">154.8 <small style="font-size: 14px; font-weight: normal;">KM</small></div>
+                        <div class="stat-label" style="color: #93c5fd;">累计骑行</div>
+                        <div style="margin-top: 20px; font-size: 28px; font-weight: 800;">35,483 <small style="font-size: 14px; font-weight: normal;">STEPS</small></div>
+                        <div class="stat-label" style="color: #93c5fd;">单日最高步数</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="slide" id="slide-5">
+            <div class="content-body" style="text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                <h1 style="font-size: 40px; margin-bottom: 40px;">最后的一点点期待</h1>
+                <div style="text-align: left; background: #f8fafc; padding: 40px; border-radius: 20px; width: 80%;">
+                    <div class="check-item"><span class="check-icon">✓</span> 专利顺利通过初审</div>
+                    <div class="check-item"><span class="check-icon">✓</span> 实验跑出理想的对比结果</div>
+                    <div class="check-item"><span class="check-icon">✓</span> 本科生科研项目高质量结题</div>
+                    <div class="check-item"><span class="check-icon">✓</span> 拿到奖金，请实验室下馆子！</div>
+                </div>
+                
+                <div style="margin-top: 40px; font-size: 24px; color: var(--accent); font-weight: 600;">
+                    以及，别忘了好好生活
+                </div>
+                <p style="color: var(--text-light); margin-top: 20px;">感谢导师与同门的指导与陪伴！</p>
+            </div>
+        </section>
+    </div>
+
+    <div class="nav-panel">
+        <button onclick="prevSlide()">←</button>
+        <div class="page-num" id="page-num">1 / 5</div>
+        <button onclick="nextSlide()">→</button>
+    </div>
+
+    <script>
+        let current = 1;
+        const total = 5;
+
+        function update() {
+            document.querySelectorAll('.slide').forEach((s, i) => {
+                s.classList.toggle('active', i === current - 1);
+            });
+            document.getElementById('page-num').innerText = `${current} / ${total}`;
+            document.getElementById('progress').style.width = `${(current/total)*100}%`;
+        }
+
+        function nextSlide() { if(current < total) { current++; update(); } }
+        function prevSlide() { if(current > 1) { current--; update(); } }
+        
+        function toggleFS() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen();
+            } else {
+                document.exitFullscreen();
+            }
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if(e.key === 'ArrowRight' || e.key === ' ') nextSlide();
+            if(e.key === 'ArrowLeft') prevSlide();
+            if(e.key.toLowerCase() === 'f') toggleFS();
+        });
+
+        // 点击屏幕两侧翻页
+        document.addEventListener('mousedown', (e) => {
+            if (e.target.tagName === 'BUTTON' || e.target.closest('.nav-panel')) return;
+            if (e.clientX > window.innerWidth / 2) nextSlide();
+            else prevSlide();
+        });
+
+        update();
+    </script>
+</body>
+</html>

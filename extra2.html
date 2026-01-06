@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0,viewport-fit=cover">
+    <title>双十佳评选·结果揭晓 | “食”至名归，更要“食”惠</title>
+    <style>
+        :root {
+            --brand-blue: #1d4d84;
+            --light-blue-bg: rgba(189, 216, 245, 0.2);
+            --accent-red: #d32f2f;
+            --text-main: #3e3e3e;
+        }
+        
+        /* 关键修改：设置 body 背景色并清除默认间距 */
+        body {
+            font-family: -apple-system-font, system-ui, sans-serif;
+            background-color: #f7f7f7; /* 与 academic 保持一致的底色 */
+            margin: 0;
+            padding: 0;
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        /* 关键修改：新增外层容器，设置最大宽度为 677px */
+        .rich-media-container {
+            max-width: 677px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px 16px;
+            box-sizing: border-box;
+            min-height: 100vh;
+        }
+        
+        /* 标题样式 */
+        .rich_media_title {
+            font-size: 22px;
+            font-weight: bold;
+            line-height: 1.4;
+            margin-bottom: 8px;
+            color: #000;
+        }
+        .meta_content {
+            font-size: 15px;
+            color: rgba(0,0,0,0.3);
+            margin-bottom: 22px;
+        }
+        .meta_nickname {
+            color: #576B95;
+            font-weight: 500;
+            margin-left: 8px;
+        }
+        /* 装饰性分割 */
+        .header-deco {
+            text-align: center;
+            color: var(--brand-blue);
+            font-size: 18px;
+            letter-spacing: 4px;
+            margin: 30px 0 10px;
+            font-weight: bold;
+        }
+        /* 核心通告卡片 */
+        .notice-card {
+            background-color: var(--light-blue-bg);
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .highlight-text {
+            color: var(--accent-red);
+            font-weight: bold;
+        }
+        /* 章节样式 */
+        .section-header {
+            text-align: center;
+            margin: 40px 0 20px;
+        }
+        .section-title {
+            display: inline-block;
+            font-size: 18px;
+            font-weight: bold;
+            color: #fff;
+            background-color: var(--brand-blue);
+            padding: 4px 20px;
+            border-radius: 20px;
+        }
+        /* 菜品/人物列表 */
+        .item-grid {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .item-row {
+            padding: 8px 0;
+            border-bottom: 1px dashed #eee;
+            font-size: 15px;
+        }
+        .item-place {
+            color: var(--brand-blue);
+            font-weight: 500;
+            margin-right: 8px;
+        }
+        /* 品牌堂样式 */
+        .hall-of-fame {
+            border: 2px solid var(--brand-blue);
+            padding: 20px;
+            margin: 20px 0;
+            position: relative;
+            text-align: center;
+        }
+        .hall-tag {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #fff;
+            padding: 0 15px;
+            color: var(--brand-blue);
+            font-weight: bold;
+        }
+        /* 图片样式 */
+        .fixed-width-img {
+            width: 100%;
+            max-width: 500px;
+            display: block;
+            margin: 20px auto;
+            border: none !important;
+            outline: none;
+            box-shadow: none;
+        }
+        /* --- 新增：问答界面样式 --- */
+        .quiz-container {
+            background: #fdfdfd;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 25px;
+            margin: 30px 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        .quiz-title {
+            color: var(--brand-blue);
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        .quiz-step { display: none; }
+        .quiz-step.active { display: block; }
+        .question { font-weight: bold; margin-bottom: 15px; color: #333; }
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        .option-btn {
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: #fff;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: left;
+        }
+        .option-btn:hover { background: #f0f7ff; border-color: var(--brand-blue); }
+        
+        /* 成功界面 */
+        #quiz-success {
+            display: none;
+            text-align: center;
+            background: #f1f8e9;
+            border: 2px solid var(--success-green);
+            padding: 20px;
+            border-radius: 12px;
+        }
+        .success-icon { font-size: 40px; color: var(--success-green); margin-bottom: 10px; }
+
+        .fixed-width-img { width: 100%; max-width: 500px; display: block; margin: 20px auto; }
+
+    </style>
+</head>
+<body>
+
+<div class="rich-media-container">
+    <h1 class="rich_media_title">双十佳评选·结果揭晓 | “食”至名归，更要“食”惠</h1>
+    <div class="meta_content">
+        <span>2026年1月8日</span>
+        <span class="meta_nickname">青州大学餐饮中心官方资讯</span>
+    </div>
+
+    <div class="header-deco">“寻味拾佳”2025</div>
+    <div class="notice-card">
+        <p style="margin-top:0;"><strong>2025年度青州大学<br>“十佳菜肴”“最佳新菜”<br>评选结果正式揭晓！</strong></p>
+        <p style="font-size: 14px; line-height: 1.8;">
+            为回馈师生，获奖菜品将于<br>
+            <span class="highlight-text">2026年1月8日至2026年1月15日</span><br>
+            统一以<span class="highlight-text">八五折</span>价格优惠售卖！
+        </p>
+    </div>
+
+    <div class="section-header">
+        <div class="section-title">/ 十佳菜肴 /</div>
+    </div>
+    <img src="top.jpg" alt="活动海报" class="fixed-width-img">
+    <div class="item-grid">
+        <div class="item-row"><span class="item-place">碧波湖</span>木桶鸡肉饭</div>
+        <div class="item-row"><span class="item-place">青川</span>双椒肥牛</div>
+        <div class="item-row"><span class="item-place">芳华苑</span>生煎包</div>
+        <div class="item-row"><span class="item-place">东苑</span>肉末鸡蛋肠粉</div>
+        <div class="item-row"><span class="item-place">东苑</span>肉蛋堡</div>
+        <div class="item-row"><span class="item-place">碧波湖</span>宜宾燃面</div>
+        <div class="item-row"><span class="item-place">东苑</span>烤盘饭</div>
+        <div class="item-row"><span class="item-place">西苑</span>涮羊肉</div>
+        <div class="item-row"><span class="item-place">西苑</span>黑椒牛肉滑蛋饭</div>
+        <div class="item-row"><span class="item-place">荷香园</span>港式烧鸭饭</div>
+    </div>
+
+    <div class="section-header">
+        <div class="section-title">/ 最佳新菜 /</div>
+    </div>
+    <img src="top1.jpg" alt="活动海报" class="fixed-width-img">
+    <div class="item-grid">
+        <div class="item-row"><span class="item-place">芳华苑</span>小炒牛肉饭</div>
+        <div class="item-row"><span class="item-place">碧波湖</span>过油肉拌面</div>
+        <div class="item-row"><span class="item-place">西苑</span>泡椒鸡胗</div>
+        <div class="item-row"><span class="item-place">荷香园</span>热乎乎柴火豆腐</div>
+        <div class="item-row"><span class="item-place">东苑</span>锅巴土豆</div>
+    </div>
+
+
+    <div class="hall-of-fame">
+        <div class="hall-tag">青州名菜堂</div>
+        <p style="font-size: 14px; color:#666;">在历年评选中四次斩获“十佳”的经典之作</p>
+        <div style="color:var(--brand-blue); font-weight: bold; font-size: 16px;">
+            东苑 · 香辣鸡腿饭<br>
+            青川 · 黄焖鸡米饭<br>
+            西苑 · 襄阳牛肉面
+        </div>
+    </div>
+<div class="quiz-container" id="quiz-box">
+        <div class="quiz-title">🎁 寻味挑战：答题赢奖品</div>
+        
+        <div class="quiz-step active" id="step-1">
+            <div class="question">1. 本次获奖菜品的限时优惠折扣是多少？</div>
+            <div class="options">
+                <button class="option-btn" onclick="checkAnswer(1, 'A')">A. 九五折</button>
+                <button class="option-btn" onclick="checkAnswer(1, 'B')">B. 八五折</button>
+                <button class="option-btn" onclick="checkAnswer(1, 'C')">C. 买一送一</button>
+            </div>
+        </div>
+
+        <div class="quiz-step" id="step-2">
+            <div class="question">2. 以下哪道菜是“碧波湖”餐厅的获奖菜肴？</div>
+            <div class="options">
+                <button class="option-btn" onclick="checkAnswer(2, 'A')">A. 木桶鸡肉饭</button>
+                <button class="option-btn" onclick="checkAnswer(2, 'B')">B. 双椒肥牛</button>
+                <button class="option-btn" onclick="checkAnswer(2, 'C')">C. 港式烧鸭饭</button>
+            </div>
+        </div>
+
+        <div class="quiz-step" id="step-3">
+            <div class="question">3. “青州名菜堂”中，哪道菜是西苑餐厅的招牌？</div>
+            <div class="options">
+                <button class="option-btn" onclick="checkAnswer(3, 'A')">A. 香辣鸡腿饭</button>
+                <button class="option-btn" onclick="checkAnswer(3, 'B')">B. 黄焖鸡米饭</button>
+                <button class="option-btn" onclick="checkAnswer(3, 'C')">C. 襄阳牛肉面</button>
+            </div>
+        </div>
+
+        <div id="quiz-success">
+            <div class="success-icon">🎉</div>
+            <p><strong>恭喜你回答正确全部题目！</strong></p>
+            <p style="font-size: 14px;">获得【青川食堂】霸王餐一份，<a href="bbs0.html">点击领取</a>。</p>
+        </div>
+    </div>
+
+
+    <div style="text-align: center; color: #aaa; font-size: 12px; margin-top: 40px; padding-bottom: 20px;">
+        © 青州大学餐饮服务中心 | 双十佳评选
+    </div>
+</div>
+
+<script>
+    const answers = { 1: 'B', 2: 'A', 3: 'C' };
+    let currentStep = 1;
+
+    function checkAnswer(step, choice) {
+        if (choice === answers[step]) {
+            if (step < 3) {
+                document.getElementById(`step-${step}`).classList.remove('active');
+                document.getElementById(`step-${step + 1}`).classList.add('active');
+            } else {
+                // 全部答对
+                document.getElementById(`step-3`).classList.remove('active');
+                document.querySelector('.quiz-title').style.display = 'none';
+                document.getElementById('quiz-success').style.display = 'block';
+            }
+        } else {
+            alert("哎呀，答错了！再仔细看一看文章吧~");
+        }
+    }
+</script>
+
+</body>
+</html>

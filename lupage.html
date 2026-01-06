@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>陆远航 - 青州大学软件工程学院师资队伍</title>
+    <style>
+            /* 全局样式 */
+        body { font-family: "Times New Roman", "SimSun", serif; line-height: 1.6; color: #333; margin: 0; padding: 0; background: #fff; }
+        
+        
+        /* 顶部导航与高教授一致，维持学院统一视觉 */
+        .header { background: #004a8d; height: 60px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .header-inner { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; height: 100%; padding: 0 20px; }
+        .school-name { color: white; font-size: 18px; font-weight: bold; letter-spacing: 1px; }
+
+        .main-container { max-width: 1000px; margin: 40px auto; display: flex; gap: 50px; padding: 0 20px; }
+        
+        /* 侧边栏 */
+        .sidebar { width: 240px; flex-shrink: 0; }
+        .photo-box { width: 100%; aspect-ratio: 3 / 4; background: #f5f5f5; border: 1px solid #eee; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; }
+        .photo-box img { width: 100%; height: 100%; object-fit: cover; }
+        
+        .status-badge { background: #fff1f0; color: #cf1322; border: 1px solid #ffa39e; padding: 5px; text-align: center; font-size: 12px; border-radius: 2px; margin-bottom: 15px; }
+
+        /* 内容区 */
+        .content-area { flex: 1; }
+        .content-area h1 { margin: 0 0 5px 0; font-size: 28px; }
+        .en-name { color: #888; font-style: italic; margin-bottom: 15px; display: block; }
+        .tags { margin-bottom: 25px; }
+        .tag { background: #f0f0f0; color: #666; padding: 2px 10px; font-size: 12px; border-radius: 2px; margin-right: 8px; }
+        
+        .info-card { background: #fafafa; border: 1px solid #f0f0f0; padding: 20px; margin-bottom: 30px; font-size: 14px; }
+        .info-item { display: flex; margin-bottom: 8px; }
+        .label { width: 80px; color: #888; font-weight: bold; }
+
+        section { margin-bottom: 35px; }
+        h3 { font-size: 18px; color: var(--qzu-blue); border-bottom: 1px solid #ddd; padding-bottom: 5px; margin-bottom: 15px; }
+        .paper-list { list-style: decimal; padding-left: 20px; font-size: 14px; }
+        .paper-list li { margin-bottom: 10px; }
+        .highlight-me { font-weight: bold; text-decoration: underline; }
+        /* --- 页眉：全宽平铺 --- */
+        header.site-header { background-color: #004a8d; color: white; width: 100%; }
+        
+        .header-top { 
+            max-width: 1100px; 
+            margin: 0 auto; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            padding: 40px 20px; 
+        }
+        .univ-title {
+    /* 优先调用：华文行楷、思源宋体、楷体，这些更有书法底蕴 */
+    font-family: "STXingkai", "Source Han Serif SC", "Noto Serif SC", "KaiTi", "楷体", serif;
+    font-size: 32px !important; /* 稍微加大 */
+    letter-spacing: 6px;        /* 关键：加大字间距，产生庄重感 */
+    font-weight: 500;           /* 书法体不需要太厚重 */
+    color: #ffffff;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.2); /* 淡淡的阴影增加立体感 */
+}
+/* 设置 Logo 的尺寸和间距 */
+.school-logo {
+    height: 50px;       /* 调整这个高度来适配你的 Logo 比例 */
+    width: auto;        /* 保持纵横比 */
+    margin-right: 15px; /* 与右侧文字保持间距 */
+    display: block;
+}
+/* 确保导航条背景容器没有内边距 */
+.nav-bar-wrapper {
+    background-color: #28659e;
+    width: 100%;
+    display: block;
+    margin: 0;
+    padding: 0;
+}
+
+/* 强制容器高度为 50px (或您想要的高度) */
+.nav-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    list-style: none;
+    padding: 0;
+    height: 50px; /* 统一导航条高度 */
+}
+
+.nav-container li { 
+    flex: 1; 
+    display: flex;         /* 使用 flex 让文字垂直居中 */
+    align-items: center;   /* 垂直居中 */
+    justify-content: center; /* 水平居中 */
+    height: 100%;          /* 关键：让 li 撑满容器高度 */
+    font-size: 15px; 
+    color: white;
+    cursor: pointer; 
+    transition: background 0.3s;
+}
+
+/* 悬停变色现在会填满整个 50px 高度 */
+.nav-container li:hover { 
+    background-color: #004a8d; 
+}
+  
+        /* --- 页脚：全宽且无左右留白 --- */
+        .footer-wrapper {
+            background-color: #004a8d; 
+            color: rgba(255,255,255,0.8); 
+            padding: 30px 0; 
+            font-size: 13px; 
+            margin-top: 60px; 
+            width: 100%;
+        }
+
+        .footer-content {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px; /* 内部内容居中对齐，但背景颜色会铺满屏幕 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .footer-info span { margin-right: 25px; }
+                .school-logo.logo-circle {
+    height: 60px;           /* 适当放大一点，因为圆形会显得视觉偏小 */
+    width: 60px;            /* 必须设置固定的宽高相等，才能形成正圆 */
+    margin-right: 15px;
+    
+    /* 核心代码：实现圆形白底 */
+    background-color: #fff; /* 设置背景为白色 */
+    border-radius: 50%;     /* 强制裁切为圆形 */
+    object-fit: contain;    /* 确保图片在圆圈内完整显示 */
+    padding: 2px;           /* 可选：给校徽边缘留一点白边，更美观 */
+        text-align: center; 
+    /* 可选：加一个淡淡的阴影让校徽更有质感 */
+    box-shadow: 0 0 5px rgba(0,0,0,0.2); 
+}
+    </style>
+</head>
+<body>
+
+<header class="site-header">
+    <div class="header-top">
+        <div style="display: flex; align-items: center;">
+            <img src="logo1.png" alt="Logo" class="school-logo logo-circle">
+            <div style="font-size: 32px; font-weight: bold; letter-spacing: 1px;">青州大学软件工程学院</div>
+            <div style="margin-left: 12px; padding-left: 12px; border-left: 1px solid rgba(255,255,255,0.5); font-size: 11px; line-height: 1.2;">
+                QINGZHOU UNIVERSITY<br>SOFTWARE INSTITUTE
+            </div>
+        </div>
+        <div style="font-size: 14px;">🔍 | English</div>
+    </div>
+    
+    <div class="nav-bar-wrapper">
+        <ul class="nav-container">
+            <li>首页</li>
+            <li>学院概况</li>
+            <li>师资力量</li>
+            <li>人才培养</li>
+            <li>招生就业</li>
+            
+            <li>院友之家</li>
+            <li>诚聘英才</li>
+            <li>教学平台</li>
+        </ul>
+    </div>
+</header>
+
+
+    <div class="main-container">
+        <div class="sidebar">
+            <div class="photo-box">
+                <div style="color: #ccc; font-size: 13px;">[ 陆远航 证件照 ]</div>
+            </div>
+            
+            <div style="font-size: 13px; color: #666;">
+                <p>· 学院竞赛指导教练</p>
+                <p>· 2023级博士班班主任</p>
+            </div>
+        </div>
+
+        <div class="content-area">
+            <h1>陆远航</h1>
+            
+            <div class="tags">
+                <span class="tag">副教授</span>
+                <span class="tag">硕士生导师</span>
+                <span class="tag">软件智能与测试实验室 (SIT)</span>
+            </div>
+
+            <div class="info-card">
+                
+                <div class="info-item"><span class="label">研究方向</span><span>分布式算法优化、实时系统数据处理</span></div>
+                <div class="info-item"><span class="label">教学工作</span><span>《操作系统》、《数据结构实验》</span></div>
+                <div class="info-item"><span class="label">办公地点</span><span>软件工程学院楼 302 室 (东侧)</span></div>
+                <div class="info-item"><span class="label">电子邮箱</span><span>luyh@qzu.edu.cn</span></div>
+            </div>
+
+            <section>
+                <h3>个人简历</h3>
+                <p style="font-size: 14px;">陆远航，博士，毕业于某中部985大学。2019年起任教于青州大学软件工程学院。研究兴趣主要集中于分布式系统中的算法效率与工程可实现性问题。长期指导学生参加各类程序设计竞赛，累计指导学生获得国家级奖励5项。目前主要研究重点在于资源稀缺环境下的任务分配效率问题。</p>
+            </section>
+
+            <section>
+                <h3>科研成果</h3>
+                <ol class="paper-list">
+    <li> <b>Yuanhang Lu</b>, et al. "Adaptive Task Offloading in Edge Computing Environments," <i>MCA Computing Surveys</i>, 2023.</li>
+    <li> <b>Yuanhang Lu*</b>, et al. "Scalable Load Balancing Algorithms for Distributed Systems," <i>International Conference on Parallel Processing</i>, 2022. (通讯作者)</li>
+    <li> <b>Yuanhang Lu*</b>, et al. "Automated Grading and Feedback Systems for Programming Contests," <i>QZ Student Competition Journal</i>, 2022. (通讯作者)</li>
+    <li> <b>Yuanhang Lu*</b>, et al. "Optimizing Reward Distribution Systems," <i>Best Paper of QZ Student Competition</i>, 2021. (通讯作者)</li>
+    <li> <b>Yuanhang Lu</b>, et al. "Dynamic Task Allocation in Constrained Environments," <i>EIII Trans.</i>, 2020.</li>
+    <li> <b>Yuanhang Lu</b>, et al. "Real-Time Scheduling for Resource-Constrained Systems," <i>Journal of Software Applications & Engineering</i>, 2020.</li>
+    <span style="color: #999;">部分研究工作处于持续修订与审稿阶段，暂未正式发表。</span>
+
+                    <p style="font-size: 13px; color: #888; margin-bottom: 10px;">
+
+                </ol>
+            </section>
+
+            <section>
+                <h3>赛事指导</h3>
+                <p style="font-size: 14px;">
+                    2025年“卓越之星”大学生竞赛 · 全国一等奖<br>
+                    2024年“第十届全国大学生程序设计竞赛” · 全国特等奖 ：《一种基于多维特征的自动化资源分配系统》<br>
+                    2024年“蓝桥杯”全国软件和信息技术专业人才大赛 · 全国一等奖 <br>
+                    2023年“挑战杯”全国大学生学术科技作品竞赛 · 全国二等奖<br>
+                    2022年“中国机器人大赛” · 全国二等奖
+                </p>
+            </section>
+
+<section>
+    <h3>主页寄语</h3>
+
+    <p style="font-size: 14px; color: #666; font-style: italic;">
+        我本人很喜欢<span style="color:#000;font-weight:500;">《怪诞小镇》</span>这部动画片，表面荒诞离奇，但每一个细节背后都有其逻辑，最终都会指向真相本身。
+    </p>
+
+    <p style="font-size: 14px; color: #666; font-style: italic;">
+        写下第一行 <span style="color:#000;font-weight:500;">HelloWorld</span> 时，其实也是一样——你并不知道它们将会在哪里起到作用，但你必须认真对待每一个<span style="color:#000;font-weight:500;">Bit</span>，因为这是你通往世界的钥匙。
+    </p>
+
+    <p style="font-size: 14px; color: #666; font-style: italic;">
+        我一直相信，好的系统、好的研究，往往藏在那些一开始看起来不起眼的细节里。对细节的耐心，往往比答案本身更重要。
+    </p>
+
+    <p style="font-size: 14px; color: #666; font-style: italic;">
+        <span style="color:#000;font-weight:500;">希望你在解决问题之前，先学会发现问题。</span>
+    </p>
+</section>
+
+        </div>
+    </div>
+<div class="footer-wrapper">
+    <div class="footer-content">
+        <div class="footer-info">
+            <span>© 版权所有：青州大学软件工程学院</span>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+</body>
+</html>

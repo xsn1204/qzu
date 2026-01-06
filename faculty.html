@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>高成安 - 青州大学软件工程学院</title>
+    <style>
+        /* 全局样式 */
+        body { font-family: "Times New Roman", "SimSun", serif; line-height: 1.6; color: #333; margin: 0; padding: 0; background: #fff; }
+        
+        /* --- 页眉：全宽平铺 --- */
+        header.site-header { background-color: #004a8d; color: white; width: 100%; }
+        
+        .header-top { 
+            max-width: 1100px; 
+            margin: 0 auto; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            padding: 40px 20px; 
+        }
+        .univ-title {
+    /* 优先调用：华文行楷、思源宋体、楷体，这些更有书法底蕴 */
+    font-family: "STXingkai", "Source Han Serif SC", "Noto Serif SC", "KaiTi", "楷体", serif;
+    font-size: 32px !important; /* 稍微加大 */
+    letter-spacing: 6px;        /* 关键：加大字间距，产生庄重感 */
+    font-weight: 500;           /* 书法体不需要太厚重 */
+    color: #ffffff;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.2); /* 淡淡的阴影增加立体感 */
+}
+/* 设置 Logo 的尺寸和间距 */
+.school-logo {
+    height: 50px;       /* 调整这个高度来适配你的 Logo 比例 */
+    width: auto;        /* 保持纵横比 */
+    margin-right: 15px; /* 与右侧文字保持间距 */
+    display: block;
+}
+/* 确保导航条背景容器没有内边距 */
+.nav-bar-wrapper {
+    background-color: #28659e;
+    width: 100%;
+    display: block;
+    margin: 0;
+    padding: 0;
+}
+
+/* 强制容器高度为 50px (或您想要的高度) */
+.nav-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    list-style: none;
+    padding: 0;
+    height: 50px; /* 统一导航条高度 */
+}
+
+.nav-container li { 
+    flex: 1; 
+    display: flex;         /* 使用 flex 让文字垂直居中 */
+    align-items: center;   /* 垂直居中 */
+    justify-content: center; /* 水平居中 */
+    height: 100%;          /* 关键：让 li 撑满容器高度 */
+    font-size: 15px; 
+    color: white;
+    cursor: pointer; 
+    transition: background 0.3s;
+}
+
+/* 悬停变色现在会填满整个 50px 高度 */
+.nav-container li:hover { 
+    background-color: #004a8d; 
+}
+
+        /* 主体内容区 */
+        .container { max-width: 1000px; margin: 0 auto; padding: 40px 20px; min-height: 600px; }
+        
+        /* 姓名栏样式：修正之前与页眉冲突的问题 */
+        .faculty-title-bar { 
+            border-bottom: 2px solid #004a8d; 
+            padding-bottom: 15px; 
+            margin-bottom: 35px; 
+            display: flex; 
+            align-items: flex-end; 
+        }
+        .name-zh { font-size: 32px; font-weight: bold; color: #004a8d; margin-right: 15px; }
+        .name-en { font-size: 20px; color: #666; font-style: italic; }
+
+        /* 基本信息 */
+        .profile { display: flex; gap: 40px; margin-bottom: 40px; }
+        .photo { width: 220px; height: 280px; background: #eee; border: 1px solid #ddd; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        .info-text { flex: 1; }
+        .info-label { font-weight: bold; width: 85px; display: inline-block; color: #444; }
+
+        section h3 { border-left: 5px solid #004a8d; padding-left: 10px; color: #004a8d; border-bottom: 1px solid #eee; padding-bottom: 5px; margin-top: 40px; }
+        ul { padding-left: 20px; }
+        li { margin-bottom: 8px; }
+
+        .lab-link { display: inline-block; background: #004a8d; color: white; padding: 10px 25px; text-decoration: none; border-radius: 4px; transition: 0.3s; margin-top: 10px; }
+        .lab-link:hover { opacity: 0.9; box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
+
+        /* --- 页脚：全宽且无左右留白 --- */
+        .footer-wrapper {
+            background-color: #004a8d; 
+            color: rgba(255,255,255,0.8); 
+            padding: 30px 0; 
+            font-size: 13px; 
+            margin-top: 60px; 
+            width: 100%;
+        }
+
+        .footer-content {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px; /* 内部内容居中对齐，但背景颜色会铺满屏幕 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .footer-info span { margin-right: 25px; }
+        .school-logo.logo-circle {
+    height: 60px;           /* 适当放大一点，因为圆形会显得视觉偏小 */
+    width: 60px;            /* 必须设置固定的宽高相等，才能形成正圆 */
+    margin-right: 15px;
+    
+    /* 核心代码：实现圆形白底 */
+    background-color: #fff; /* 设置背景为白色 */
+    border-radius: 50%;     /* 强制裁切为圆形 */
+    object-fit: contain;    /* 确保图片在圆圈内完整显示 */
+    padding: 2px;           /* 可选：给校徽边缘留一点白边，更美观 */
+    
+    /* 可选：加一个淡淡的阴影让校徽更有质感 */
+    box-shadow: 0 0 5px rgba(0,0,0,0.2); 
+}
+    </style>
+</head>
+<body>
+
+<header class="site-header">
+    <div class="header-top">
+        <div style="display: flex; align-items: center;">
+            <img src="logo1.png" alt="Logo" class="school-logo logo-circle">
+            <div style="font-size: 32px; font-weight: bold; letter-spacing: 1px;">青州大学软件工程学院</div>
+            <div style="margin-left: 12px; padding-left: 12px; border-left: 1px solid rgba(255,255,255,0.5); font-size: 11px; line-height: 1.2;">
+                QINGZHOU UNIVERSITY<br>SOFTWARE INSTITUTE
+            </div>
+        </div>
+        <div style="font-size: 14px;">🔍 | English</div>
+    </div>
+    
+    <div class="nav-bar-wrapper">
+        <ul class="nav-container">
+            <li>首页</li>
+            <li>学院概况</li>
+            <li>师资力量</li>
+            <li>人才培养</li>
+            <li>招生就业</li>
+          
+            <li>院友之家</li>
+            <li>诚聘英才</li>
+            <li>教学平台</li>
+        </ul>
+    </div>
+</header>
+
+<div class="container">
+    <div class="faculty-title-bar">
+        <span class="name-zh">高成安</span>
+        <span class="name-en">教授</span>
+    </div>
+
+    <div class="profile">
+        <div class="photo">
+            <div style="text-align: center; color: #999;">[教授照片]</div>
+        </div>
+        <div class="info-text">
+          <p><span class="info-label">行政职务：</span> 软件工程学院副院长</p>
+            <p><span class="info-label">研究方向：</span> 智能软件工程、自动化测试、软件安全</p>
+            <p><span class="info-label">办公地点：</span> 软件工程学院楼 302 室 (西侧)</p>
+            <p><span class="info-label">联系电话：</span> 0312-83XXX361</p>
+
+            <p style="margin-top: 20px;">
+                <a href="lab.html" class="lab-link">进入：软件智能与测试实验室 (SIT Lab) →</a>
+            </p>
+        </div>
+    </div>
+
+<section>
+    <h3>个人简介</h3>
+    <p>高成安教授现任青州大学软件工程学院副院长、博士生导师，长期从事智能软件工程研究，致力于产教研融合，并主持了若干国家级与省级科研项目。</p>
+</section>
+
+<section>
+    <h3>学术头衔与荣誉</h3>
+    <ul>
+        <li>临源省计算机学会技术委员会执行主任</li>
+        <li>FFC杰出会员与杰出讲者</li>
+        <li>国家级及省部级科技成果奖多项</li>
+              <li>担任EIII TSE、MCA、TSI、SJJ等国际高水平期刊审稿人</li>
+    </ul>
+</section>
+
+<section>
+    <h3>近期研究</h3>
+    <p>高成安教授主要研究方向包括智能软件工程、自动化测试、代码质量分析及软件安全。</p>
+    <p style="color: #666; font-size: 13px;">* 现因课题发展需要，诚聘具有智能软件工程或分布式算法背景的博士后研究员若干名。</p>
+</section>
+
+<section>
+    <h3>教学工作</h3>
+    <ul>
+        <li>主编《软件测试基础》、《软件测试方法与技术》、《软件开发实践指南》等教材</li>
+        <li>MOOC课程上线：中国大学MOOC、学习强国平台</li>
+    </ul>
+</section>
+
+
+</div>
+
+<div class="footer-wrapper">
+    <div class="footer-content">
+        <div class="footer-info">
+            <span>© 版权所有：青州大学软件工程学院</span>
+        </div>
+    </div>
+</div>
+</body>
+</html>

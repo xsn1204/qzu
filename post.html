@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>微信公众号编辑器 - 实名举报信</title>
+    <style>
+        :root {
+            --bg-gray: #f5f5f5;
+            --border-color: #e7e7eb;
+            --wechat-green: #07c160;
+            --text-gray: #9a9a9a;
+            --text-main: #333333;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "PingFang SC", "Microsoft YaHei", sans-serif;
+            background-color: var(--bg-gray);
+            overflow: hidden; /* 防止网页整体出现双滚动条 */
+        }
+
+        .container {
+            display: flex;
+            height: 100vh;
+        }
+
+        /* --- 左侧预览栏 --- */
+        .sidebar {
+            width: 280px;
+            background: #fff;
+            border-right: 1px solid var(--border-color);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+        }
+
+        .logo {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-icon {
+            width: 24px;
+            height: 24px;
+            background: var(--wechat-green);
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .preview-card {
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            cursor: pointer;
+        }
+
+        .preview-img {
+            height: 140px;
+            background: linear-gradient(135deg, #bdc3c7, #2c3e50);
+            position: relative;
+        }
+
+        .preview-title {
+            position: absolute;
+            bottom: 0;
+            padding: 12px;
+            color: #fff;
+            background: rgba(0,0,0,0.5);
+            width: 100%;
+            box-sizing: border-box;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        /* --- 主编辑区 --- */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+        }
+
+        /* 顶部导航与工具栏 */
+        .top-nav {
+            background: #fff;
+            padding: 10px 25px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            gap: 25px;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .top-nav-item.active { color: var(--wechat-green); font-weight: 500; }
+
+        .rich-toolbar {
+            background: #fff;
+            padding: 8px 25px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-shrink: 0;
+        }
+
+        .tool-icon {
+            width: 20px;
+            height: 20px;
+            background: #f8f8f8;
+            border: 1px solid #ddd;
+            border-radius: 2px;
+        }
+
+        /* 滚动容器：解决“划拉不动”的关键 */
+        .editor-container {
+            flex: 1;
+            overflow-y: auto; 
+            padding: 40px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 0; 
+        }
+
+        /* 编辑纸张：解决“看不到标题”的关键（确保白色背景和内边距存在） */
+        .editor-paper {
+            width: 90%;
+            max-width: 750px;
+            background: #fff;
+            padding: 60px 80px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            min-height: 1200px; /* 保证高度产生滚动 */
+            margin-bottom: 60px; /* 底部留白确保滑到底 */
+            box-sizing: border-box;
+            flex-shrink: 0;
+        }
+
+        /* 标题：解决不换行导致的显示不全 */
+        .input-title {
+            font-size: 28px;
+            font-weight: 600;
+            color: var(--text-main);
+            line-height: 1.4;
+            margin-bottom: 20px;
+            outline: none;
+            word-break: break-all;
+            display: block;
+            width: 100%;
+        }
+
+        .input-author {
+            font-size: 15px;
+            color: #576b95;
+            border: none;
+            outline: none;
+            width: 100%;
+            margin-bottom: 35px;
+            display: block;
+        }
+
+        /* 正文排版 */
+        .editor-body {
+            font-size: 16px;
+            color: var(--text-main);
+            line-height: 1.8;
+            outline: none;
+        }
+
+        .subject-line { font-weight: bold; margin-bottom: 25px; }
+        .p-content p { margin-bottom: 1.5em; text-align: justify; }
+        .signature { margin-top: 60px; line-height: 2; }
+
+        .cursor {
+            border-left: 2px solid var(--wechat-green);
+            animation: blink 1s infinite;
+        }
+        @keyframes blink { 50% { opacity: 0; } }
+
+        .bottom-bar {
+            height: 65px;
+            background: #fff;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+        }
+
+        .status-info {
+            font-size: 13px;
+            color: var(--text-gray);
+        }
+
+        .btn {
+            padding: 9px 24px;
+            border-radius: 4px;
+            cursor: pointer;
+            border: 1px solid var(--border-color);
+            background: #fff;
+            font-size: 14px;
+            margin-left: 10px;
+        }
+
+        .btn-primary {
+            background: var(--wechat-green);
+            color: #fff;
+            border: none;
+        }
+
+        .btn:hover { opacity: 0.8; }
+        :root {
+    /* 夜间模式色彩定义 */
+    --bg-gray: #111111;       /* 整体背景：极深灰 */
+    --editor-bg: #1e1e1e;     /* 编辑器纸张：深灰 */
+    --sidebar-bg: #191919;    /* 侧边栏 */
+    --nav-bg: #191919;        /* 顶部导航 */
+    --border-color: #333333;  /* 边框：深色 */
+    --wechat-green: #07c160;  
+    --text-gray: #888888;
+    --text-main: #d1d1d1;     /* 主文字：浅白 */
+    --text-link: #576b95;     /* 链接色 */
+}
+
+body, html {
+    background-color: var(--bg-gray);
+    color: var(--text-main);
+}
+
+/* --- 左侧预览栏夜间适配 --- */
+.sidebar {
+    background: var(--sidebar-bg);
+}
+
+.logo { color: #fff; }
+
+.preview-card {
+    background: #262626;
+    border-color: var(--border-color);
+}
+
+/* --- 主编辑区夜间适配 --- */
+.top-nav, .rich-toolbar, .bottom-bar {
+    background: var(--nav-bg);
+    border-color: var(--border-color);
+    color: var(--text-main);
+}
+
+.tool-icon {
+    background: #2a2a2a;
+    border-color: #444;
+}
+
+/* --- 核心：编辑纸张夜间模式 --- */
+.editor-paper {
+    background: var(--editor-bg); /* 纸张变暗 */
+    box-shadow: 0 4px 20px rgba(0,0,0,0.5); /* 阴影加深 */
+    color: var(--text-main);
+}
+
+.input-title {
+    color: #ffffff; /* 标题用纯白增加对比 */
+}
+
+.input-author {
+    background: transparent;
+    color: var(--text-link);
+}
+
+.editor-body {
+    color: var(--text-main);
+}
+
+/* --- 按钮夜间模式 --- */
+.btn {
+    background: #2c2c2c;
+    border-color: #444;
+    color: #ccc;
+}
+
+.btn-primary {
+    background: var(--wechat-green);
+    color: #fff;
+    border: none;
+}
+.logo {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 30px;
+    display: flex;
+    align-items: center;
+    color: #ffffff; /* 夜间模式文字设为白色 */
+}
+
+/* 针对本地 SVG 的样式控制 */
+.sidebar-logo-img {
+    width: 22px;   /* 略小于登录页，更符合侧边栏比例 */
+    height: 22px;
+    margin-right: 10px;
+    display: block;
+    /* 如果你的 SVG 是黑色的，可以使用 filter 将其变为微信绿或白色 */
+    /* filter: brightness(0) invert(1); // 变全白 */
+}
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <aside class="sidebar">
+        <div class="logo">
+        <img src="wechat1.svg" alt="logo" class="sidebar-logo-img">
+        <span>服务号</span>
+    </div>
+        <div class="preview-card">
+            <div class="preview-img">
+                <div class="preview-title">实名举报：关于软件工程学院副院长高成安严重违纪行为的说明</div>
+            </div>
+        </div>
+        <div class="add-btn">+ 新建消息</div>
+    </aside>
+
+    <main class="main-content">
+        <header class="top-nav">
+             <div class="top-nav-item">视频</div>
+            <div class="top-nav-item">图片 ⌵</div>
+                      <div class="top-nav-item">音频</div>
+            <div class="top-nav-item active">内容编辑</div>
+            <div class="top-nav-item">小程序</div>
+
+            <div class="top-nav-item">模板</div>
+        </header>
+
+        <div class="rich-toolbar">
+            <div class="tool-icon"></div><div class="tool-icon"></div>
+            <div style="font-size: 13px; color: #666;">字体 ⌵</div>
+            <div style="font-size: 13px; color: #666;">17px ⌵</div>
+        </div>
+
+        <div class="editor-container">
+            <div class="editor-paper">
+                <div class="input-title" contenteditable="true">实名举报：关于软件工程学院副院长高成安严重违纪行为的说明</div>
+                
+                <input type="text" class="input-author" value="Marvin">
+                
+                <div class="editor-body" contenteditable="true">
+                    <div class="subject-line">尊敬的青州大学校领导、纪委及监察部门同志：</div>
+                    
+                    <div class="p-content">
+                        <p>我是软件工程学院博士研究生麦闻（学号：2300114964）。我在此实名举报学院副院长高成安长期以来的严重违纪行为。</p>
+                        <p>2023年秋，我满怀憧憬地进入SIT实验室，只觉得能跟随高成安院长是莫大的荣幸。前任实验室助理毕业后，我被安排接管接手相关事务。也许是高院长的识人眼光出了差错，我并没有他预期地那样“上道”，对布置下来的一些工作始终心存疑虑。</p>
+                        <p>随着经手的事务越来越多，我逐渐发现，有些本应用于科研活动的课题经费，并未用于项目本身，而是通过各种途径流入了高院长的钱包。此外，他还利用副院长的职权，操控实验室技术成果归属，干预课题审批，甚至左右大大小小的人事任免。</p>
+                        <p>当我意识到这种行为涉嫌职务侵占时，我尝试在学校BBS发帖求助。但怎么也没想到，等待我的是学院的一纸处分。高院长始终未与我进行任何正面交流，却很快撤销了我的助理职务，并开始对我实施长期隐性的心理施压。</p>
+                        <p>出于对个人前途的恐惧，我一度选择沉默，但我始终无法假装这一切从未发生。尤其是当我听闻实验室的陆远航老师，在高压考核下，被学院强制解聘。看到这位一向教学认真、治学严谨的学者被系统性地压榨和牺牲，我感到了彻骨的悲凉。</p>
+                        <p>我深知自己人微言轻，也清楚这封信一旦发出，可能意味着我的求学生涯将就此终结。但我已无法继续沉默。如果我不说出这一切，沉默只会让更多人受害。</p>
+                        <p>恳请母校正视问题，不要再眼见着一届届的年轻教师、学子，再度被卷入这样的深渊。</p>
+                    </div>
+                
+                    <div class="signature">
+                        举报人：麦闻<br>
+                        2026年1月9日 凌晨<span class="cursor"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer class="bottom-bar">
+            <div class="status-info">04:20 已保存 正文字数 609</div>
+            <div class="actions">
+                <button class="btn">保存为草稿</button>
+                <button class="btn">删除</button>
+                <button class="btn btn-primary">发表</button>
+            </div>
+        </footer>
+    </main>
+</div>
+
+</body>
+</html>

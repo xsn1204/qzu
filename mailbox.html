@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>青州大学邮件系统</title>
+    <style>
+        :root { --qzu-red: #003366; --text-gray: #666; --bg-light: #f4f4f4; }
+        body, html { margin: 0; padding: 0; height: 100%; font-family: "Microsoft YaHei", Arial, sans-serif; overflow: hidden; }
+
+        /* 登录页样式 - 修复背景图显示 */
+        #login-screen {
+            display: flex; height: 100%; 
+            /* 如果你有本地图片，请将下方URL替换为 'background.jpg' */
+            background: url('background.jpg') no-repeat center center;
+            background-size: cover; position: relative;
+        }
+        .login-overlay { 
+            position: absolute; right: 10%; top: 20%; width: 350px; background: rgba(255,255,255,0.95);
+            padding: 40px; border-radius: 4px; box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        .qzu-logo-text { font-size: 22px; color: var(--qzu-red); font-weight: bold; margin-bottom: 30px; display: flex; align-items: center; }
+        .input-box { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 2px; box-sizing: border-box; }
+        .login-btn { width: 100%; padding: 12px; background: var(--qzu-red); color: white; border: none; font-size: 16px; cursor: pointer; transition: 0.3s; }
+        .login-btn:hover { background: #003366; }
+
+        /* 邮箱内部界面 */
+        #mail-system { display: none; height: 100%; flex-direction: column; background: white; }
+        .top-bar { height: 50px; background: white; border-bottom: 1px solid #ddd; display: flex; justify-content: space-between; align-items: center; padding: 0 20px; }
+        .main-body { display: flex; flex: 1; overflow: hidden; }
+        
+        /* 侧边栏 */
+        .sidebar { width: 200px; background: #fdfdfd; border-right: 1px solid #ddd; padding: 10px 0; }
+        .sidebar-item { padding: 10px 25px; cursor: pointer; color: #333; font-size: 14px; position: relative; }
+        .sidebar-item:hover { background: #eee; }
+        .sidebar-item.active { background: #e8e8e8; color: var(--qzu-red); font-weight: bold; }
+        .badge { position: absolute; right: 15px; background: var(--qzu-red); color: white; border-radius: 10px; padding: 1px 6px; font-size: 10px; }
+
+        /* 邮件列表 */
+        .mail-list { width: 400px; border-right: 1px solid #ddd; overflow-y: auto; background: #fff; }
+        .mail-row { padding: 15px; border-bottom: 1px solid #eee; cursor: pointer; position: relative; transition: 0.2s; }
+        .mail-row:hover { background: #f9f9f9; }
+        .mail-row.unread { border-left: 4px solid var(--qzu-red); background: #fdf8f8; }
+        .mail-row.selected { background: #f0f0f0; }
+        .sender { font-weight: bold; font-size: 14px; color: #333; margin-bottom: 5px; }
+        .subject { font-size: 13px; color: #111; margin-bottom: 3px; font-weight: 500; }
+        .preview { font-size: 12px; color: #888; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .date { position: absolute; right: 15px; top: 15px; font-size: 11px; color: #999; }
+
+        /* 邮件内容预览 */
+        .mail-content { flex: 1; padding: 30px; overflow-y: auto; display: flex; flex-direction: column; background: #fff; }
+        .mail-header { border-bottom: 1px solid #eee; margin-bottom: 20px; padding-bottom: 20px; }
+        .mail-header h2 { margin: 0 0 10px 0; font-size: 20px; color: #333; }
+        .mail-meta { font-size: 13px; color: #666; line-height: 1.8; }
+        .mail-text { font-size: 15px; color: #222; line-height: 1.8; white-space: pre-line; }
+
+        .placeholder { display: flex; justify-content: center; align-items: center; height: 100%; color: #999; flex-direction: column; }
+                .progress-indicator {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: rgba(0,0,0,0.6);
+    color: #fff;
+    padding: 6px 10px;
+    border-radius: 8px;
+    font-family: monospace;
+    font-size: 0.85rem;
+    z-index: 9999;
+}
+.login-tabs {
+        display: flex;
+        margin-bottom: 20px;
+        border-bottom: 2px solid #eee;
+    }
+    .tab {
+        flex: 1;
+        text-align: center;
+        padding: 10px;
+        cursor: pointer;
+        color: #666;
+        font-weight: bold;
+        transition: 0.3s;
+    }
+
+    /* 学生状态下的颜色 (深蓝) */
+    .student-active .tab-stu { color: #003366; border-bottom: 2px solid #003366; }
+    .student-active .login-btn { background: #003366; }
+
+    /* 教师状态下的颜色 (暗红) */
+    .teacher-active .tab-tea { color: #800000; border-bottom: 2px solid #800000; }
+    .teacher-active .login-btn { background: #800000; }
+    .teacher-active .qzu-logo-text { color: #800000; }
+    </style>
+</head>
+<body>
+    <div class="progress-indicator">3/35</div>
+
+
+<div id="login-screen">
+    <div class="login-overlay student-active" id="login-container">
+        <div class="qzu-logo-text">青州大学邮件系统</div>
+        
+        <div class="login-tabs">
+            <div class="tab tab-stu" onclick="switchTab('student')">学生登录</div>
+            <div class="tab tab-tea" onclick="switchTab('teacher')">教工登录</div>
+        </div>
+
+        <div style="margin-bottom: 10px; font-size: 13px; color: #666;" id="user-label">学号</div>
+        <input type="text" id="user" class="input-box" placeholder="请输入学号/邮箱地址">
+        
+        <div style="margin-bottom: 10px; font-size: 13px; color: #666;">密码</div>
+        <input type="password" id="pass" class="input-box" placeholder="请输入密码">
+        
+        <div style="margin-bottom: 20px; font-size: 12px; color: #666;">
+            <input type="checkbox"> 记住账号
+        </div>
+        <button class="login-btn" onclick="checkLogin()">登 录</button>
+        <div id="error" style="color: red; font-size: 12px; margin-top: 15px; display: none; text-align: center;"></div>
+    </div>
+</div>
+
+</div>
+
+<script>
+    // 切换逻辑
+function switchTab(type) {
+    const container = document.getElementById('login-container');
+    const userLabel = document.getElementById('user-label');
+    const userInput = document.getElementById('user');
+    
+    if (type === 'student') {
+        container.classList.add('student-active');
+        container.classList.remove('teacher-active');
+        userLabel.innerText = "账号";
+        userInput.placeholder = "请输入学号/邮箱地址";
+    } else {
+        container.classList.add('teacher-active');
+        container.classList.remove('student-active');
+        userLabel.innerText = "账号";
+        userInput.placeholder = "请输入教工号/邮箱地址";
+    }
+}
+function checkLogin() {
+    // 1. 获取输入值
+    const u = document.getElementById('user').value;
+    const p = document.getElementById('pass').value;
+    const errorEl = document.getElementById('error');
+
+    // 隐藏之前的错误提示
+    errorEl.style.display = 'none';
+
+    // 2. 匹配账号逻辑
+    if (u === '2400882130' && p === '0p9o8i7u') {
+        // 跳转到江同学的邮箱页面
+        window.location.href = 'jiangmail.html';
+    } 
+    else if (u === 'luyh@qzu.edu.cn' && p === 'ImemwPpzee') {
+        // 跳转到陆老师的邮箱页面
+        window.location.href = 'luyhmail.html';
+    } 
+    else {
+        // 3. 账号密码不匹配，显示提示
+        errorEl.style.display = 'block';
+        errorEl.innerText = "账号或密码错误，请检查后再试";
+    }
+}
+
+</script>
+</body>
+</html>

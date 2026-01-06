@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>企眼查-企业查询_工商查询_企业信用信息查询平台</title>
+    <style>
+        :root { --qcc-blue: #128bed; --qcc-orange: #ff7300; }
+        body, html { margin: 0; padding: 0; font-family: "Microsoft YaHei", Arial, sans-serif; background-color: #f8f9fb; }
+
+        /* 顶部蓝色背景区 */
+        .hero-section {
+            background: linear-gradient(180deg, #128bed 0%, #3072f6 100%);
+            height: 420px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: white;
+            position: relative;
+        }
+
+        /* 模拟顶部导航 */
+        .nav-header {
+            width: 100%;
+            display: flex;
+            justify-content: flex-end;
+            padding: 15px 50px;
+            box-sizing: border-box;
+            font-size: 13px;
+        }
+        .nav-header span { margin-left: 20px; cursor: pointer; opacity: 0.9; }
+
+        /* 中间 Logo 和 标题 */
+        .main-logo-area { text-align: center; margin-top: 40px; }
+        .main-logo-area h1 { font-size: 40px; margin-bottom: 30px; letter-spacing: 2px; }
+
+        /* 搜索选项卡 */
+        .search-tabs { display: flex; gap: 30px; margin-bottom: 15px; font-size: 16px; }
+        .tab { cursor: pointer; opacity: 0.8; padding-bottom: 5px; }
+        .tab.active { opacity: 1; border-bottom: 3px solid white; font-weight: bold; }
+
+        /* 搜索框 */
+        .search-container {
+            width: 850px;
+            display: flex;
+            background: white;
+            border-radius: 4px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        .search-input {
+            flex: 1;
+            border: none;
+            padding: 18px 25px;
+            font-size: 16px;
+            outline: none;
+            color: #333;
+        }
+        .search-btn {
+            background-color: var(--qcc-orange);
+            color: white;
+            border: none;
+            width: 120px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .search-btn:hover { background-color: #e66700; }
+
+        /* 热搜词 */
+        .hot-search { margin-top: 20px; font-size: 13px; opacity: 0.8; }
+        .hot-search span { margin: 0 10px; cursor: pointer; }
+
+        /* 热门应用区域 */
+        .app-section {
+            max-width: 1100px;
+            margin: -40px auto 50px;
+            background: white;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            position: relative;
+            z-index: 10;
+        }
+        .app-header {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        .app-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+        .app-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border-radius: 4px;
+            transition: background 0.2s;
+            cursor: pointer;
+        }
+        .app-item:hover { background-color: #f5f8ff; }
+        .app-icon {
+            width: 40px;
+            height: 40px;
+            background-color: #eef4ff;
+            color: var(--qcc-blue);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            margin-right: 15px;
+            font-weight: bold;
+        }
+        .app-info h4 { margin: 0; font-size: 14px; color: #333; }
+        .app-info p { margin: 5px 0 0; font-size: 12px; color: #999; }
+
+        /* 右侧浮动栏模拟 */
+        .side-bar {
+            position: fixed;
+            right: 0;
+            top: 20%;
+            width: 60px;
+            background: white;
+            border: 1px solid #ddd;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px 0;
+            z-index: 100;
+        }
+        .side-item { margin-bottom: 20px; font-size: 10px; text-align: center; color: #666; }
+                        .progress-indicator {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: rgba(0,0,0,0.6);
+    color: #fff;
+    padding: 6px 10px;
+    border-radius: 8px;
+    font-family: monospace;
+    font-size: 0.85rem;
+    z-index: 9999;
+}
+    </style>
+</head>
+<body>
+<div class="progress-indicator">5/35</div>
+<div class="hero-section">
+    <div class="nav-header">
+        <span>应用中心</span><span>数据服务</span><span>合作伙伴</span><span>登录 | 注册</span>
+    </div>
+
+    <div class="main-logo-area">
+        <h1>查企业 上企眼查</h1>
+        <div class="search-tabs">
+            <div class="tab active">查企业</div>
+            <div class="tab">查老板</div>
+            <div class="tab">查风险</div>
+            <div class="tab">查招标</div>
+            <div class="tab">找关系</div>
+        </div>
+        <div class="search-container">
+            <input type="text" id="searchInput" class="search-input" placeholder="请输入企业名等关键词" >
+            <button class="search-btn" onclick="handleSearch()">查一下</button>
+        </div>
+        <div class="hot-search">
+            热搜：<span>人工智能</span> | <span>芯片研发</span> | <span>专利清算</span> | <span>“万亿”城市</span>
+        </div>
+    </div>
+</div>
+
+<div class="app-section">
+    <div class="app-header">
+        <span style="font-weight: bold; color: var(--qcc-blue);">热门应用</span>
+        <span style="color: #999; font-size: 13px;">全部应用 ></span>
+    </div>
+    <div class="app-grid">
+        <div class="app-item">
+            <div class="app-icon">查</div>
+            <div class="app-info"><h4>批量查询</h4><p>批量导出企业工商信息</p></div>
+        </div>
+        <div class="app-item">
+            <div class="app-icon">风</div>
+            <div class="app-info"><h4>风险排查</h4><p>监控关联企业风险明细</p></div>
+        </div>
+        <div class="app-item">
+            <div class="app-icon">信</div>
+            <div class="app-info"><h4>信用大数据</h4><p>多维数据反映主体信用</p></div>
+        </div>
+        <div class="app-item">
+            <div class="app-icon">专</div>
+            <div class="app-info"><h4>查专利</h4><p>智能检索专利数据库</p></div>
+        </div>
+        <div class="app-item">
+            <div class="app-icon">图</div>
+            <div class="app-info"><h4>千寻地图</h4><p>圈地盘、查企业、锁定目标</p></div>
+        </div>
+        <div class="app-item">
+            <div class="app-icon">标</div>
+            <div class="app-info"><h4>查商标</h4><p>识别风险，降低注册风险</p></div>
+        </div>
+        <div class="app-item">
+            <div class="app-icon">招</div>
+            <div class="app-info"><h4>招投标查询</h4><p>找采购、找项目、找工程</p></div>
+        </div>
+        <div class="app-item">
+            <div class="app-icon">全</div>
+            <div class="app-info"><h4>全球企业</h4><p>70+国家地区企业数据</p></div>
+        </div>
+    </div>
+</div>
+
+<div class="side-bar">
+    <div class="side-item">小程序</div>
+    <div class="side-item">公众号</div>
+    <div class="side-item">APP</div>
+    <div class="side-item">客服</div>
+</div>
+
+<script>
+function handleSearch() {
+    const keyword = document.getElementById('searchInput').value;
+
+    if (keyword.includes('青州智核')) {
+        window.location.href = 'capital.html';
+    } else if (keyword.includes('青州华研')) {
+        window.location.href = 'capital1.html';
+    } else {
+        alert('未找到相关企业。');
+    }
+}
+
+// 绑定回车键
+document.getElementById('searchInput').addEventListener('keypress', function (e) {
+    if (e.key === 'Enter') {
+        handleSearch();
+    }
+});
+</script>
+
+</body>
+</html>

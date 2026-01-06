@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>处分决定书草案</title>
+    <style>
+        body { background: #555; padding: 50px 0; font-family: "SimSun", "FangSong", serif; }
+        .document { 
+            width: 650px; margin: 0 auto; background: white; padding: 60px 80px; 
+            box-shadow: 0 0 20px rgba(0,0,0,0.5); position: relative;
+        }
+        .header { text-align: center; color: red; border-bottom: 2px solid red; margin-bottom: 30px; }
+        .header h1 { font-size: 32px; margin: 0; padding-bottom: 10px; letter-spacing: 2px; }
+        .doc-no { text-align: right; font-size: 14px; color: #333; margin-top: 10px; }
+
+        .title { text-align: center; font-size: 24px; font-weight: bold; margin: 40px 0; }
+        .content { font-size: 16px; line-height: 1.8; color: #000; text-align: justify; }
+        .p-indent { text-indent: 2em; margin-bottom: 15px; }
+        
+        .footer { margin-top: 60px; text-align: right; padding-right: 20px; }
+        .footer p { margin: 5px 0; }
+
+        /* 模拟批注样式 */
+        .comment { 
+            position: absolute; right: -180px; top: 200px; width: 150px; 
+            background: #fffbe6; border: 1px solid #ffe58f; padding: 10px; 
+            font-size: 13px; color: #856404; font-family: sans-serif; border-radius: 4px;
+        }
+        .comment::before { content: "批示："; font-weight: bold; display: block; margin-bottom: 5px; }
+
+        /* 模拟红色印章 */
+        .seal { 
+            position: absolute; bottom: 80px; right: 100px; width: 140px; height: 140px; 
+            border: 3px solid rgba(255,0,0,0.5); border-radius: 50%; 
+            display: flex; align-items: center; justify-content: center; 
+            color: rgba(255,0,0,0.5); font-weight: bold; transform: rotate(-10deg); 
+            font-size: 16px; text-align: center; pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="document">
+    <div class="header">
+        <h1>青州大学软件工程学院文件</h1>
+    </div>
+    <div class="doc-no">青大软处〔2025〕104号</div>
+
+    <div class="title">关于给予麦闻同学“记过”处分的决定（草案）</div>
+
+    <div class="content">
+        <div class="p-indent">
+            麦闻，男，软件工程学院2023博士研究生，学号：2300114964。
+        </div>
+        <div class="p-indent">
+            经查，该生自2025年1月以来，多次在校内论坛以用户名<strong>【Marvin】</strong>发布未经核实的虚假信息，恶意攻击学院领导及指导教师。
+        </div>
+        <div class="p-indent">
+            该生此类行为性质极其恶劣，严重干扰了学院正常的科研教学秩序，损害了学院在社会各界的声誉，并在广大学生中造成了负面的价值导向。该生的行为严重抹黑了集体荣誉，损害了学术共同体的团结。
+        </div>
+        <div class="p-indent">
+            根据《青州大学学生违纪处分规定》第三章第十五条之规定：“对于在公共场所或网络平台捏造事实、歪曲真相、侮辱他人或损害学院声誉者，视情节轻重给予记过及以上处分。”
+        </div>
+        <div class="p-indent">
+            经学院行政办公会议研究决定，拟给予麦闻同学<b>记过处分</b>。处分期内取消其所有评优评先、奖学金申请等资格。
+        </div>
+        <div class="p-indent">
+            希望全院同学引以为戒，自觉遵守法律法规和校纪校规，做到不造谣、不传谣，共同维护学院的和谐稳定。
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>青州大学软件工程学院</p>
+        <p>2025年5月15日</p>
+    </div>
+
+    <div class="comment">
+        通知班主任，下午找他谈话前先让他签了。如果不签，直接走留校察看流程。
+    </div>
+
+    <div class="seal">
+        青州大学软件工程学院<br>（拟 办）
+    </div>
+</div>
+
+</body>
+</html>

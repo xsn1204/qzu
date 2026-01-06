@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>心理咨询个案记录详情</title>
+    <style>
+        body { background: #323234; font-family: "Microsoft YaHei", sans-serif; padding: 40px; color: #333; }
+        .report-paper {
+            max-width: 850px; margin: 0 auto; background: #fff; padding: 60px 80px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1); position: relative; min-height: 1000px;
+        }
+        /* 绝密水印 */
+        .watermark {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-30deg);
+            font-size: 80px; color: rgba(255, 0, 0, 0.05); font-weight: bold; pointer-events: none;
+            white-space: nowrap; user-select: none;
+        }
+
+        .header { text-align: center; border-bottom: 2px solid #333; padding-bottom: 20px; margin-bottom: 30px; }
+        .header h1 { font-size: 24px; letter-spacing: 2px; margin: 0; }
+        .header p { font-size: 14px; margin: 10px 0 0; color: #666; }
+
+        .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 30px; border-bottom: 1px solid #eee; padding-bottom: 20px; }
+        .info-item { font-size: 14px; }
+        .info-item b { color: #555; }
+
+        .section-title { font-size: 16px; font-weight: bold; border-left: 4px solid #007bff; padding-left: 10px; margin: 25px 0 15px; background: #f8f9fa; padding: 5px 10px; }
+        .content { font-size: 15px; line-height: 1.8; text-align: justify; white-space: pre-wrap; }
+
+        .eval-box { margin-top: 20px; padding: 15px; border: 1px dashed #ffa39e; background: #fff1f0; border-radius: 4px; }
+        .warning-text { color: #cf1322; font-weight: bold; }
+
+        .footer-sign { margin-top: 50px; display: flex; justify-content: flex-end; gap: 40px; }
+        .sign-item { text-align: center; font-size: 14px; }
+        .stamp { width: 100px; opacity: 0.8; margin-top: -20px; }
+        
+        .back-btn { 
+            position: fixed; top: 20px; left: 20px; padding: 8px 15px; background: #fff; 
+            border: 1px solid #ddd; border-radius: 4px; cursor: pointer; text-decoration: none; color: #666; font-size: 13px;
+        }
+        .back-btn:hover { background: #eee; }
+    </style>
+</head>
+<body>
+
+<a href="psy.html" class="back-btn">← 返回列表</a>
+
+<div class="report-paper">
+    <div class="watermark">仅咨访双方可见</div>
+
+    <div class="header">
+        <h1>青州大学心理咨询中心</h1>
+        <p>个体咨询过程回顾总结表 (存档编号: PSY-2025-LW-06)</p>
+    </div>
+
+    <div class="info-grid">
+        <div class="info-item"><b>姓名：</b>麦闻</div>
+        <div class="info-item"><b>咨询师：</b>董琳</div>
+        <div class="info-item"><b>咨询日期：</b>2025年4月8日</div>
+        <div class="info-item"><b>来访次数：</b>第 6 次</div>
+    </div>
+
+<div class="section-title">主诉与求助问题</div>
+<div class="content">
+来访者麦闻，博士二年级在读，因持续性的焦虑体验、睡眠质量显著下降及近期反复出现退学相关想法前来求助。来访者在咨询中情绪整体低落，表达受限，言语中多次提及“难以继续维持现有科研与学习状态”。
+</div>
+
+<div class="section-title">咨询对话要点摘录</div>
+<div class="content">
+来访者围绕其与导师的长期互动经历进行了较为系统的陈述，主要集中于学术成果、经费压力与前途不确定感等方面。
+</div>
+
+<div class="section-title">咨询师观察与评估</div>
+<div class="eval-box">
+    <div class="content">
+综合访谈表现，来访者目前处于<b>显著心理应激反应状态</b>。其情绪反应与长期高压、失控感及角色冲突高度相关。来访者表现出明显的无助感和自我价值感下降。值得注意的是，在缺乏有效支持的情况下，来访者提到曾尝试通过校内BBS<b>【回廊】</b>进行求助，反映其仍存在一定的外界求助意识。
+    </div>
+    <p class="warning-text">⚠️ 危机风险评估：中至高风险</p>
+</div>
+
+<div class="section-title">后续建议</div>
+<div class="content">
+1. 建议短期内提高心理支持频次（每周2次），重点聚焦情绪稳定、现实支持评估与压力应对策略。
+2. 如持续出现明显睡眠障碍、情绪低落或消极意念加重，建议转介至精神科进行进一步评估，以判断是否需要医学层面的支持。
+
+    </div>
+
+    <div class="footer-sign">
+        <div class="sign-item">
+            <p>咨询师签字：</p>
+            <p style="font-family: '楷体'; font-size: 20px; border-bottom: 1px solid #000;">董琳</p>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

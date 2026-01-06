@@ -1,0 +1,227 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>江奕云的邮箱 - QZU Mail</title>
+    <style>
+        :root { 
+            --qzu-blue: #003366; 
+            --text-main: #333;
+            --bg-light: #f4f7f9;
+            --border-color: #ddd;
+        }
+
+        body, html { margin: 0; padding: 0; height: 100%; overflow: hidden; font-family: "Microsoft YaHei", sans-serif; }
+        
+        /* 顶部导航 */
+        .top-bar { 
+            height: 55px; background: var(--qzu-blue); color: white; 
+            display: flex; justify-content: space-between; align-items: center; 
+            padding: 0 25px; flex-shrink: 0; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        /* 主体布局 */
+        .main-body { display: flex; height: calc(100vh - 55px); background: white; }
+        
+        /* 侧边栏 */
+        .sidebar { width: 220px; background: #fdfdfd; border-right: 1px solid var(--border-color); padding: 15px 0; flex-shrink: 0; }
+        .sidebar-item { padding: 12px 30px; cursor: pointer; color: #555; font-size: 14px; display: flex; justify-content: space-between; }
+        .sidebar-item:hover { background: #f0f0f0; }
+        .sidebar-item.active { background: #e8f0f7; color: var(--qzu-blue); font-weight: bold; }
+        .badge { background: #cc0000; color: white; border-radius: 10px; padding: 1px 7px; font-size: 11px; }
+
+        /* 邮件列表区 */
+        .mail-list { width: 380px; border-right: 1px solid var(--border-color); overflow-y: auto; background: #fff; flex-shrink: 0; }
+        .mail-row { padding: 18px 20px; border-bottom: 1px solid #eee; cursor: pointer; position: relative; transition: 0.2s; border-left: 4px solid transparent; }
+        .mail-row:hover { background: #f9f9f9; }
+        .mail-row.unread { border-left-color: #cc0000; background: #fffcfc; }
+        .mail-row.unread .subject { font-weight: bold; }
+        .mail-row.selected { background: #eef4fa; border-left-color: var(--qzu-blue); }
+        
+        .sender { font-weight: bold; font-size: 14px; color: #333; margin-bottom: 4px; display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .subject { font-size: 13px; color: #111; margin-bottom: 4px; display: block; }
+        .preview { font-size: 12px; color: #888; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .date { position: absolute; right: 20px; top: 18px; font-size: 11px; color: #999; }
+        .attach-icon { position: absolute; right: 20px; bottom: 15px; font-size: 12px; opacity: 0.5; }
+
+        /* 邮件内容区 */
+        .mail-content { flex: 1; padding: 40px; overflow-y: auto; background: #fff; display: flex; flex-direction: column; }
+        .mail-header { border-bottom: 1px solid #eee; margin-bottom: 25px; padding-bottom: 20px; }
+        .mail-header h2 { margin: 0 0 15px 0; font-size: 22px; color: #222; }
+        .mail-meta { font-size: 13px; color: #666; line-height: 2; }
+        .mail-text { font-size: 15px; color: #333; line-height: 1.8; white-space: pre-line; }
+
+.mail-text br {
+    line-height: 1.2; font-size: 10px; color: #666; /* 尾部换行更紧凑 */
+}
+        /* 附件样式 */
+        .attachment-box {
+            margin-top: 35px; padding: 15px; border: 1px solid #ddd; background: #f8f9fa; 
+            border-radius: 6px; display: flex; align-items: center; gap: 15px; width: fit-content;
+            transition: 0.2s; cursor: pointer;
+        }
+        .attachment-box:hover { border-color: var(--qzu-blue); background: #f0f4f8; }
+        .file-icon { font-size: 30px; color: #555; }
+
+        .placeholder { display: flex; justify-content: center; align-items: center; height: 100%; color: #bbb; font-size: 18px; flex-direction: column; gap: 10px; }
+    </style>
+</head>
+<body>
+
+    <div class="top-bar">
+        <div style="font-weight: bold; letter-spacing: 1px; display: flex; align-items: center; gap: 10px;">
+             <span style="font-size: 20px;">📧</span> 青州大学邮件系统
+        </div>
+        <div style="font-size: 14px;">
+            江奕云 (2024级) | 
+            <a href="mailbox.html" style="color:white; text-decoration:none; margin-left: 10px; opacity: 0.8;">退出登录</a>
+        </div>
+    </div>
+
+    <div class="main-body">
+        <div class="sidebar">
+            <div class="sidebar-item active">收件箱 <span class="badge" id="unread-count">3</span></div>
+            <div class="sidebar-item">已发送</div>
+            <div class="sidebar-item">草稿箱</div>
+            <div class="sidebar-item">垃圾邮件</div>
+            <div class="sidebar-item">回收站</div>
+        </div>
+
+        <div class="mail-list" id="list-container">
+            </div>
+
+        <div class="mail-content" id="content-view">
+            <div class="placeholder">
+                <span style="font-size: 40px; opacity: 0.3;">📥</span>
+                请选择邮件查看详情
+            </div>
+        </div>
+    </div>
+
+<script>
+    const mails = [
+        {
+            unread: true,
+            sender: "李明薇 <li.mw@qysk.com>",
+            subject: "【附件】江奕云-电子版实习证明及评价表",
+            date: "1/10",
+            fullDate: "2026年1月10日 10:31",
+            preview: "江奕云同学：你好。附件为你在公司实习期间的电子版...",
+            body: "江奕云同学：\n\n你好。附件为你在公司实习期间的电子版《实习证明》及《实习表现评价表》。\n\n祝前程似锦！\n\n李明薇",
+            hasAttachment: true,
+            attachmentName: "实习证明_江奕云.pdf"
+            
+        },
+        {
+            unread: false,
+            sender: "宋以宁 <2300113473@qzu.edu.cn>",
+            subject: "年末工作提醒",
+            date: "12/21",
+            fullDate: "2025年12月21日 10:15",
+            preview: "各位同学：大家注意一下，年底了，学院这边要走年度...",
+            body: "各位同学：\n\n大家注意一下，年底了，学院这边要走年度汇总流程。\n\n麻烦各位把今年相关的材料（项目、成果、实验记录这些）按之前说的模版整理好。有经费、设备使用相关的流程，也顺手对一下，缺的尽快补齐。\n\n寒假离校的同学记得提前报一下时间，把公用设备和账号交接好；留校的也按要求登记一下。\n\n这段时间事情会比较集中，大家尽量早点处理，有问题私下找我就好。辛苦大家。\n\n宋以宁<br>软件工程学院（23级）<br>青州大学"
+        },
+        {
+            unread: false,
+            sender: "信息中心 <infocenter@qzu.edu.cn>",
+            subject: "【通知】邮箱密码重置",
+            date: "11/23",
+            fullDate: "2025年11月23日 14:27",
+             preview: "各管理员已对您的邮箱密码进行重置。请您尽快完成密...",
+            body: "管理员已对您的邮箱密码进行重置。请您尽快完成密码修改，并妥善保管账号信息。感谢您的理解与配合。\n\n信息化服务中心"
+        },
+        {
+            unread: false,
+            sender: "麦闻 <2300114964@qzu.edu.cn>",
+            subject: "Re: 接口优化与代码问题",
+            date: "9/25",
+            fullDate: "2025年9月25日 22:20",
+                         preview: "奕云：你发来的接口我看了，思路是对的。我这两天比...",
+            body: "奕云：\n\n你发来的接口我看了，思路是对的。我这两天比较忙，你先参考我上次发你的论文尝试改一下，遇到问题贴代码片段给我，我可以帮你看。\n\n<b>很多事你先别直接问陆老师</b>。\n\n麦闻<br>软件工程学院 23级博士生<br>联系方式：11302722839<br>"
+        }
+    ];
+
+    let currentIndex = -1;
+
+    function renderList() {
+        const container = document.getElementById('list-container');
+        let unreadCount = 0;
+        
+        container.innerHTML = mails.map((m, i) => {
+            if(m.unread) unreadCount++;
+            return `
+                <div class="mail-row ${m.unread ? 'unread' : ''} ${currentIndex === i ? 'selected' : ''}" onclick="showMail(${i})">
+                    <span class="sender">${m.sender.split(' <')[0]}</span>
+                    <span class="subject">${m.subject}</span>
+                    <span class="preview">${m.body.substring(0, 45)}...</span>
+                    <span class="date">${m.date}</span>
+                    ${m.hasAttachment ? '<span class="attach-icon">📎</span>' : ''}
+                </div>
+            `;
+        }).join('');
+        
+        document.getElementById('unread-count').innerText = unreadCount;
+    }
+
+    function showMail(index) {
+        currentIndex = index;
+        const m = mails[index];
+        m.unread = false; // 标记已读
+
+        const contentView = document.getElementById('content-view');
+        
+        // 附件 HTML
+        const attachHtml = m.hasAttachment ? `
+            <div class="attachment-box">
+                <div class="file-icon">📄</div>
+                <div>
+                    <div style="font-size:14px; font-weight:bold;">${m.attachmentName}</div>
+                    <div style="font-size:12px; color:var(--qzu-blue);">点击预览</div>
+                </div>
+            </div>
+        ` : '';
+
+        contentView.innerHTML = `
+            <div class="mail-header">
+                <h2>${m.subject}</h2>
+                <div class="mail-meta">
+                    <strong>发件人：</strong>${m.sender.replace('<','&lt;').replace('>','&gt;')}<br>
+                    <strong>发送时间：</strong>${m.fullDate}
+                </div>
+            </div>
+            <div class="mail-text">${m.body.replace(/\n/g, '<br>')}</div>
+            ${attachHtml}
+        `;
+
+        renderList();
+    }
+    function renderList() {
+    const container = document.getElementById('list-container');
+    let unreadCount = 0;
+    
+    container.innerHTML = mails.map((m, i) => {
+        if(m.unread) unreadCount++;
+        // 提取姓名：截取第一个 < 符号之前的内容
+        const displayName = m.sender.split(' <')[0]; 
+        
+        return `
+            <div class="mail-row ${m.unread ? 'unread' : ''} ${currentIndex === i ? 'selected' : ''}" onclick="showMail(${i})">
+                <span class="sender">${displayName}</span>
+                <span class="subject">${m.subject}</span>
+                <span class="preview">${m.preview ?? m.body.substring(0, 45) + '...'}</span>
+                <span class="date">${m.date}</span>
+                ${m.hasAttachment ? '<span class="attach-icon">📎</span>' : ''}
+            </div>
+        `;
+    }).join('');
+    
+    document.getElementById('unread-count').innerText = unreadCount;
+}
+
+    // 初始化显示列表
+    window.onload = renderList;
+</script>
+</body>
+</html>

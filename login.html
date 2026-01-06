@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>青大心语 - 登录</title>
+    <style>
+        body { margin: 0; padding: 0; display: flex; height: 100vh; font-family: "Microsoft YaHei", sans-serif; background: #fff; }
+        
+        /* 左侧蓝色背景区 - 参考 640(2).png */
+        .left-panel { flex: 1; background: #0099ff; display: flex; flex-direction: column; justify-content: center; align-items: center; color: #fff; position: relative; overflow: hidden; }
+        .logo-text { font-size: 40px; font-weight: bold; margin-bottom: 20px; z-index: 2; }
+        .bg-pattern { position: absolute; font-size: 300px; opacity: 0.1; font-weight: bold; top: 10%; left: -10%; }
+
+        /* 右侧登录表单区 */
+        .right-panel { width: 450px; display: flex; flex-direction: column; justify-content: center; padding: 0 60px; }
+        .login-title { font-size: 24px; color: #333; margin-bottom: 40px; display: flex; align-items: center; }
+        .login-title span { color: #0099ff; margin-left: 10px; font-size: 16px; border-left: 1px solid #ccc; padding-left: 10px; }
+
+        .input-group { margin-bottom: 25px; position: relative; }
+        input { width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 4px; background: #f9f9f9; box-sizing: border-box; font-size: 14px; }
+        input:focus { outline: none; border-color: #0099ff; background: #fff; }
+
+        .verify-row { display: flex; gap: 10px; }
+        .verify-code { width: 100px; height: 42px; background: #eee; display: flex; align-items: center; justify-content: center; font-style: italic; font-weight: bold; color: #004c8c; letter-spacing: 2px; }
+
+        /* 灰色问号提醒 */
+        .help-icon { display: inline-block; width: 16px; height: 16px; background: #999; color: #fff; border-radius: 50%; font-size: 12px; text-align: center; line-height: 16px; cursor: pointer; margin-left: 8px; vertical-align: middle; position: relative; }
+        .tooltip { display: none; position: absolute; left: 30px; top: -10px; width: 250px; background: #333; color: #fff; padding: 10px; border-radius: 4px; font-size: 12px; z-index: 10; line-height: 1.5; }
+        .help-icon:hover .tooltip { display: block; }
+
+        .btn-login { width: 100%; padding: 12px; background: #0099ff; color: #fff; border: none; border-radius: 4px; font-size: 16px; cursor: pointer; transition: 0.3s; }
+        .btn-login:hover { background: #007ccd; }
+
+        .footer-links { margin-top: 20px; font-size: 12px; color: #666; text-align: center; }
+        .footer-links a { color: #0099ff; text-decoration: none; }
+                        .progress-indicator {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: rgba(0,0,0,0.6);
+    color: #fff;
+    padding: 6px 10px;
+    border-radius: 8px;
+    font-family: monospace;
+    font-size: 0.85rem;
+    z-index: 9999;
+}
+    </style>
+</head>
+<body>
+<div class="progress-indicator">11/35</div>
+<div class="left-panel">
+    <div class="bg-pattern">QZU</div>
+    <div class="logo-text">青大心语</div>
+    <p>心理健康信息化管理平台</p>
+</div>
+
+<div class="right-panel">
+    <div class="login-title">
+        自助端登录 <span>青州大学</span>
+        <div class="help-icon">?
+            <div class="tooltip">
+                <strong>💡 登录指引：</strong><br>
+                1. 账号：您的<b>10位学号</b><br>
+                2. 原始密码：<b>预留手机号码</b> <br>
+                3. 初次登录后尽快修改原始密码
+            </div>
+        </div>
+    </div>
+
+    <form onsubmit="return handleLogin(event)">
+        <div class="input-group">
+            <input type="text" id="username" placeholder="账号" required>
+        </div>
+        <div class="input-group">
+            <input type="password" id="password" placeholder="密码" required>
+        </div>
+        <div class="input-group verify-row">
+            <input type="text" placeholder="验证码" required style="flex: 1;">
+            <div class="verify-code">zjfH2</div> </div>
+
+        <button type="submit" class="btn-login">登录</button>
+    </form>
+
+    <div class="footer-links">
+        登录即代表您已阅读并接受 <a href="#">《用户协议》</a> <a href="#">《隐私条款》</a>
+    </div>
+</div>
+
+<script>
+    function handleLogin(e) {
+        e.preventDefault();
+        const user = document.getElementById('username').value;
+        const pass = document.getElementById('password').value;
+        
+        // 剧情触发逻辑
+        if (user === '2300114964' && pass === '11302722839') { // 麦闻的学号和密码
+            window.location.href = "psy.html"; // 链接到上一轮生成的预约记录页面
+        } else {
+            alert("学号或密码错误，请查看登录指引。");
+        }
+    }
+</script>
+
+</body>
+</html>

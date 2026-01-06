@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>异常警告</title>
+    <style>
+        :root {
+            --space-bg: #030816;
+            --accent-gold: #c5a059;
+            --warning-red: #ff4d4d;
+            --text-gray: #a0aec0;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--space-bg);
+            color: #fff;
+            font-family: "Constantia", "Lucida Bright", "Georgia", serif;
+            overflow: hidden;
+        }
+
+        /* 1. 星空与坐标网格背景 */
+        .background-layer {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: 
+                radial-gradient(circle at 50% 50%, #1a2a4a 0%, #030816 100%),
+                linear-gradient(rgba(197, 160, 89, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(197, 160, 89, 0.05) 1px, transparent 1px);
+            background-size: 100% 100%, 50px 50px, 50px 50px;
+            z-index: -1;
+        }
+
+        /* 2. 警告容器：像一份庄严的卷轴或证书 */
+        .audit-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            padding: 20px;
+        }
+
+        .audit-card {
+            max-width: 700px;
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--accent-gold);
+            padding: 60px;
+            position: relative;
+            box-shadow: 0 0 50px rgba(0,0,0,0.8);
+            /* 装饰边角 */
+        }
+
+        .audit-card::before, .audit-card::after {
+            content: "";
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--accent-gold);
+        }
+        .audit-card::before { top: 10px; left: 10px; border-right: 0; border-bottom: 0; }
+        .audit-card::after { bottom: 10px; right: 10px; border-left: 0; border-top: 0; }
+
+        /* 3. 文本排版 */
+        header {
+            border-bottom: 1px solid rgba(197, 160, 89, 0.3);
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            text-align: center;
+        }
+
+        .case-number {
+            font-family: "Courier New", monospace;
+            color: var(--accent-gold);
+            font-size: 0.9rem;
+            letter-spacing: 3px;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            margin: 10px 0;
+            color: #fff;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+        }
+
+        .content {
+            line-height: 1.8;
+            color: var(--text-gray);
+            font-size: 1.1rem;
+            text-align: justify;
+        }
+
+        .content b {
+            color: #fff;
+        }
+
+        .verdict {
+            margin-top: 40px;
+            color: var(--warning-red);
+            font-style: italic;
+            border-left: 3px solid var(--warning-red);
+            padding-left: 20px;
+            animation: subtle-pulse 4s infinite;
+        }
+
+        @keyframes subtle-pulse {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 1; }
+        }
+
+        /* 4. 动态扫描线 */
+        .scanner {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent-gold), transparent);
+            animation: scan 6s linear infinite;
+            opacity: 0.3;
+        }
+
+        @keyframes scan {
+            0% { top: 0; }
+            100% { top: 100%; }
+        }
+
+        .footer {
+            margin-top: 50px;
+            display: flex;
+            justify-content: space-between;
+            font-family: "Courier New", monospace;
+            font-size: 0.75rem;
+            color: rgba(197, 160, 89, 0.5);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="background-layer"></div>
+
+    <div class="audit-container">
+        <div class="audit-card">
+            <div class="scanner"></div>
+            
+            <header>
+                <div class="case-number">此内容因违规无法查看</div>
+                <h1>学术诚信警告</h1>
+            </header>
+
+            <div class="content">
+                <p>
+                    在尚未踏上探索之旅之前就急于获取答案，极有可能导致严重的认知塌缩。副作用包括但不限于：
+                </p>
+                <p><strong>误以为自己已经理解了一切、错过真正有趣的部分，以及在事后发现答案本身毫无用处。</strong></p>
+                <p>
+                    请注意，绝大多数答案之所以显得深刻，只是因为你还没走完通往它的那段路。
+                </p>
+
+                <div class="verdict">
+                    “不要恐慌（DON’T PANIC）。”
+                </div>
+            </div>
+
+            <div class="footer">
+                <span>4-0-4</span>
+                <span>🔔</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 增加一点点的交互深度
+        document.addEventListener('mousemove', (e) => {
+            const x = (e.clientX / window.innerWidth - 0.5) * 20;
+            const y = (e.clientY / window.innerHeight - 0.5) * 20;
+            // 卡片随鼠标极轻微移动，增加空间感
+            document.querySelector('.audit-card').style.transform = `perspective(1000px) rotateY(${x}deg) rotateX(${-y}deg)`;
+        });
+
+        // 定时在控制台留下更隐晦的“学术警告”
+        console.log("%c [PROTOCOL] %c 观测者提示：数据完整性是连接现实的唯一纽带。", "color: gold; font-weight: bold", "color: gray");
+    </script>
+</body>
+</html>

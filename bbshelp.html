@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>回廊BBS - 帖子详情</title>
+    <style>
+        /* 基础样式复位 */
+        body, html { margin: 0; padding: 0; background-color: #a4a4a4; font-family: "lucida grande", "Segoe UI", "Tahoma", "Microsoft YaHei", sans-serif; }
+        
+        /* 顶部导航栏 */
+        .header-nav { background: #a4a4a4; height: 35px; border-bottom: 1px solid #c8c6c6; padding: 0 50px; display: flex; align-items: center; justify-content: space-between; font-size: 12px; color: #666; }
+        .breadcrumb { padding: 12px 50px; font-size: 12px; color: #555; background: #a4a4a4 }
+
+        /* 下架提示横幅 */
+        .notice-banner { background: #fff1f0; border: 1px solid #ffa39e; color: #cf1322; padding: 8px; margin: 10px 50px; text-align: center; font-size: 13px; border-radius: 2px; }
+
+        /* 主容器 */
+        .main-container { max-width: 1100px; margin: 0 auto 50px auto; border: 1px solid #d4d4d4; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+
+        /* 分页与功能条 */
+        .pagination-bar { padding: 10px 20px; border-top: 2px solid #ff6600; border-bottom: 1px solid #eee; display: flex; align-items: center; gap: 6px; }
+        .btn-retro { padding: 3px 10px; border: 1px solid #ccc; font-size: 12px; color: #333; text-decoration: none; background: #fff; }
+        .btn-retro.active { border-color: #ff6600; color: #ff6600; font-weight: bold; }
+
+        /* 标题行 */
+        .post-title-row { padding: 15px 20px; font-size: 20px; font-weight: bold; color: #333; border-bottom: 1px solid #eee; }
+
+        /* 楼层容器：左右分栏布局 */
+        .floor-container { display: flex; border-bottom: 5px solid #f6f6f6; }
+        
+        /* 左侧：用户信息栏 */
+        .user-sidebar { width: 160px; background: #fdfdfd; border-right: 1px solid #eee; padding: 20px; flex-shrink: 0; display: flex; flex-direction: column; align-items: center; }
+        .avatar-box { width: 100px; height: 100px; background: #eee; border: 1px solid #ddd; margin-bottom: 15px; }
+        .avatar-box img { width: 100%; height: 100%; object-fit: cover; }
+        .username { color: #004a80; font-weight: bold; font-size: 13px; margin-bottom: 4px; }
+        .user-title { font-size: 12px; color: #777; margin-bottom: 15px; }
+
+        /* 右侧：正文区域 */
+        .content-area { flex: 1; padding: 20px 30px; position: relative; }
+        .floor-info { font-size: 11px; color: #999; margin-bottom: 15px; display: flex; justify-content: space-between; border-bottom: 1px dashed #eee; padding-bottom: 8px; }
+        
+        .post-text { font-size: 14px; line-height: 1.8; color: #222; word-break: break-all; }
+        
+        /* 引用样式 */
+        .quote-text { border-left: 3px solid #66c2cd; background: #f4fbfc; padding: 10px 15px; margin: 15px 0; font-size: 13px; color: #666; }
+
+        /* 底部工具条 */
+        .post-footer { margin-top: 30px; padding-top: 15px; border-top: 1px solid #f0f0f0; font-size: 12px; color: #999; display: flex; gap: 20px; }
+        .action-link { cursor: pointer; }
+        .action-link:hover { color: #ff6600; }
+        .avatar-modal {
+    display: none; /* 默认隐藏 */
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.7);
+    justify-content: center;
+    align-items: center;
+}
+
+/* 放大头像图片 */
+.avatar-modal img {
+    max-width: 90%;
+    max-height: 90%;
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    transition: transform 0.3s;
+}
+
+/* 鼠标悬停微微放大 */
+.avatar-modal img:hover {
+    transform: scale(1.05);
+}
+
+/* 光标提示可关闭 */
+.avatar-modal.closeable {
+    cursor: pointer;
+}
+.username-glass {
+    font-weight: bold;
+    font-size: 13px;
+    color: rgba(0, 74, 128, 0.4); /* 半透明文字 */
+    filter: blur(2px);              /* 轻微模糊 */
+    user-select: none;               /* 不可选中文本 */
+    pointer-events: none;            /* 禁止点击或拖拽 */
+    transition: filter 0.3s, color 0.3s;
+    
+}
+.avatar-frosted {
+    width: 64px;       /* 根据你的需求调整 */
+    height: 64px;
+    filter: blur(3px);  /* 轻微模糊 */
+    opacity: 0.6;       /* 半透明，增强若隐若现感 */
+    pointer-events: none; /* 禁止点击/拖拽 */
+    transition: filter 0.3s, opacity 0.3s;
+}
+
+/* 可选：鼠标悬停时稍微清晰一点 */
+.avatar-frosted:hover {
+    filter: blur(1px);
+    opacity: 0.9;
+}
+
+    </style>
+</head>
+<body>
+
+<div class="header-nav">
+    <div style="font-weight: bold; font-size: 18px;color: #ff6600; ">回廊BBS</div>
+    <div>帮助中心</div>
+</div>
+
+<div class="breadcrumb">
+    首页 >> 版面目录 >> 四区：硕博天地 >> 提问区 >> [求助] 博二，最近真的有点撑不住了，想听听大家的看法
+</div>
+
+<div class="main-container">
+    <div class="pagination-bar">
+        <a href="#" class="btn-retro">返回本版</a>
+        <a href="#" class="btn-retro active">1</a>
+        <a href="#" class="btn-retro">下一页 ></a>
+        <span style="font-size: 12px; color: #666; margin-left: 10px;">跳转至 <input type="text" value="1" style="width: 25px; text-align: center;"> / 1 页</span>
+    </div>
+
+    <div class="post-title-row">
+        [求助] 博二，最近真的有点撑不住了，想听听大家的看法
+    </div>
+
+    <div class="floor-container">
+        <div class="user-sidebar">
+            <div class="avatar-box">
+                <img src="avatar1.jpg" alt="User"  class="clickable-avatar avatar-frosted" >
+            </div>
+            <div class="username username-glass">Marvin [离线]</div>
+            <div style="font-size: 11px; color: #bbb; line-height: 1.6; text-align: center;">
+                发帖数: 3<br>积分: 15
+            </div>
+        </div>
+        <div class="content-area">
+            <div class="floor-info">
+                <span>1楼</span>
+                <span>发表于 2025-03-10 01:43:12</span>
+            </div>
+            <div class="post-text">
+
+                抱歉占用版面，纠结了很久还是决定发出来。<br><br>
+                最近一段时间状态很差，焦虑感几乎是持续性的，睡眠也明显变差，经常凌晨醒来就再也睡不着，白天靠硬撑。<br><br>
+                论文、项目、出路，这些问题最近在脑子里反复打转。我很清楚在师生关系中自己是弱势的一方，这种失衡让我在很多时候只能选择忍耐，但长期下来真的有点扛不住了。<br><br>
+                我明白有人觉得博士本来就是这样熬出来的，问题未必在外部，也许只是我个人抗压能力不足。只是有些时候，现实和最初想象中的差距太大，心里一时有点难以消化。<br><br>
+                很多事情我没办法在帖子里说得太清楚，只想问问有没有人也经历过类似的阶段，是怎么慢慢走出来的。如果没人回复，那就当作自己在自言自语吧。<br><br>
+            
+            </div>
+            <div class="post-footer">
+                <span class="action-link">回帖</span>
+                <span class="action-link">评分</span>
+                <span class="action-link">举报</span>
+            </div>
+        </div>
+    </div>
+    <div id="avatarModal" class="avatar-modal closeable">
+    <img src="" alt="放大头像">
+</div>
+
+
+    <div class="floor-container">
+        <div class="user-sidebar">
+            <div class="avatar-box">
+                <img src="avatar.jpg" alt="User">
+            </div>
+            <div class="username">Anonymous [离线]</div>
+        </div>
+        <div class="content-area">
+            <div class="floor-info">
+                <span>2楼</span>
+                <span>发表于 2025-03-11 11:02:47</span>
+            </div>
+            <div class="post-text">
+                <div class="quote-text">
+                    在 ta 的帖子中提到：<br>
+                    抱歉占用版面，纠结了很久还是决定发出来。...
+                </div>
+                抱抱楼主，把睡眠和身体照顾好。回看读博也是我最黑暗的几年，先不要在精神极限下做重大决定，试着找找朋友或咨询师倾诉，比自我消耗要靠谱得多。
+            </div>
+            <div class="post-footer">
+                <span class="action-link">回帖</span>
+                <span class="action-link">赞 (12)</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+
+
+</html>

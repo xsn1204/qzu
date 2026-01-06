@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body, html { margin: 0; padding: 0; height: 100%; overflow: hidden; font-family: "Microsoft YaHei", sans-serif; }
+        
+        /* 桌面背景：经典的学院派深蓝色或带校徽的壁纸 */
+        .desktop {
+            width: 100vw; height: 100vh;
+                padding-bottom: 40px; /* 留出任务栏空间 */
+            background: #2c3e50 url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&q=80&w=2070') no-repeat center;
+            background-size: cover;
+            position: relative;
+        }
+
+        /* 图标区域 */
+        .icon-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, 80px);
+            grid-template-rows: repeat(auto-fill, 90px);
+            grid-auto-flow: column;
+            gap: 15px;
+            padding: 20px;
+            height: calc(100% - 40px);
+        }
+        .icon {
+            width: 80px; text-align: center; cursor: pointer; color: white; text-shadow: 1px 1px 2px #000;
+        }
+        .icon img { width: 48px; height: 48px; display: block; margin: 0 auto 5px; filter: drop-shadow(0 0 2px rgba(0,0,0,0.5)); }
+        .icon span { font-size: 12px; word-break: break-all; line-height: 1.2; display: block; }
+
+        /* 右侧便签：核心线索区 */
+        .sticky-note {
+            position: absolute; right: 30px; top: 40px;
+            width: 240px; background: #fdf6b2; padding: 15px;
+            box-shadow: 5px 5px 10px rgba(0,0,0,0.2);
+            color: #1a1a1a;
+            border-bottom-right-radius: 20px 5px;
+        }
+        .sticky-note h4 { margin: 0 0 10px 0; border-bottom: 1px solid #e5e7eb; padding-bottom: 5px; color: #92400e; font-size: 14px; }
+        .sticky-note p { font-size: 12px; margin: 5px 0; line-height: 1.6; }
+        .sticky-note .urgent { color: #dc2626; font-weight: bold; }
+
+/* 仿 Win10 任务栏 */
+.taskbar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 40px;
+    background: rgba(199, 187, 187, 0.85);
+    display: flex;
+    align-items: center;
+    backdrop-filter: blur(5px);
+    z-index: 6000; /* 保证在弹窗之上 */
+    color: white;
+}
+
+        /* 开始按钮 */
+        .start-btn {
+            width: 48px; height: 100%; display: flex; align-items: center; justify-content: center;
+            cursor: pointer; transition: background 0.2s;
+        }
+        .start-btn:hover { background: rgba(255, 255, 255, 0.1); }
+        .start-btn img { width: 20px; height: 20px; filter: invert(1); }
+
+        /* 搜索框 */
+        .search-container {
+            height: 32px; width: 240px; background: rgba(255, 255, 255, 0.9);
+            margin: 0 10px; display: flex; align-items: center; padding: 0 10px;
+            border-radius: 2px;
+        }
+        .search-container input {
+            border: none; background: none; outline: none; width: 100%;
+            font-size: 12px; color: #333;
+        }
+        .search-icon { font-size: 14px; margin-right: 8px; color: #666; }
+
+        /* 快捷图标 */
+        .task-icons { display: flex; height: 100%; align-items: center; gap: 5px; }
+        .task-icon { width: 40px; height: 100%; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+        .task-icon img { width: 22px; height: 22px; }
+
+        /* 系统托盘与时钟 */
+        .tray-area { margin-left: auto; display: flex; align-items: center; padding: 0 10px;color: #000000; }
+        .clock { text-align: center; font-size: 11px; line-height: 1.2; padding: 0 5px; cursor: default; }
+/* 优化搜索结果项布局 */
+.search-item {
+    padding: 12px 15px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: background 0.2s;
+}
+
+.search-item:hover {
+    background-color: #e5f3ff;
+}
+
+/* 搜索文字信息的容器 */
+.search-item-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.search-item-title {
+    font-size: 13px;
+    font-weight: bold;
+    color: #000;
+}
+
+.search-item-type {
+    font-size: 11px;
+    color: #0067b8;
+}
+/* --- Windows 10 风格窗口 --- */
+        .window {
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 640px; height: 420px; background: #fff; border: 1px solid #1883d7;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3); display: none; flex-direction: column; z-index: 2000;
+        }
+        .window-header { height: 32px; display: flex; justify-content: space-between; align-items: center; padding-left: 10px; user-select: none; }
+        .header-title { font-size: 12px; display: flex; align-items: center; gap: 6px; color: #333; }
+        .header-controls { display: flex; height: 100%; }
+        .control-btn { width: 46px; height: 32px; display: flex; align-items: center; justify-content: center; transition: 0.2s; font-size: 16px; color: #333; }
+        .control-btn:hover { background: #e5e5e5; }
+        .close-btn:hover { background: #e81123; color: white; }
+
+        .window-main { display: flex; flex: 1; border-top: 1px solid #f0f0f0; overflow: hidden; }
+        .window-sidebar { width: 160px; background: #f0f0f0; border-right: 1px solid #e5e5e5; padding: 10px; font-size: 12px; color: #333; }
+        .window-content { flex: 1; padding: 20px; display: grid; grid-template-columns: repeat(auto-fill, 90px); gap: 15px; background: white; align-content: flex-start; }
+        /* 回收站文件图标 */
+        .deleted-item { width: 90px; display: flex; flex-direction: column; align-items: center; cursor: pointer; padding: 8px 4px; border: 1px solid transparent; }
+        .deleted-item:hover { background: #e5f3ff; border: 1px solid #99d1ff; }
+        .deleted-item img { width: 42px; height: 42px; filter: grayscale(100%); opacity: 0.6; }
+        .deleted-item span { font-size: 11px; text-align: center; margin-top: 6px; color: #333; word-break: break-all; }
+   /* 紧贴底部的搜索历史面板 */
+.history-window { 
+    position: fixed; bottom: 40px; left: 0; 
+    width: 320px; height: 450px; 
+    background: rgba(255, 255, 255, 0.98); 
+    border: 1px solid #ccc; border-bottom: none;
+    display: none; flex-direction: column; z-index: 4000;
+    animation: slideUp 0.2s ease-out;
+}
+
+@keyframes slideUp {
+    from { transform: translateY(10px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+/* 修改后的 history-list 样式 */
+.history-list { 
+    flex: 1; 
+    overflow-y: auto; 
+    padding: 10px; 
+    display: flex;           /* 启用 Flex 布局 */
+    flex-direction: column;
+}
+
+/* 新增：提示文字的居中样式 */
+.no-history-msg {
+    margin: auto;            /* 在 Flex 容器中实现完美居中 */
+    color: #999; 
+    font-size: 12px;
+    text-align: center;
+}
+.history-item { 
+    padding: 12px 15px; margin-bottom: 2px;
+    background: #fff; color: #333; cursor: pointer; font-size: 13px; 
+    display: flex; align-items: center; gap: 10px; border-left: 3px solid transparent;
+}
+.history-item:hover { background: #e5f3ff; border-left: 3px solid #0078d7; }
+.history-item::before { content: "🕒"; font-size: 12px; opacity: 0.6; }
+
+        /* --- 微信窗口容器 (Win10风格) --- */
+        .win-window {
+            position: absolute; top: 50px; left: 250px;
+            width: 870px; height: 620px;
+            background: #fff; border: 1px solid var(--win-blue);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            display: none; flex-direction: column; z-index: 1000;
+                font-family: -apple-system, BlinkMacSystemFont,
+                 "Segoe UI", "PingFang SC",
+                 "Microsoft YaHei", sans-serif;
+    font-size: 14px; /* 微信正文基准 */
+        }
+        .win-header {
+            height: 32px; background: #fff; display: flex; justify-content: space-between;
+            align-items: center; padding-left: 10px; cursor: move; border-bottom: 1px solid #eee;
+        }
+        .win-controls { display: flex; height: 100%; }
+        .win-btn { width: 46px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 16px; }
+        .win-btn:hover { background: #e5e5e5; }
+        .close-btn:hover { background: #e81123; color: white; }
+
+        /* --- 微信内部内容样式 --- */
+        /* 确保主体撑满除去标题栏后的空间 */
+.wechat-body {
+    flex: 1;
+    display: flex;
+    overflow: hidden;
+}
+        .sidebar { width: 50px; background: #2e2e2e; display: flex; flex-direction: column; align-items: center; padding-top: 20px; }
+        .nav-icon { color: #919191; font-size: 20px; margin-bottom: 25px; cursor: pointer; }
+        .nav-icon.active { color: var(--wechat-green); }
+
+        
+        .chat-list { width: 220px; background: #e6e6e6; border-right: 1px solid #dcdcdc; overflow-y: auto; }
+        .list-item { height: 50px; font-size: 0.95em;display: flex; padding: 12px; align-items: center; cursor: pointer; border-bottom: 1px solid #ddd; }
+        .list-item:hover { background: #dbdbdb; }
+        .list-item.selected { background: #c5c5c5; }
+        .avatar { width: 40px; height: 40px; border-radius: 4px; margin-right: 10px; background: #ccc; display: flex; align-items: center; justify-content: center; color: white; }
+
+        .main-view { flex: 1; background: #f5f5f5; display: flex; flex-direction: column; position: relative; }
+.view-header {
+    height: 60px; /* 稍微加高到 60px 更有空间感 */
+    padding: 0 25px;
+    display: flex;  font-size: 15px;
+    justify-content: space-between; /* 左右分布 */
+    align-items: center;
+    border-bottom: 1px solid #e7e7e7;
+    background: #f5f5f5;
+}
+
+/* 模拟右侧的更多操作图标 */
+.view-header::after {
+    content: "···"; 
+    font-size: 20px;
+    color: #888;
+    cursor: pointer;
+}
+.msg-bubble {
+    position: relative;
+    background: #fff;
+    padding: 9px 12px;  line-height: 1.4;
+    border-radius: 4px;
+    max-width: 70%;
+    font-size: 1em;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+/* 添加气泡小尖角 */
+.msg-bubble::before {
+    content: "";
+    position: absolute;
+    left: -6px;
+    top: 10px;
+    border-width: 6px 6px 6px 0;
+    border-style: solid;
+    border-color: transparent #fff transparent transparent;
+}
+/* --- Moments Style --- */
+#moments-content {
+    flex: 1; /* 占据剩余垂直高度 */
+    height: 100%;
+    padding: 20px 40px;
+    overflow-y: auto; /* 允许滚动 */
+    background: #f7f7f7;
+    display: flex;
+    flex-direction: column;
+    min-height: 0; /* 防止内部内容撑破容器 */
+}
+
+.moment {
+    display: flex;
+    background: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    margin-bottom: 20px;
+}
+.moment-body {
+    flex: 1;
+}
+.moment .avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 4px; /* 或方角 4px */
+    margin-right: 15px;
+    flex-shrink: 0;
+    /* 向下移动头像 */
+    margin-top: 15px; /* 或使用 top: 10px; */
+}
+
+
+.moment-detail {
+    flex: 1;
+}
+
+.moment .m-name {
+    color: #576b95;
+    font-weight: bold;
+    font-size: 15px;
+    margin-bottom: 2px;
+}
+
+.moment-detail p {
+    margin: 0 0 4px 0; /* 内容和时间间距 */
+    font-size: 14px;
+}
+
+.moment-detail .time {
+    color: #bbb;
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+/* 可选：朋友圈图片网格 */
+.moment-image-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 100px);
+    gap: 5px;
+    margin-bottom: 10px;
+}
+
+.moment-image-grid img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 4px;
+    background: #eee;
+}
+
+        /* 公众号卡片 */
+        .subs-card { background: #fff; margin: 15px; padding: 15px; border-radius: 4px; cursor: pointer; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+/* 压缩左侧会话列表中标题与预览的上下间距 */
+.list-item h4 {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.2;
+}
+
+.list-item p {
+    margin: 4px 0 0;
+    font-size: 12px;
+    line-height: 1.3;
+    color: #888;
+}
+.moments-title {
+    font-weight: bold;        /* 加粗 */
+    font-size: 16px;          /* 可调整大小 */
+    text-align: center;       /* 居中 */
+    padding: 10px 0;          /* 上下间距 */
+    background: #f7f7f7;      /* 可选：背景色 */
+    border-bottom: 1px solid #e0e0e0; /* 可选：底部分割线 */
+}
+
+        .progress-indicator {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: rgba(0,0,0,0.6);
+    color: #fff;
+    padding: 6px 10px;
+    border-radius: 8px;
+    font-family: monospace;
+    font-size: 0.85rem;
+    z-index: 9999;
+}
+        .moment-footer {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: #999;
+                margin-top: 6px;
+        }
+        .like-link {
+    color: inherit;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.like-link:hover {
+    color: #07c160; /* 微信绿 */
+}
+
+
+.deleted-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;       /* 图标和文字间距 */
+    cursor: pointer;
+}
+
+
+.deleted-item span {
+    color: #8B0000;   /* 深红文字 */
+    font-weight: bold; /* 可选，加粗更醒目 */
+}
+
+   </style>
+</head>
+
+
+<div id="recycleWindow" class="window">
+        <div class="window-header">
+            <div class="header-title">
+                <img src="https://img.icons8.com/color/16/000000/recycle-bin.png">
+                <span>回收站</span>
+            </div>
+            <div class="header-controls">
+                <div class="control-btn close-btn" onclick="closeWindow('recycleWindow')">×</div>
+            </div>
+        </div>
+        <div class="window-main">
+            <div class="window-sidebar">
+                <div style="color: #0067b8; font-weight: bold; margin-bottom: 8px;">快速访问</div>
+                <div style="padding: 4px 0; opacity: 0.7;">🏠 桌面</div>
+                <div style="padding: 4px 0; background: #d7e8f5; margin: 0 -10px; padding-left: 10px;">🗑️ 回收站</div>
+            </div>
+            <div class="window-content">
+                <div class="deleted-item" onclick="alert('404：文件已损坏，无法恢复或读取。')">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Microsoft_Office_Word_%282019%E2%80%932025%29.svg/330px-Microsoft_Office_Word_%282019%E2%80%932025%29.svg.png">
+                    <span>关于⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿的实名检举说明.docx</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="historyWindow" class="history-window">
+    <div style="padding: 15px; font-size: 14px; font-weight: bold; color: #333; border-bottom: 1px solid #ddd; background: #f9f9f9;">最近搜索记录</div>
+    <div class="history-list" id="historyList"></div>
+</div>
+
+<body>
+        <div class="progress-indicator">1/35</div>
+
+<div class="desktop">
+    <div class="icon-grid">
+        <div class="icon">
+            <img src="https://img.icons8.com/color/48/000000/my-computer.png" alt="此电脑">
+            <span>此电脑</span>
+        </div>
+        <div class="icon">
+            <img src="https://img.icons8.com/color/48/000000/folder-invoices.png" alt="项目底稿">
+            <span>实验室成果归档(2023-2025)</span>
+        </div>
+        <div class="icon">
+            <img src="https://img.icons8.com/color/48/000000/visual-studio-code-2019.png" alt="VS Code">
+            <span>VS Code</span>
+        </div>
+        <div class="icon">
+            <img src="https://img.icons8.com/color/48/000000/intellij-idea.png" alt="IntelliJ">
+            <span>IntelliJ IDEA</span>
+        </div>
+        <div class="icon" onclick="window.location.href='chrome.html'">
+            <img src="https://img.icons8.com/color/48/000000/chrome.png" alt="Chrome">
+            <span>Chrome</span>
+        </div>
+        <div class="icon">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/Mendeley_Logo_Vertical.png/1200px-Mendeley_Logo_Vertical.png" alt="文献管理">
+            <span>Mendeley文献库</span>
+        </div>
+        
+        <div class="icon">
+            <img src="https://img.icons8.com/color/48/000000/python.png" alt="Python">
+            <span>Python</span>
+        </div>
+    <div class="icon" onclick="window.location.href='excel.html'">
+        <img src="excel.png" alt="Excel">
+        <span>302实验室寒假离校时间统计.xlsx</span>
+    </div>
+        <div class="icon" onclick="openRecycleBin()">
+            <img src="https://img.icons8.com/color/48/000000/recycle-bin.png" alt="回收站">
+            <span>回收站</span>
+        </div>
+    </div>
+
+      <div id="wechatWin" class="win-window">
+        <div class="win-header">
+            <div style="font-size:12px; color:#666;">微信</div>
+            <div class="win-controls">
+                <div class="win-btn" onclick="toggleApp('wechatWin')">－</div>
+                <div class="win-btn close-btn" onclick="toggleApp('wechatWin')">×</div>
+            </div>
+        </div>
+        <div class="wechat-body">
+            <div class="sidebar">
+                <div class="nav-icon active" onclick="switchTab('chat')">💬</div>
+                  <div class="nav-icon"  id="contact-icon">👥</div>
+                <div class="nav-icon" onclick="switchTab('moments')">🌐</div>
+                <div style="flex-grow:1"></div>
+                <div class="nav-icon">⚙️</div>
+            </div>
+            <div class="chat-list">
+                <div class="list-item" id="subs-item" onclick="switchTab('subs')">
+                    <div class="avatar" style="background:#107bef">📜</div>
+                    <div style="flex:1"><h4>订阅号</h4><p id="subs-preview">猫猫图鉴：Pick你年度...</p></div>
+                </div>
+                <div class="list-item selected" onclick="openChat('Bur')">
+                    <div class="avatar" style="background:#f39c12">🍳</div>
+                    <div style="flex:1"><h4>Bur</h4> <p>V我50</p> </div>
+                </div>
+                <div class="list-item" onclick="openChat('催饭归')">
+                    <div class="avatar" style="background:#ffef85">😋</div>
+                    <div style="flex:1"><h4>催饭归</h4><p>🤷</p></div>
+                </div>
+                  <div class="list-item" onclick="openChat('李明薇（青源HR）')">
+                    <div class="avatar" style="background:#ffb0f1">🌱</div>
+                    <div style="flex:1"><h4>李明薇（青源HR）</h4><p>不客气～</p></div>
+                </div>
+                <div class="list-item" onclick="openChat('302科研牧场（绿色无导版）')">
+                    <div class="avatar" style="background:#5ab250">🐄</div>
+                    <div style="flex:1"><h4>302科研牧场（绿...</h4><p>宋宁如意：谢谢大家</p></div>
+                </div>
+            </div>
+            <div class="main-view">
+<div id="chat-view" style="display:flex; flex-direction:column; height:100%;">
+    <div class="view-header" id="chat-title">Bur</div>
+    <div id="chat-msg" style="flex:1; padding:20px; overflow-y:auto;">
+
+        <div style="margin-bottom:15px; display:flex; flex-direction:column; align-items:flex-end;">
+            <div style="background:#dcf8c6; padding:8px; border-radius:4px; width:fit-content; max-width:70%; margin-top:2px;">
+                学长，老板不是最近去瑞士开会，组里看起来没剩几个人，年终总结还要开吗？
+            </div>
+        </div>
+        <div style="margin-bottom:15px; display:flex; flex-direction:column; align-items:flex-start;">
+            <div style="background:#fff; padding:8px; border-radius:4px; width:fit-content; max-width:70%; margin-top:2px;">
+                没哪次能跑得掉
+            </div>
+        </div>
+                <div style="margin-bottom:15px; display:flex; flex-direction:column; align-items:flex-start;">
+            <div style="background:#fff; padding:8px; border-radius:4px; width:fit-content; max-width:70%; margin-top:2px;">
+                看看你的PPT，我帮你润色下😊
+            </div>
+        </div>
+        
+        <div style="margin-bottom:15px; display:flex; flex-direction:column; align-items:flex-end;">
+            <div style="background:#dcf8c6; padding:8px; border-radius:4px; width:fit-content; max-width:70%; margin-top:2px;">
+                V我50
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+                <div id="moments-content" style="display: none;">
+                    <div class="moments-title">朋友圈</div>
+                    <div class="moment">
+                        <div class="avatar" style="background:#29be8a"></div>
+                        <div class="moment-body">
+                                <p class="m-name">毕加思索</p>
+                                <p>我为什么要没事打开<strong>【青大树洞】</strong>，被《线性代数》出分的消息暴击😭</p>
+
+                                <div class="moment-footer">
+                                    <span>35分钟前</span>
+                                    <span>👍 1 | 💬 3</span>
+                                </div>
+                            </div>
+                    </div>
+
+                    <div class="moment">
+                        <div class="avatar" style="background:#aaa9a9"></div>
+                        <div class="moment-body">
+                                <p class="m-name">只洒一些脱</p>
+                                <p>此条已屏蔽辅导员：能者多劳，你们能吧，我回家了🧳</p>
+
+                                <div class="moment-footer">
+                                    <span>1天前</span>
+                                    <span>👍 8 | 💬 5</span>
+                                </div>
+                            </div>
+                    </div>
+                                        <div class="moment">
+                        <div class="avatar" style="background:#f0ab94"></div>
+                        <div class="moment-body">
+                                <p class="m-name">青大南门一期烤冷面</p>
+                                <p>今天最后一天老位置出摊，下周换到产业园摆，同学们寒假快乐！</p>
+
+                                <div class="moment-footer">
+                                    <span>2天前</span>
+                                    <span>👍 28 | 💬 19</span>
+                                </div>
+                            </div>
+                    </div>
+                                        <div class="moment">
+                        <div class="avatar" style="background:#5fbcff"></div>
+                        <div class="moment-body">
+                                <p class="m-name">菠萝吹雪</p>
+                                <p>十佳菜品评选，请给芳华苑小炒牛肉饭投一票！</p>
+
+                                <div class="moment-footer">
+                                    <span>3天前</span>
+                                    <span>
+        <a href="extra2.html" class="like-link">👍 5</a> | 💬 6</span>
+                                </div>
+                            </div>
+                    </div>
+                </div>
+                <div id="subs-view" style="display:none; flex:1; overflow-y:auto; background:#ededed;">
+                    <div class="view-header">订阅号</div>
+
+
+                <div class="subs-card">
+                    <p style="color:#999; font-size:12px;">青大猫协 2026年12月17日</p>
+                    <p style="font-weight:bold; margin-top:5px;">猫猫图鉴：Pick你年度最爱的一张校园猫咪日常📸</p>
+                </div>
+                <div class="subs-card">
+                    <p style="color:#999; font-size:12px;">机器之心 2025年11月28日</p>
+                    <p style="font-weight:bold; margin-top:5px;">学术圈炸了！ICLR评审大开盒，原来低分是好友打的 </p>
+                </div>
+
+                <div class="subs-card" onclick="window.location.href='https://mp.weixin.qq.com/s/yZLSmWFlu14DThOqTFH7Jg'">
+                    <p style="color:#999; font-size:12px;">毕导 2025年11月20日</p>
+                    <p style="font-weight:bold; margin-top:5px;">高中学历，靠诈骗混成博导？深扒江苏科技大学郭伟骗局</p>
+                </div>
+
+
+                <div class="subs-card" onclick="window.location.href='canteen2.html'">
+                    <p style="color:#999; font-size:12px;">QZU小喇叭 2025年11月16日</p>
+                    <p style="font-weight:bold; margin-top:5px;">【呕】刚刷到市监局抽检公告，咱学校青川食堂的大肠杆菌超标了整整4倍！说是餐具清洗消毒流程完全不合格[图片.jpg]。
+            前几天刚在青川就餐过的UU们，现在自求多福吧... </p>
+                </div>
+                <div class="subs-card" onclick="window.location.href='academic.html'">
+                    <p style="color:#999; font-size:12px;">学术资讯速递 2025年11月2日</p>
+                    <p style="font-weight:bold; margin-top:5px;">副教授转岗做保安，努力的你还有方向吗？</p>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="sticky-note">
+        <h4>📌 实验室管理规定</h4>
+        <p>1. 严禁在公用电脑存储个人账号密码！</p>
+        <p>2. 定期清理D盘Temp文件夹，不定期格式化。</p>
+        <p>3. <span class="urgent">重要：</span>账号及密码仅限单个平台使用，请勿在其他平台重复使用。</p>
+    </div>
+
+    <div class="sticky-note" style="top: 280px; background: #cceeff; width: 220px;">
+        <h4>🔑 备忘</h4>
+        <p>善用内部搜索（左下角）以及外部搜索（真实互联网）以获取信息。</p>
+        <p>菜单栏最左侧可查看搜索记录，便于快速访问历史查询。</p>
+        <p>第1/4/11页中，分别可进行一次页面内搜索。</p>
+        <p>若点击无响应，则表示该信息无关。</p>
+        <p>无需使用F12或查看源码来获得线索。</p>
+        <p style="font-size:10px; color:#666;">AAA 2026/1</p>
+    </div>
+
+<div class="taskbar">
+        <div class="start-btn" onclick="toggleHistory(event)">
+            <img src="https://img.icons8.com/material-outlined/24/ffffff/windows-10.png">
+        </div>
+
+<div class="search-container" style="position: relative;">
+    <span class="search-icon">🔍</span>
+    <input type="text" id="searchInput" placeholder="搜索文件或应用..." oninput="handleExactSearch(this.value)" autocomplete="off">
+    
+    <div id="searchResults" style="display: none; position: absolute; bottom: 40px; left: 0; width: 100%; background: white; border: 1px solid #ccc; box-shadow: 0 -2px 10px rgba(0,0,0,0.2); color: #333; z-index: 1001;">
+        <div style="padding: 10px; font-size: 11px; border-bottom: 1px solid #eee; background: #f9f9f9; color: #666; letter-spacing: 1px;">最佳匹配</div>
+        <div class="search-item" onclick="recordAndJump('青大心语', 'login.html')">
+            <img src="https://img.icons8.com/color/24/000000/heart-monitor.png" style="width: 24px; height: 24px;">
+            <div class="search-item-info">
+                <div class="search-item-title">青大心语</div>
+                <div class="search-item-type">应用</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="task-icons">
+    <div class="task-icon" onclick="toggleApp('wechatWin')">
+        <img src="wechat.svg">
+    </div>
+    
+    <a href="mailbox.html" class="task-icon">
+        <img src="logo1.png">
+    </a>
+</div>
+        <div class="tray-area">
+            <div class="clock">
+                <div id="time">04:17</div>
+                <div id="date">2025/12/23</div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    const SEARCH_MAP = {
+    '青大心语': 'login.html',
+    '青大树洞': 'bbq.html',
+    '回廊': 'bbs.html',
+    'SIT LAB': 'lupage.html',
+    'SIT Lab': 'lupage.html',
+    'sit lab': 'lupage.html',
+    '高成安': 'news.html',
+    '江奕云': ' extra1.html',
+    '陆远航': 'hack.html',
+    '智核科技': ' bbsfinal.html',
+    '青州智核科技有限公司': ' bbsfinal.html',
+    '青州智核科技': ' bbsfinal.html',
+        ' Marvin': ' bbs404.html',
+    '青大门户网站': 'login2.html'
+};
+
+    const UIState = {
+    startMenuOpen: false
+};
+    // 初始化
+    window.onload = function() {
+        renderHistory();
+        updateClock();
+        setInterval(updateClock, 1000);
+    };
+
+    // 渲染历史列表（从本地存储读取）
+function renderHistory() {
+    const list = document.getElementById('historyList');
+    const history = JSON.parse(localStorage.getItem('searchHistory') || "[]");
+    // 使用 no-history-msg 类名
+    list.innerHTML = history.length ? "" : "<div class='no-history-msg'>暂无最近搜索内容</div>";
+    
+    history.forEach(itemText => {
+        const div = document.createElement('div');
+        div.className = 'history-item';
+        div.innerText = itemText;
+        div.onclick = () => jumpTo(itemText);
+        list.appendChild(div);
+    });
+}
+
+    // 核心逻辑：记录并跳转
+function recordAndJump(keyword, url) {
+    // 1. 保存到本地存储
+    saveToLocalStorage(keyword);
+    
+    // 2. 逻辑新增：点击后立即隐藏搜索弹出项
+    const res = document.getElementById('searchResults');
+    if (res) res.style.display = 'none';
+    
+    // 3. 清空搜索框输入文字（可选，模拟更真实）
+    document.getElementById('searchInput').value = '';
+    
+    // 4. 执行跳转
+    window.location.href = url;
+}
+
+    function saveToLocalStorage(keyword) {
+        let history = JSON.parse(localStorage.getItem('searchHistory') || "[]");
+        if (!history.includes(keyword)) {
+            history.unshift(keyword); // 新记录排在最前
+            if (history.length > 8) history.pop(); // 最多存8条
+            localStorage.setItem('searchHistory', JSON.stringify(history));
+            renderHistory();
+        }
+    }
+
+    // 搜索框输入监听
+function handleExactSearch(val) {
+    const keyword = val.trim();
+    const res = document.getElementById('searchResults');
+
+    // 先清空
+    res.innerHTML = `
+        <div style="padding: 10px; font-size: 11px; border-bottom: 1px solid #eee; background: #f9f9f9; color: #666;">
+            最佳匹配
+        </div>
+    `;
+
+    // 只有“完全命中”才展示
+    if (SEARCH_MAP[keyword]) {
+        const item = document.createElement('div');
+        item.className = 'search-item';
+        item.onclick = () => recordAndJump(keyword, SEARCH_MAP[keyword]);
+        item.innerHTML = `
+            <img src="https://img.icons8.com/color/24/000000/search.png">
+            <div class="search-item-info">
+                <div class="search-item-title">${keyword}</div>
+                <div class="search-item-type">应用</div>
+            </div>
+        `;
+        res.appendChild(item);
+        res.style.display = 'block';
+    } else {
+        res.style.display = 'none';
+    }
+}
+
+
+    // 回车键快捷触发
+document.getElementById('searchInput').onkeydown = function(e) {
+    if (e.key === 'Enter') {
+        const val = this.value.trim();
+        if (SEARCH_MAP[val]) {
+            recordAndJump(val, SEARCH_MAP[val]);
+        } else if (val === '回收站') {
+            saveToLocalStorage('回收站');
+            openRecycleBin();
+            this.value = '';
+        }
+    }
+};
+
+
+
+
+    // 统一跳转逻辑
+function jumpTo(text) {
+    if (SEARCH_MAP[text]) {
+        window.location.href = SEARCH_MAP[text];
+    } else if (text === '回收站') {
+        openRecycleBin();
+    }
+    closeWindow('historyWindow');
+}
+
+
+    // 面板切换
+function toggleHistory(e) {
+    e.stopPropagation();
+    UIState.startMenuOpen = !UIState.startMenuOpen;
+    renderStartMenu();
+}
+function renderStartMenu() {
+    const win = document.getElementById('historyWindow');
+    win.style.display = UIState.startMenuOpen ? 'flex' : 'none';
+}
+
+    function openRecycleBin() { document.getElementById('recycleWindow').style.display = 'flex'; }
+    function closeWindow(id) { document.getElementById(id).style.display = 'none'; }
+    
+function updateClock() {
+    const now = new Date();
+    
+    // 1. 获取真实的时间并格式化 (时:分)
+    const hours = now.getHours().toString().padStart(2, '0');
+    const minutes = now.getMinutes().toString().padStart(2, '0');
+    const seconds = now.getSeconds().toString().padStart(2, '0'); // 如果你想显示秒，可以使用这个变量
+    
+    // 更新时间显示 (如果你HTML里只有时分，就用这个)
+    document.getElementById('time').innerText = hours + ":" + minutes;
+    
+    // 2. 固定日期为 2025/01/09
+    // 不再使用 now.getFullYear()，直接写死日期
+    document.getElementById('date').innerText = "2026/1/9";
+}
+document.addEventListener('mousedown', function () {
+    if (UIState.startMenuOpen) {
+        UIState.startMenuOpen = false;
+        renderStartMenu();
+    }
+});
+document.getElementById('historyWindow')
+    .addEventListener('mousedown', e => e.stopPropagation(), true);
+
+document.querySelector('.start-btn')
+    .addEventListener('mousedown', e => e.stopPropagation(), true);
+     function switchTab(tab) {
+        document.getElementById('chat-view').style.display = 'none';
+        document.getElementById('moments-content').style.display = 'none';
+        document.getElementById('subs-view').style.display = 'none';
+        document.querySelectorAll('.list-item').forEach(i => i.classList.remove('selected'));
+
+        if(tab === 'chat') {
+            document.getElementById('chat-view').style.display = 'flex';
+        } else if(tab === 'moments') {
+            document.getElementById('moments-content').style.display = 'block';
+        } else if(tab === 'subs') {
+            document.getElementById('subs-view').style.display = 'block';
+            document.getElementById('subs-item').classList.add('selected');
+        }
+    }
+
+    function openChat(name) {
+        switchTab('chat');
+        document.getElementById('chat-title').innerText = name;
+        // 简单模拟不同对话
+        const msgBox = document.getElementById('chat-msg');
+        if(name.includes('催饭归')) {
+msgBox.innerHTML = `
+        <div style="margin-bottom:15px; display:flex; flex-direction:column; align-items:flex-end;">
+    <div style="background:#dcf8c6; padding:8px; border-radius:4px; width:fit-content; max-width:70%; margin-top:2px;">
+        我这台实验室电脑之前是谁在用啊？
+    </div>
+</div>
+
+<div style="margin-bottom:15px;">
+    <div style="background:#fff; padding:8px; border-radius:4px; width:fit-content;">
+        我想想，上一个好像是麦闻学长
+    </div>
+</div>
+
+        <div style="margin-bottom:15px; display:flex; flex-direction:column; align-items:flex-end;">
+    <div style="background:#dcf8c6; padding:8px; border-radius:4px; width:fit-content; max-width:70%; margin-top:2px;">
+        哦…好久没在302看到他了
+    </div>
+</div>
+
+<div style="margin-bottom:15px;">
+    <div style="background:#fff; padding:8px; border-radius:4px; width:fit-content;">
+        你实习那段时间，他好像申请退出实验室了，上次看到他来把东西都搬走了
+    </div>
+</div>
+        <div style="margin-bottom:15px; display:flex; flex-direction:column; align-items:flex-end;">
+    <div style="background:#dcf8c6; padding:8px; border-radius:4px; width:fit-content; max-width:70%; margin-top:2px;">
+     啊？为什么，他不是一直都算我们组的大腿吗?
+    </div>
+</div>
+
+<div style="margin-bottom:15px;">
+    <div style="background:#fff; padding:8px; border-radius:4px; width:fit-content;">
+        🤷
+    </div>
+</div>
+`;
+
+
+        } else if(name.includes('科研牧场')) {
+             msgBox.innerHTML = `
+        <div style="margin-bottom:15px;"><small style="color:#888">夏木</small><div style="background:#fff; padding:8px; border-radius:4px; width:fit-content;">@所有人 请大家今晚前填好离校时间表，方便统计值班情况。</div></div>
+        <div style="margin-bottom:15px;"><small style="color:#888">催饭归</small><div style="background:#fff; padding:8px; border-radius:4px; width:fit-content;">我留校🙋年底的实验数据一直没来得及整理。</div></div>
+        <div style="margin-bottom:15px;"><small style="color:#888">Bur</small><div style="background:#fff; padding:8px; border-radius:4px; width:fit-content;">下周就回了，赶得上年末聚餐吗？</div></div>
+        <div style="margin-bottom:15px;"><small style="color:#888">夏木</small><div style="background:#fff; padding:8px; border-radius:4px; width:fit-content;">聚餐定在下周一晚上，顺便给@宋宁如意 过生日，蛋糕已安排~🎂</div></div>
+         <div style="margin-bottom:15px;"><small style="color:#888">宋宁如意</small><div style="background:#fff; padding:8px; border-radius:4px; width:fit-content;">谢谢大家</div></div>
+    `;
+        } else if(name.includes('Bur')) {
+             msgBox.innerHTML = `
+                   <div style="margin-bottom:15px; display:flex; flex-direction:column; align-items:flex-end;">
+            <div style="background:#dcf8c6; padding:8px; border-radius:4px; width:fit-content; max-width:70%; margin-top:2px;">
+                学长，老板不是最近去瑞士开会，组里看起来没剩几个人，年终总结还要开吗？
+            </div>
+        </div>
+
+        <div style="margin-bottom:15px; display:flex; flex-direction:column; align-items:flex-start;">
+            <div style="background:#fff; padding:8px; border-radius:4px; width:fit-content; max-width:70%; margin-top:2px;">
+                没哪次能跑得掉
+            </div>
+        </div>
+                <div style="margin-bottom:15px; display:flex; flex-direction:column; align-items:flex-start;">
+            <div style="background:#fff; padding:8px; border-radius:4px; width:fit-content; max-width:70%; margin-top:2px;">
+                看看你的PPT，我帮你润色下😊
+            </div>
+        </div>
+        
+        <div style="margin-bottom:15px; display:flex; flex-direction:column; align-items:flex-end;">
+            <div style="background:#dcf8c6; padding:8px; border-radius:4px; width:fit-content; max-width:70%; margin-top:2px;">
+                V我50
+            </div>
+        </div>`;
+
+        } else {
+    msgBox.innerHTML = `
+        <div style="margin-bottom:15px; display:flex; flex-direction:column; align-items:flex-start;">
+            <div style="background:#fff; padding:8px; border-radius:4px; width:fit-content; max-width:70%; margin-top:2px;">奕云，你的实习证明开好了。</div>
+        </div>
+        <div style="margin-bottom:15px; display:flex; flex-direction:column; align-items:flex-end;">
+            <div style="background:#dcf8c6; padding:8px; border-radius:4px; width:fit-content; max-width:70%; margin-top:2px;">您发我邮箱就好了，谢谢</div>
+        </div>
+                <div style="margin-bottom:15px; display:flex; flex-direction:column; align-items:flex-start;">
+            <div style="background:#fff; padding:8px; border-radius:4px; width:fit-content; max-width:70%; margin-top:2px;">没问题。开学后还考虑来公司实习吗？大家对你评价都很好👍</div>
+        </div>
+                <div style="margin-bottom:15px; display:flex; flex-direction:column; align-items:flex-end;">
+            <div style="background:#dcf8c6; padding:8px; border-radius:4px; width:fit-content; max-width:70%; margin-top:2px;">哈哈，我可能考虑去别的行业多学习一下。感谢李经理，邮件收到了</div>
+        </div>
+        <div style="margin-bottom:15px; display:flex; flex-direction:column; align-items:flex-start;">
+            <div style="background:#fff; padding:8px; border-radius:4px; width:fit-content; max-width:70%; margin-top:2px;">不客气～</div>
+        </div>
+    `;
+        }
+    }
+
+    
+    // 切换窗口显示/隐藏
+function toggleApp(id) {
+    const win = document.getElementById(id);
+    if (win.style.display === 'flex') {
+        win.style.display = 'none';
+    } else {
+        win.style.display = 'flex';
+        // 提升层级，确保弹窗在最顶层
+        win.style.zIndex = 5000; 
+    }
+    document.querySelectorAll('.icon').forEach(icon => {
+    icon.addEventListener('click', () => {
+        const url = icon.getAttribute('data-url');
+        if (url) window.location.href = url;
+    });
+});
+
+}
+</script>
+
+</body>
+</html>

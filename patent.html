@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>通知详情</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body { background-color: #f5f7fa; font-family: "Microsoft YaHei", sans-serif; }
+        .audit-stamp {
+            position: absolute; top: 80px; right: 100px;
+            width: 140px; height: 140px; border: 4px solid #ff4d4f;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            color: #ff4d4f; font-size: 24px; font-weight: bold; transform: rotate(-15deg);
+            opacity: 0.7; pointer-events: none; border-style: double;
+        }
+        .step-active { color: #003366; font-weight: bold; }
+        .step-line { height: 2px; flex: 1; background: #e5e7eb; margin: 0 10px; }
+    </style>
+</head>
+<body class="min-h-screen">
+
+    <header class="bg-[#003366] text-white sticky top-0 z-50 shadow-md">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <div class="flex items-center space-x-4 cursor-pointer">
+          <div class="bg-white p-2 rounded-full">
+    <img 
+        src="logo1.png"
+        alt="青州大学"
+        class="w-8 h-8 object-contain"
+    />
+</div>
+                <div>
+                    <h1 class="text-xl font-bold tracking-tighter leading-none">青州大学门户网站</h1>
+                    <p class="text-[10px] opacity-70 uppercase mt-1">Qingzhou University Portal</p>
+                </div>
+            </div>
+
+            <nav class="flex h-full items-center">
+                <button onclick="switchPage('news')" class="nav-item relative px-6 h-full font-medium hover:bg-white/10 transition-all">首页新闻</button>
+                <button onclick="switchPage('service')" class="nav-item relative px-6 h-full font-medium hover:bg-white/10 transition-all">办事大厅</button>
+                <button onclick="switchPage('remind')" class="nav-item relative px-6 h-full font-medium hover:bg-white/10 transition-all">消息提醒</button>
+                <button class="nav-item relative px-6 h-full font-medium hover:bg-white/10 transition-all">个人日程</button>
+                <div class="ml-8 pl-8 border-l border-white/20 flex items-center space-x-4">
+                    <i class="fas fa-search cursor-pointer hover:scale-110"></i>
+                    <div class="flex items-center space-x-2 bg-white/10 px-3 py-1.5 rounded text-sm cursor-pointer hover:bg-white/20">
+                        <i class="fas fa-user-circle"></i>
+                        <span>宋以宁</span>
+                        <i class="fas fa-caret-down text-[10px]"></i>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="max-w-5xl mx-auto py-8 px-4">
+        <div class="text-sm text-gray-500 mb-6">
+            首页 > 消息提醒 > 专利发明人变更 > 详情
+        </div>
+
+        <div class="bg-white rounded-lg shadow-sm border border-gray-100 relative overflow-hidden">
+            <div class="audit-stamp">审核未通过</div>
+
+            <div class="px-10 py-8 bg-gray-50 border-b flex items-center justify-between">
+                <div class="flex flex-col items-center">
+                    <div class="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-xs">1</div>
+                    <div class="text-xs mt-2 step-active">提交申请</div>
+                </div>
+                <div class="step-line bg-blue-600"></div>
+                <div class="flex flex-col items-center">
+                    <div class="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-xs">2</div>
+                    <div class="text-xs mt-2 step-active">学院初审</div>
+                </div>
+                <div class="step-line bg-blue-600"></div>
+                <div class="flex flex-col items-center">
+                    <div class="w-8 h-8 bg-red-500 text-white rounded-full flex items-center justify-center text-xs">3</div>
+                    <div class="text-xs mt-2 text-red-500 font-bold">国家知识产权局审核</div>
+                </div>
+                <div class="step-line"></div>
+                <div class="flex flex-col items-center">
+                    <div class="w-8 h-8 bg-gray-300 text-white rounded-full flex items-center justify-center text-xs">4</div>
+                    <div class="text-xs mt-2 text-gray-400">流程办结</div>
+                </div>
+            </div>
+
+            <div class="p-10">
+                <h2 class="text-2xl font-bold text-gray-800 mb-8 flex items-center">
+                    <i class="fas fa-file-signature text-[#003366] mr-3"></i>
+                    专利发明人变更申请结果回执
+                </h2>
+
+                <div class="grid grid-cols-2 gap-y-4 text-sm mb-10">
+                    <div class="flex"><span class="w-32 text-gray-400">流水号：</span><span class="text-gray-800 font-mono">REQ-20251105-0842</span></div>
+                    <div class="flex"><span class="w-32 text-gray-400">申请时间：</span><span class="text-gray-800">2025-11-05 14:30:22</span></div>
+                    <div class="flex"><span class="w-32 text-gray-400">变更类型：</span><span class="text-gray-800">第一发明人变更</span></div>
+                    <div class="flex"><span class="w-32 text-gray-400">涉及专利号：</span><span class="text-gray-800">CN20221029XXXX.X</span></div>
+                    <div class="col-span-2 flex">
+                        <span class="w-32 text-gray-400">专利名称：</span>
+                        <span class="text-gray-800 font-bold">一种分布式任务调度的方法及其应用</span>
+                    </div>
+                </div>
+
+                <div class="bg-red-50 border border-red-100 rounded-lg p-6">
+                    <h3 class="text-red-700 font-bold mb-3 flex items-center">
+                        <i class="fas fa-exclamation-circle mr-2"></i>
+                        国家知识产权局 审核意见：
+                    </h3>
+                    <div class="text-sm text-gray-700 leading-relaxed">
+                        <p class="mb-2">经核查，本次发明人变更申请因以下原因被驳回：</p>
+                        <ul class="list-disc list-inside space-y-2 ml-2">
+                            <li><span class="font-bold">拟变更后的第一发明人（<span class="highlight">高成安</span>）提交的补充材料，不足以证明其在本项目中作出了超越原发明人（<span class="highlight">陆远航</span>）的实质性创造性贡献，不符合第一发明人认定标准。</li></li>
+                            <li><span class="font-bold">申请文件中关于“贡献度重新评估”的内部说明，缺乏原始实验数据及研发日志支撑，无法作为变更发明人顺位的法定依据。</li></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="mt-10 pt-8 border-t flex items-center justify-between">
+                    <div class="text-xs text-gray-400">
+                        <i class="fas fa-info-circle mr-1"></i> 如对结果有异议，请联系学院科研秘书。
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="text-center py-10 text-xs text-gray-400">
+        版权所有 © 2026 青州大学信息化建设与管理处 | 技术支持：知识产权中心
+    </footer>
+
+</body>
+</html>

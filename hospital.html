@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>青州大学校医院 - 电子病历</title>
+    <style>
+        body { background: #f0f0f0; padding: 40px 0; font-family: "SimSun", "STSong", serif; }
+        .paper { 
+            width: 700px; margin: 0 auto; background: white; padding: 50px; 
+            box-shadow: 0 0 10px rgba(0,0,0,0.1); border: 1px solid #ddd;
+            position: relative;
+        }
+        .header { text-align: center; border-bottom: 2px solid #000; margin-bottom: 20px; padding-bottom: 10px; }
+        .header h1 { font-size: 28px; margin: 0; letter-spacing: 5px; }
+        .header h2 { font-size: 24px; margin: 5px 0; font-weight: normal; }
+
+        table { width: 100%; border-collapse: collapse; margin-bottom: 15px; }
+        td { border: 1px solid #000; padding: 8px; font-size: 16px; line-height: 1.5; vertical-align: top; }
+        
+        .label { font-weight: bold; width: 15%; }
+        .value { width: 35%; }
+        .full-width { width: 85%; }
+
+        .content-box { min-height: 40px; }
+        .footer { margin-top: 50px; text-align: right; }
+        .footer-note { font-size: 12px; margin-top: 20px; border-top: 1px solid #eee; padding-top: 10px; }
+        
+        /* 模拟校寓公章 */
+        .stamp { 
+            position: absolute; bottom: 80px; right: 100px; 
+            width: 120px; height: 120px; border: 3px solid rgba(255,0,0,0.6); 
+            border-radius: 50%; color: rgba(255,0,0,0.6); 
+            display: flex; align-items: center; justify-content: center; 
+            transform: rotate(-15deg); font-weight: bold; font-size: 14px; text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<div class="paper">
+    <div class="header">
+        <h1>青 州 大 学 校 医 院</h1>
+        <h2>门 诊 病 历</h2>
+    </div>
+
+    <table>
+        <tr>
+            <td class="label">姓名</td>
+            <td class="value">陆远航</td>
+            <td class="label">性别</td>
+            <td class="value">男</td>
+        </tr>
+        <tr>
+            <td class="label">年龄</td>
+            <td class="value">34岁</td>
+            <td class="label">门诊号</td>
+            <td class="value">QZU-20251014082</td>
+        </tr>
+        <tr>
+            <td class="label">科室</td>
+            <td class="value">神经内科</td>
+            <td class="label">就诊日期</td>
+            <td class="value">2025年10月14日</td>
+        </tr>
+        <tr>
+            <td class="label">主诉</td>
+            <td colspan="3" class="content-box">
+                入睡困难、早醒伴阵发性惊恐三个月，加重一周。
+            </td>
+        </tr>
+        <tr>
+            <td class="label">现病史</td>
+            <td colspan="3" class="content-box">
+                患者近三个月以来因工作压力巨大，出现明显睡眠障碍。表现为入睡极度困难（平均入睡需2小时以上），梦境杂乱且多为工作场景或争执场景，常在凌晨3点左右无故惊醒，醒后伴有心慌、出冷汗。
+                <br>近一周症状显著加重，伴随头痛、耳鸣、食欲不振及注意力难以集中。
+            </td>
+        </tr>
+        <tr>
+            <td class="label">过敏史</td>
+            <td colspan="3" class="content-box">无已知药物及食物过敏史。</td>
+        </tr>
+        <tr>
+            <td class="label">体格检查</td>
+            <td colspan="3" class="content-box">
+                BP: 135/90 mmHg（稍高），P: 88次/分。神志清，面色略显苍白，眼圈青紫明显。双肺听诊清，心律齐，未闻及杂音。
+            </td>
+        </tr>
+        <tr>
+            <td class="label">辅助检查</td>
+            <td colspan="3" class="content-box">
+                SAS焦急自评量表：68分（重度焦虑）；SDS抑郁自评量表：62分（中度抑郁）。
+            </td>
+        </tr>
+        <tr>
+            <td class="label">诊断</td>
+            <td colspan="3" class="content-box">
+                1. 神经衰弱<br>
+                2. 焦虑性抑郁障碍<br>
+                3. 重度失眠症
+            </td>
+        </tr>
+        <tr>
+            <td class="label">处理</td>
+            <td colspan="3" class="content-box">
+                1. 建议带薪休假两周，远离高压环境，增加户外运动。<br>
+                2. 盐酸舍曲林片 (50mg * 14片) x 1盒，每日早餐后服1片。<br>
+                3. 右佐匹克隆片 (3mg * 10片) x 1盒，临睡前服1片。<br>
+                4. 心理科辅助心理疏导。
+            </td>
+        </tr>
+        <tr>
+            <td class="label">医嘱建议</td>
+            <td colspan="3" class="content-box">
+                严格遵循药嘱，服药期间禁止饮酒，避免驾驶车辆。如症状持续不缓解或有自伤倾向，请立即复诊。
+            </td>
+        </tr>
+    </table>
+
+    <div class="footer">
+        医师签名：<span style="font-family: 'Kaiti'; font-size: 20px;">周淑琴</span><br><br>
+        单位盖章：<br>
+        2025 年 10 月 14 日
+    </div>
+
+    <div class="stamp">
+        青州大学校医院<br>诊疗专用章
+    </div>
+
+    <div class="footer-note">
+        备注：1、无门诊部盖章及医师签字无效。2、请妥善保管病历，丢弃不补。
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>BBS - 帖子详情</title>
+    <style>
+        /* 基础样式复位 */
+        body, html { margin: 0; padding: 0; background-color: #f6f6f6; font-family: "lucida grande", "Segoe UI", "Tahoma", "Microsoft YaHei", sans-serif; }
+        
+        /* 顶部导航栏 */
+        .header-nav { background: #fff; height: 35px; border-bottom: 1px solid #ddd; padding: 0 50px; display: flex; align-items: center; justify-content: space-between; font-size: 12px; color: #666; }
+        .breadcrumb { padding: 12px 50px; font-size: 12px; color: #555; background: #fff; }
+
+        /* 下架提示横幅 */
+        .notice-banner { background: #fff1f0; border: 1px solid #ffa39e; color: #cf1322; padding: 8px; margin: 10px 50px; text-align: center; font-size: 13px; border-radius: 2px; }
+
+        /* 主容器 */
+        .main-container { max-width: 1100px; margin: 0 auto 50px auto; border: 1px solid #d4d4d4; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+
+        /* 分页与功能条 */
+        .pagination-bar { padding: 10px 20px; border-top: 2px solid #ff6600; border-bottom: 1px solid #eee; display: flex; align-items: center; gap: 6px; }
+        .btn-retro { padding: 3px 10px; border: 1px solid #ccc; font-size: 12px; color: #333; text-decoration: none; background: #fff; }
+        .btn-retro.active { border-color: #ff6600; color: #ff6600; font-weight: bold; }
+
+        /* 标题行 */
+        .post-title-row { padding: 15px 20px; font-size: 20px; font-weight: bold; color: #333; border-bottom: 1px solid #eee; }
+
+        /* 楼层容器：左右分栏布局 */
+        .floor-container { display: flex; border-bottom: 5px solid #f6f6f6; }
+        
+        /* 左侧：用户信息栏 */
+        .user-sidebar { width: 160px; background: #fdfdfd; border-right: 1px solid #eee; padding: 20px; flex-shrink: 0; display: flex; flex-direction: column; align-items: center; }
+        .avatar-box { width: 100px; height: 100px; background: #eee; border: 1px solid #ddd; margin-bottom: 15px; }
+        .avatar-box img { width: 100%; height: 100%; object-fit: cover; }
+        .username { color: #004a80; font-weight: bold; font-size: 13px; margin-bottom: 4px; }
+        .user-title { font-size: 12px; color: #777; margin-bottom: 15px; }
+
+        /* 右侧：正文区域 */
+        .content-area { flex: 1; padding: 20px 30px; position: relative; }
+        .floor-info { font-size: 11px; color: #999; margin-bottom: 15px; display: flex; justify-content: space-between; border-bottom: 1px dashed #eee; padding-bottom: 8px; }
+        
+        .post-text { font-size: 14px; line-height: 1.8; color: #222; word-break: break-all; }
+        
+        /* 引用样式 */
+        .quote-text { border-left: 3px solid #66c2cd; background: #f4fbfc; padding: 10px 15px; margin: 15px 0; font-size: 13px; color: #666; }
+
+        /* 底部工具条 */
+        .post-footer { margin-top: 30px; padding-top: 15px; border-top: 1px solid #f0f0f0; font-size: 12px; color: #999; display: flex; gap: 20px; }
+        .action-link { cursor: pointer; }
+        .action-link:hover { color: #ff6600; }
+        .avatar-modal {
+    display: none; /* 默认隐藏 */
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.7);
+    justify-content: center;
+    align-items: center;
+}
+
+
+/* 放大头像图片 */
+.avatar-modal img {
+    max-width: 90%;
+    max-height: 90%;
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    transition: transform 0.3s;
+}
+
+/* 鼠标悬停微微放大 */
+.avatar-modal img:hover {
+    transform: scale(1.05);
+}
+
+/* 光标提示可关闭 */
+.avatar-modal.closeable {
+    cursor: pointer;
+}
+/* 仅针对特殊用户名添加毛玻璃效果 */
+.username-glass {
+    font-weight: bold;
+    font-size: 13px;
+    color: rgba(0, 74, 128, 0.4); /* 半透明文字 */
+    filter: blur(2px);              /* 轻微模糊 */
+    user-select: none;               /* 不可选中文本 */
+    pointer-events: none;            /* 禁止点击或拖拽 */
+    transition: filter 0.3s, color 0.3s;
+    
+}
+.avatar-frosted {
+    width: 64px;       /* 根据你的需求调整 */
+    height: 64px;
+    filter: blur(3px);  /* 轻微模糊 */
+    opacity: 0.6;       /* 半透明，增强若隐若现感 */
+    pointer-events: none; /* 禁止点击/拖拽 */
+    transition: filter 0.3s, opacity 0.3s;
+}
+
+/* 可选：鼠标悬停时稍微清晰一点 */
+.avatar-frosted:hover {
+    filter: blur(1px);
+    opacity: 0.9;
+}
+
+.frosted-text {
+    font-weight: bold;
+    font-size: 18px;
+    color: rgba(255, 102, 0, 0.4); /* 半透明文字 */
+    filter: blur(2px);              /* 轻微模糊 */
+    user-select: none;               /* 不可选中文本 */
+    pointer-events: none;            /* 禁止点击或拖拽 */
+    transition: filter 0.3s, color 0.3s;
+}
+
+/* 可选：悬浮时略微清晰 */
+.frosted-text:hover {
+    color: rgba(255, 102, 0, 0.8);
+    filter: blur(1px);
+}
+
+
+    </style>
+</head>
+<body>
+
+<div class="header-nav">
+        <div class="bbs-title frosted-text">回廊BBS</div>
+
+    <div>帮助中心</div>
+</div>
+
+<div class="breadcrumb">
+    首页 >> 版面目录 >> 二区：校园生活 >> 吐槽区 >> 青川食堂吃进校医院了
+</div>
+
+<div class="notice-banner">
+    ⚠️ 提示：该帖子内容因“违反校园网络社区管理规范”已被版主下架，当前为历史快照存档。
+</div>
+
+<div class="main-container">
+    <div class="pagination-bar">
+        <a href="#" class="btn-retro">返回本版</a>
+        <a href="#" class="btn-retro active">1</a>
+        <a href="#" class="btn-retro">下一页 ></a>
+        <span style="font-size: 12px; color: #666; margin-left: 10px;">跳转至 <input type="text" value="1" style="width: 25px; text-align: center;"> / 1 页</span>
+    </div>
+
+    <div class="post-title-row">
+        青川食堂吃进校医院了
+    </div>
+
+    <div class="floor-container">
+        <div class="user-sidebar">
+            <div class="avatar-box">
+                <img src="avatar1.jpg" alt="User"  class="clickable-avatar avatar-frosted" >
+            </div>
+            <div class="username username-glass">Marvin [离线]</div>
+            <div style="font-size: 11px; color: #bbb; line-height: 1.6; text-align: center;">
+                发帖数: 1<br>积分: 5
+            </div>
+        </div>
+        <div class="content-area">
+            <div class="floor-info">
+                <span>1楼</span>
+                <span>发表于 2024-12-10 13:48:02</span>
+            </div>
+            <div class="post-text">
+
+                刚才在青川食堂吃午饭，点了黄焖鸡米饭，结果大概半小时后就开始肚子痛，连下午的课都没上完就去校医院了……<br><br>
+
+                不知道是食堂卫生还是我个人体质原因，第一次遇到这种事情，但感觉好严重。<br><br>
+
+                希望校方能关注一下，也提醒大家注意饮食安全。<br><br>
+
+            </div>
+            <div class="post-footer">
+                <span class="action-link">回帖</span>
+                <span class="action-link">评分</span>
+                <span class="action-link">举报</span>
+            </div>
+        </div>
+    </div>
+    <div id="avatarModal" class="avatar-modal closeable">
+    <img src="" alt="放大头像">
+</div>
+
+
+    <div class="floor-container">
+        <div class="user-sidebar">
+            <div class="avatar-box">
+                <img src="avatar.jpg" alt="User">
+            </div>
+            <div class="username">Anonymous [离线]</div>
+        </div>
+        <div class="content-area">
+            <div class="floor-info">
+                <span>2楼</span>
+                <span>发表于 2024-12-10 14:20:45</span>
+            </div>
+            <div class="post-text">
+                <div class="quote-text">
+                    在 ta 的帖子中提到：<br>
+                    刚才在青川食堂吃午饭，点了黄焖鸡米饭，结果大概半小时后就开始肚子痛，连下午的...
+                </div>
+                看来我是铁胃，同今天点的黄焖鸡到现在没事。楼主还吃了别的什么吗？
+            </div>
+            <div class="post-footer">
+                <span class="action-link">回帖</span>
+                <span class="action-link">赞 (2)</span>
+            </div>
+        </div>
+        
+    </div>
+        <div class="floor-container">
+        <div class="user-sidebar">
+            <div class="avatar-box">
+                <img src="avatar.jpg" alt="User">
+            </div>
+            <div class="username">Bobo [离线]</div>
+        </div>
+     <div class="content-area">
+            <div class="floor-info">
+                <span>3楼</span>
+                <span>发表于 2024-12-10 15:02:25</span>
+            </div>
+            <div class="post-text">
+                <div class="quote-text">
+                    Anonymous 评论道：<br>
+                    看来我是铁胃，同今天点的黄焖鸡到现在没事，楼主还吃了别的什么吗？
+                </div>
+                楼上太天真了吧，青川的承包商这学期被换成我们学校某位大领导的亲戚了，换完之后食材质量堪忧，大家还是少去为妙。
+            </div>
+            <div class="post-footer">
+                <span class="action-link">回帖</span>
+                <span class="action-link">赞 (5)</span>
+            </div>
+        </div>
+</div>
+
+</body>
+<script>
+// 获取弹窗和图片元素
+const modal = document.getElementById('avatarModal');
+const modalImg = modal.querySelector('img');
+
+// 给所有可点击头像绑定事件
+document.querySelectorAll('.clickable-avatar').forEach(avatar => {
+    avatar.addEventListener('click', () => {
+        modal.style.display = 'flex'; // 显示弹窗
+        modalImg.src = avatar.src;    // 设置放大图片
+    });
+});
+
+// 点击弹窗背景关闭
+modal.addEventListener('click', () => {
+    modal.style.display = 'none';
+});
+</script>
+
+</html>

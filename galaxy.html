@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gemini 3 模拟界面</title>
+    <style>
+        :root {
+            --bg-color: #0e0e0e;
+            --card-bg: #1e1f20;
+            --text-main: #e3e3e3;
+            --text-dim: #444746;
+            --google-blue: #8ab4f8;
+            --gradient: linear-gradient(90deg, #4285f4 0%, #9b72cb 30%, #d96570 70%);
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: "Google Sans", "Segoe UI", Roboto, sans-serif;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        /* 顶部导航栏 */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 24px;
+            font-size: 20px;
+        }
+
+        .header-left { font-weight: 500; }
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            background: #5c6bc0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: white;
+        }
+
+        /* 主内容区域 - 模拟截图的左对齐 */
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            overflow-y: auto;
+        }
+
+        .welcome-title {
+            font-size: 56px;
+            font-weight: 500;
+            margin: 0;
+            line-height: 1.2;
+        }
+
+        .gradient-text {
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .sub-title {
+            color: var(--text-dim);
+            margin-bottom: 40px;
+        }
+
+        /* 输入框容器 - 固定在底部附近 */
+        .bottom-section {
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .input-box-wrapper {
+            background-color: var(--card-bg);
+            border-radius: 28px;
+            padding: 18px 24px;
+            margin-bottom: 16px;
+            pointer-events: none; /* 初始禁用 */
+            opacity: 0.6;
+            transition: 0.3s;
+        }
+
+        .input-box-wrapper.active {
+            pointer-events: auto;
+            opacity: 1;
+        }
+
+        .input-box-wrapper input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 16px;
+            outline: none;
+        }
+
+        .input-footer {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+            color: #c4c7c5;
+            font-size: 14px;
+        }
+
+        .icons { display: flex; gap: 20px; align-items: center; }
+
+        /* 药丸按钮布局 */
+        .pill-row {
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            padding-bottom: 20px;
+        }
+
+        .pill {
+            background: #131314;
+            border: 1px solid #444746;
+            padding: 10px 18px;
+            border-radius: 10px;
+            white-space: nowrap;
+            cursor: pointer;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+
+        .pill:hover { background: #1e1f20; }
+
+        /* 消息展示 */
+        .chat-msg {
+            margin: 20px 0;
+            font-size: 18px;
+            line-height: 1.6;
+            animation: fadeIn 0.4s ease;
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+        .answer-box {
+            background: #131314;
+            padding: 20px;
+            border-radius: 16px;
+            border-left: 4px solid var(--google-blue);
+        }
+                        .progress-indicator {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: rgba(0,0,0,0.6);
+    color: #fff;
+    padding: 6px 10px;
+    border-radius: 8px;
+    font-family: monospace;
+    font-size: 0.85rem;
+    z-index: 9999;
+}
+
+    </style>
+</head>
+<body>
+<div class="progress-indicator">4/35</div>
+
+    <header>
+        <div class="header-left">Gemini</div>
+        <div class="header-right">
+            <div style="font-size: 14px; border: 1px solid #444746; padding: 4px 12px; border-radius: 8px;">✨ 升级</div>
+            <div class="user-avatar">W</div>
+        </div>
+    </header>
+
+    <main id="content-area">
+        <div id="initial-screen">
+            <h1 class="welcome-title"><span class="gradient-text">✨ 你好</span></h1>
+            <h1 class="welcome-title sub-title">需要我为你做些什么？</h1>
+        </div>
+    </main>
+
+    <div class="bottom-section">
+        <div class="input-box-wrapper" id="main-input">
+            <input type="text" id="userInput" placeholder="问问 Gemini 3" onkeypress="checkEnter(event)">
+            <div class="input-footer">
+                <div class="icons">
+                    <span>➕</span>
+                    <span>🛠️ 工具</span>
+                </div>
+                <div style="display:flex; gap:10px; align-items:center;">
+                    <span>🎤</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="pill-row" id="pills">
+<div class="pill">🍌 制作图片</div>
+<div class="pill">给我的一天注入活力</div>
+            <div class="pill" style="border-color: var(--google-blue); color: var(--google-blue);" onclick="startGuide()">📖 书籍导读</div>
+        </div>
+    </div>
+
+    <script>
+        const contentArea = document.getElementById('content-area');
+        const mainInput = document.getElementById('main-input');
+        const inputField = document.getElementById('userInput');
+
+        function startGuide() {
+            // 清理首屏
+            document.getElementById('initial-screen').style.display = 'none';
+            
+            // Gemini 提问
+            addMessage('Gemini', '太棒了！你想了解什么书籍？给我它的中文名✨');
+            
+            // 激活输入
+            mainInput.classList.add('active');
+            inputField.focus();
+        }
+
+const guideAliases = [
+    '银河系漫游指南',
+    '银河系搭车客指南',
+    '银河系便车指南'
+];
+
+function checkEnter(e) {
+    if (e.key === 'Enter') {
+        const val = inputField.value.trim();
+        if (!val) return;
+
+        addMessage('You', val);
+        inputField.value = '';
+
+        setTimeout(() => {
+            if (guideAliases.includes(val)) {
+                addMessage('Gemini', `
+                    <div class="answer-box">
+                        <p><strong>💡 深度科普：银河系漫游指南</strong></p>
+                        <p>想象一下，你正悠闲地喝着茶，突然发现你的房子要被拆，而你的好友……其实是外星人。顺便告诉你，地球即将被银河高速公路夷平。没错，这就是道格拉斯·亚当斯的《银河系漫游指南》带给我们的第一课：人生从来不会按计划走。</p>
+                        <p>这本书里，你会遇到一位完全不靠谱的地球人阿瑟·丹特，还有外星人福特·普雷费克特——他随时准备带你穿越宇宙，用毛巾拯救一切。</p>
+                        <p>在道格拉斯·亚当斯的笔下，宇宙的终极答案是 <strong>42</strong>。但如果你不知道问题是什么，答案就毫无意义。</p>
+                        <p>核心守则：Don't Panic（不要恐慌）。顺便问一句，你带毛巾了吗？</p>
+                    </div>
+                `);
+            } else {
+                addMessage('Gemini', '<span style="color:#f28b82;">发生错误，请稍后再试。</span>');
+            }
+        }, 600);
+    }
+}
+
+        function addMessage(sender, text) {
+            const div = document.createElement('div');
+            div.className = 'chat-msg';
+            div.innerHTML = `<strong>${sender}</strong><br>${text}`;
+            contentArea.appendChild(div);
+            contentArea.scrollTop = contentArea.scrollHeight;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>微信公众平台 - 登录</title>
+    <style>
+        :root {
+            --wechat-green: #07c160;
+            --text-gray: #9a9a9a;
+            --border-color: #e4e4e4;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "PingFang SC", "Microsoft YaHei", sans-serif;
+            overflow: hidden;
+        }
+
+        /* --- 头部 --- */
+        .header {
+            height: 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 10%;
+            background: #fff;
+            border-bottom: 1px solid #eee;
+        }
+
+        .logo {
+            font-size: 19px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+        }
+
+        /* --- 背景区域 --- */
+        .hero {
+            height: 480px;
+            /* 替换后的蓝色星空图 URL */
+            background: #050816 url('star.jpg') no-repeat center center;
+            background-size: cover;
+            position: relative;
+            display: flex;
+            align-items: center;
+            padding: 0 10%;
+        }
+
+        .hero-text {
+            color: #fff;
+            font-size: 34px;
+            font-weight: 300;
+            letter-spacing: 2px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+
+        /* --- 登录框 --- */
+        .login-box {
+            position: absolute;
+            right: 10%;
+            top: 50px;
+            width: 380px;
+            background: #fff;
+            border-radius: 4px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            padding: 40px;
+            box-sizing: border-box;
+        }
+
+        .login-box h2 {
+            font-size: 20px;
+            margin: 0 0 30px 0;
+            font-weight: 400;
+            color: #1a1a1a;
+        }
+                .qr-icon {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 50px;
+            height: 50px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 50 50"><path d="M50 0 L50 50 L0 0 Z" fill="%23f0f0f0"/><path d="M42 8 L42 20 L30 8 Z" fill="%23999"/></svg>');
+            cursor: pointer;
+        }
+
+        .input-group { margin-bottom: 20px; }
+        .input-group input {
+            width: 100%;
+            height: 44px;
+            border: 1px solid var(--border-color);
+            padding: 0 12px;
+            box-sizing: border-box;
+            outline: none;
+            font-size: 15px;
+            border-radius: 4px;
+        }
+
+        .input-group input:focus { border-color: var(--wechat-green); }
+
+        .btn-login {
+            width: 100%;
+            height: 44px;
+            background: var(--wechat-green);
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .btn-login:hover { background: #06ad56; }
+
+        .options {
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            color: #576b95;
+        }
+        /* 修改 html 和 body，确保它们占据 100% 视口高度且不产生滚动条 */
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100vh; /* 使用 vh 确保占据整个视口高度 */
+    width: 100%;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "PingFang SC", "Microsoft YaHei", sans-serif;
+    overflow: hidden; /* 防止出现多余的滚动条 */
+    display: flex;
+    flex-direction: column; /* 让 header 和 hero 垂直排列 */
+}
+
+/* 调整背景区域，使其撑满剩余的全部空间 */
+.hero {
+    flex: 1; /* 自动填满除去 header 后剩余的所有空间 */
+    background: #050816 url('star.jpg') no-repeat center center;
+    background-size: cover; /* 确保图片平铺并覆盖整个区域 */
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 0 10%;
+}
+.login-box {
+    position: absolute;
+    right: 10%;
+    top: 50%;
+    transform: translateY(-50%); /* 配合 top: 50% 实现垂直居中 */
+    /* 其他样式保持不变 */
+}
+.logo {
+    font-size: 19px;
+    font-weight: 500;
+    display: flex;
+    align-items: center; /* 确保文字和图标垂直对齐 */
+}
+
+.logo-img {
+    width: 28px;  /* 根据需要调整图标宽度 */
+    height: 28px; /* 根据需要调整图标高度 */
+    margin-right: 8px; /* 图标与文字之间的间距 */
+    display: block;
+}
+
+/* 确保背景填满且无白边 */
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.hero {
+    flex: 1; /* 占据除去 header 外的所有剩余高度 */
+    background: #050816 url('star.jpg') no-repeat center center;
+    background-size: cover; /* 核心：图片自动拉伸填满且不留白 */
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 0 10%;
+}
+    </style>
+</head>
+<body>
+
+<header class="header">
+    <div class="logo">
+        <img src="wechat1.svg" alt="WeChat Logo" class="logo-img">
+        <span>微信公众平台</span>
+    </div>
+    <div style="font-size: 14px; color: #353535;">立即注册 | 简体中文</div>
+</header>
+
+    <div class="hero">
+        <div class="hero-text">再小的个体，也有自己的终极回答</div>
+        
+        <div class="login-box">
+                <div class="qr-icon"></div>
+            <h2>登录</h2>
+            <div class="input-group">
+                <input type="text" id="username" placeholder="账户名">
+            </div>
+            <div class="input-group">
+                <input type="password" id="password" placeholder="密码">
+            </div>
+            <button class="btn-login" onclick="handleLogin()">登录</button>
+
+<div id="error-msg" style="color: #fa5151; font-size: 13px; margin-top: 12px; text-align: center; height: 18px;"></div>
+
+<div class="options">
+    <label style="color: #888;"><input type="checkbox"> 记住账号</label>
+    <a href="#" style="text-decoration: none; color: #576b95;">找回账号或密码</a>
+</div>
+
+        </div>
+    </div>
+
+    <script>
+function handleLogin() {
+    const user = document.getElementById('username').value;
+    const pass = document.getElementById('password').value;
+    const errorDisplay = document.getElementById('error-msg');
+
+    // 清空之前的提示
+    errorDisplay.innerText = '';
+
+    if (user === 'Marvin' && pass === 'fortytwo') {
+        window.location.href = 'post.html';
+    } else {
+        // 直接在页面上显示提示，不再使用 alert
+        errorDisplay.innerText = '用户名或密码错误！提示：8位英文字母';
+        
+        // 可选：给输入框加个红框效果
+        document.getElementById('username').style.borderColor = '#fa5151';
+        document.getElementById('password').style.borderColor = '#fa5151';
+    }
+}
+    </script>
+</body>
+</html>

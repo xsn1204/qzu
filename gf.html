@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>怪诞小镇 - Qoogle 搜索</title>
+    <style>
+        body { font-family: arial, sans-serif; margin: 0; background: #fff; color: #202124; }
+        
+        /* 头部搜索栏区域 */
+        .search-header { padding: 20px 30px; display: flex; align-items: center; position: sticky; top: 0; background: #fff; z-index: 100; }
+        .logo { width: 92px; margin-right: 30px; cursor: default; }
+        .search-box { width: 690px; height: 44px; background: #fff; border: 1px solid #dfe1e5; border-radius: 24px; display: flex; align-items: center; padding: 0 20px; box-shadow: none; }
+        .search-input { flex: 1; border: none; outline: none; font-size: 16px; margin-left: 10px; cursor: default; }
+        .search-icons { display: flex; gap: 15px; color: #4285f4; cursor: default; }
+
+        
+        /* 主体内容布局 */
+        .main-content { margin-left: 170px; max-width: 652px; padding-top: 20px; }
+        
+        /* 结果项样式 */
+        .result-item { margin-bottom: 30px; }
+        .site-info { display: flex; align-items: center; margin-bottom: 5px; font-size: 14px; }
+        .site-icon { width: 26px; height: 26px; border-radius: 50%; background: #f1f3f4; margin-right: 12px; display: flex; align-items: center; justify-content: center; }
+        .title-link { color: #1a0dab; font-size: 20px; text-decoration: none; display: block; margin-bottom: 3px; cursor: default; }
+        .snippet { font-size: 14px; line-height: 1.58; color: #4d5156; }
+        .highlight { color: #d93025; }
+
+        /* 关联搜索区域修正 */
+        .related-queries { margin-top: 40px; border-top: 1px solid #dfe1e5; padding-top: 28px; width: 100%; }
+        .related-header { font-size: 22px; margin-bottom: 20px; color: #202124; }
+        .queries-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px 12px; }
+        .query-item { 
+            background: #f1f3f4; border-radius: 100px; padding: 12px 20px; 
+            display: flex; justify-content: space-between; align-items: center;
+            text-decoration: none; color: #202124; font-size: 14px; cursor: default;
+        }
+        .search-icon-small { color: #70757a; font-size: 14px; }
+
+        /* 分页导航修正 */
+        .nav-footer { margin: 60px 0; display: flex; flex-direction: column; align-items: center; width: 100%; }
+        .google-logo-nav { display: flex; align-items: center; margin-bottom: 10px; font-size: 34px; font-weight: bold; }
+        .nav-letter { display: inline-block; }
+        .letter-G { color: #4285f4; }
+        .letter-o-red { color: #ea4335; }
+        .letter-o-yellow { color: #fbbc05; }
+        .letter-g-blue { color: #4285f4; }
+        .letter-l { color: #34a853; }
+        .letter-e { color: #ea4335; }
+
+        .pagination-row { display: flex; align-items: center; gap: 15px; font-size: 14px; color: #4285f4; }
+        .pagination-numbers { display: flex; gap: 12px; list-style: none; padding: 0; margin: 0; }
+        .pagination-numbers li { cursor: default; }
+        .pagination-numbers .active { color: #202124; font-weight: bold; }
+        .nav-link { text-decoration: none; color: #4285f4; cursor: default; }
+        .nav-tabs {
+        display: flex;
+        margin-left: 170px; /* 与主内容对齐 */
+        border-bottom: 1px solid #ebebeb;
+        padding-bottom: 0;
+        margin-top: -10px; /* 紧贴搜索栏 */
+    }
+    .nav-tab {
+        padding: 13px 12px;
+        font-size: 14px;
+        color: #70757a;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+    }
+    .nav-tab.active {
+        color: #1a73e8;
+        border-bottom: 3px solid #1a73e8;
+    }
+    .nav-tab:hover {
+        color: #1a73e8;
+    }
+    .more-dropdown::after {
+        content: " ▼";
+        font-size: 10px;
+        margin-left: 4px;
+    }
+    /* 顶部固定容器，包含搜索框和导航栏 */
+.header-container {
+    position: sticky;
+    top: 0;
+    background: #fff;
+    z-index: 100;
+    border-bottom: 1px solid #ebebeb;
+}
+
+/* 搜索栏区域：去除下边框，因为现在由容器统一提供 */
+.search-header { 
+    padding: 20px 30px 10px 30px; 
+    display: flex; 
+    align-items: center; 
+}
+
+/* 导航栏样式 */
+.nav-tabs {
+    display: flex;
+    margin-left: 170px; /* 与搜索框对齐 */
+    gap: 4px;
+}
+
+.nav-tab {
+    padding: 12px 12px 11px 12px;
+    font-size: 14px;
+    color: #70757a;
+    cursor: pointer;
+    white-space: nowrap;
+    border-bottom: 3px solid transparent;
+}
+
+.nav-tab.active {
+    color: #1a73e8;
+    border-bottom: 3px solid #1a73e8;
+}
+
+.nav-tab:hover {
+    color: #1a73e8;
+}
+
+.more-dropdown::after {
+    content: " ▾";
+    font-size: 12px;
+}
+
+/* 右侧工具按钮 */
+.tools-btn {
+    margin-left: auto;
+    margin-right: 30px;
+}
+    </style>
+</head>
+<body>
+
+<div class="header-container">
+    <div class="search-header">
+                        <div style="font-size: 30px; font-weight: bold; margin-right: 30px;">
+                    <span style="color: #4285F4">Q</span><span style="color: #EA4335">o</span><span style="color: #FBBC05">o</span><span style="color: #4285F4">g</span><span style="color: #34A853">l</span><span style="color: #EA4335">e</span>
+                </div>
+        <div class="search-box">
+            <svg height="20" viewBox="0 0 24 24" width="20" fill="#9aa0a6"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path></svg>
+            <input type="text" class="search-input" value="怪诞小镇" readonly>
+            <div class="search-icons"><span>🎤</span><span>📷</span></div>
+        </div>
+    </div>
+
+    <div class="nav-tabs">
+        <div class="nav-tab">AI 模式</div>
+        <div class="nav-tab active">全部</div>
+        <div class="nav-tab">图片</div>
+        <div class="nav-tab">视频</div>
+        <div class="nav-tab">短视频</div>
+        <div class="nav-tab">购物</div>
+        <div class="nav-tab">新闻</div>
+        <div class="nav-tab more-dropdown">更多</div>
+    </div>
+</div>
+
+
+
+    <div class="main-content">
+        <div class="result-item">
+                        <div class="site-info">
+                <div class="site-icon">P</div>
+                <div>
+                    <div class="site-name">风闻</div>
+                    <div class="site-url">https://user.guancha.cn › main › content</div>
+                </div>
+                              </div>
+            
+            <a href="#" class="title-link">《<span class="highlight">怪诞小镇</span>》十周年！这部高分神剧为何总让人念念不忘？</a>
+            <div class="snippet">它不仅仅是面向小孩子单线冒险题材动画，其中更是夹杂了神秘学、符号学、宗教等极其复杂的信息。不仅如此，每一集的片头片尾都暗藏玄机，正片中也隐藏了无数的彩蛋和伏笔。</div>
+        </div>
+       <div class="result-item">
+            <div class="site-info">
+                <div class="site-icon"><img src="https://www.redditstatic.com/desktop2x/img/favicon/apple-icon-57x57.png" width="20"></div>
+                <div>
+                    <div class="site-name">Reddit · r/gravityfall</div>
+                    <div class="meta-data">10+ 条评论 · 11年前</div>
+                </div>
+            </div>
+            <a href="#" class="title-link">怪诞小镇》中一些密码/密码的初学者指南（剧透警告</a>
+            <div class="video-card">
+                <div class="video-thumb">
+                </div>
+                <div class="snippet">这里面的三个密码是专门为怪诞小镇虚构的，最后一个是真实存在的密码。注意，还有一个叫做<span class="highlight">“维吉尼亚密码”</span>的密码，但是太复杂了，所以自行搜索一下吧，哈哈！</div>
+            </div>
+        </div>
+      
+ <div class="result-item">
+            <div class="site-info">
+                <div class="site-icon">P</div>
+                <div>
+                    <div class="site-name">Pinterest</div>
+                    <div class="site-url">https://www.pinterest.com › 怪诞小镇</div>
+                </div>
+            </div>
+            <a href="#" class="title-link">68 个<span class="highlight">怪诞小镇</span>点子</a>
+            <div class="snippet">2018年11月5日 - 在Pinterest 上探索“怪诞小镇”。查看更多关于怪诞小镇，神秘小镇大冒险，主题的点子。</div>
+        </div>
+      
+        <div class="result-item">
+            <div class="site-info">
+                <div class="site-icon"><img src="https://www.redditstatic.com/desktop2x/img/favicon/apple-icon-57x57.png" width="20"></div>
+                <div>
+                    <div class="site-name">Reddit · r/gravityfalls</div>
+                    <div class="meta-data">70+ 条评论 · 2年前</div>
+                </div>
+            </div>
+            <a href="#" class="title-link">为什么《<span class="highlight">怪诞小镇</span>》被认为是“最好的迪士尼剧集”或“完美之作”？</a>
+            <div class="snippet">长话短说，《怪诞小镇》的主流吸引力仍然是它经久不衰，并且仍然受到广泛喜爱和尊敬的重要原因。即使有一些新剧在某些方面做得比它更好，但它们并没有GF当时 ...</div>
+
+
+        <div class="related-queries">
+            <div class="related-header">用户还搜索了</div>
+            <div class="queries-grid">
+                <div class="query-item"><span>怪诞小镇第一季线上看</span><span class="search-icon-small">🔍</span></div>
+                <div class="query-item"><span>怪诞小镇英文</span><span class="search-icon-small">🔍</span></div>
+                <div class="query-item"><span>怪诞小镇第二季线上看</span><span class="search-icon-small">🔍</span></div>
+                <div class="query-item"><span>怪诞小镇密码</span><span class="search-icon-small">🔍</span></div>
+                <div class="query-item"><span>怪诞小镇在线</span><span class="search-icon-small">🔍</span></div>
+                <div class="query-item"><span>怪诞小镇维吉尼亚密码</span><span class="search-icon-small">🔍</span></div>
+                <div class="query-item"><span>怪诞小镇第三季</span><span class="search-icon-small">🔍</span></div>
+                <div class="query-item"><span>怪诞小镇中英文字幕</span><span class="search-icon-small">🔍</span></div>
+            </div>
+        </div>
+
+        <div class="nav-footer">
+            <div class="google-logo-nav">
+                <span class="nav-letter letter-G">Q</span>
+                <span class="nav-letter letter-o-red">o</span>
+                <span class="nav-letter letter-o-yellow">o</span>
+                <span class="nav-letter letter-o-yellow">o</span>
+                <span class="nav-letter letter-o-yellow">o</span>
+                <span class="nav-letter letter-o-yellow">o</span>
+                <span class="nav-letter letter-o-yellow">o</span>
+                <span class="nav-letter letter-o-yellow">o</span>
+                <span class="nav-letter letter-o-yellow">o</span>
+                <span class="nav-letter letter-o-yellow">o</span>
+                <span class="nav-letter letter-g-blue">g</span>
+                <span class="nav-letter letter-l">l</span>
+                <span class="nav-letter letter-e">e</span>
+            </div>
+            <div class="pagination-row">
+                <ul class="pagination-numbers">
+                    <li class="active">1</li>
+                    <li>2</li>
+                    <li>3</li>
+                    <li>4</li>
+                    <li>5</li>
+                    <li>6</li>
+                    <li>7</li>
+                    <li>8</li>
+                    <li>9</li>
+                    <li>10</li>
+                </ul>
+                <span class="nav-link">下一页 ></span>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

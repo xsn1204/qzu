@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>青州大学 - 官方门户网站</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root { --qz-main: #003366; --qz-light: #f0f4f8; }
+        body { font-family: "Microsoft YaHei", sans-serif; background-color: #f5f7fa; color: #333; }
+        
+        /* 顶部导航激活状态 */
+        .nav-item::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 3px;
+            background: #fff;
+            transition: all 0.3s;
+            transform: translateX(-50%);
+        }
+        .nav-item:hover::after { width: 100%; }
+        
+        /* 页面切换逻辑 */
+        .page { display: none; }
+        .page.active { display: block; animation: slideUp 0.4s ease-out; }
+        
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .section-card { @apply bg-white rounded shadow-sm border border-gray-100; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <div class="bg-gray-100 text-[12px] py-1 px-12 flex justify-between text-gray-500">
+        <div>欢迎访问青州大学门户网站</div>
+        <div class="space-x-4">
+            <a href="#" class="hover:text-[#003366]">校友之家</a>
+            <a href="#" class="hover:text-[#003366]">旧版门户</a>
+            <a href="#" class="hover:text-[#003366]">English</a>
+        </div>
+    </div>
+
+    <header class="bg-[#003366] text-white sticky top-0 z-50 shadow-md">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <div class="flex items-center space-x-4 cursor-pointer">
+          <div class="bg-white p-2 rounded-full">
+    <img 
+        src="logo1.png"
+        alt="青州大学"
+        class="w-8 h-8 object-contain"
+    />
+</div>
+                <div>
+                    <h1 class="text-xl font-bold tracking-tighter leading-none">青州大学门户网站</h1>
+                    <p class="text-[10px] opacity-70 uppercase mt-1">Qingzhou University Portal</p>
+                </div>
+            </div>
+
+            <nav class="flex h-full items-center">
+                <button onclick="switchPage('news')" class="nav-item relative px-6 h-full font-medium hover:bg-white/10 transition-all">首页新闻</button>
+                <button onclick="switchPage('service')" class="nav-item relative px-6 h-full font-medium hover:bg-white/10 transition-all">办事大厅</button>
+                <button onclick="switchPage('remind')" class="nav-item relative px-6 h-full font-medium hover:bg-white/10 transition-all">消息提醒</button>
+                <button class="nav-item relative px-6 h-full font-medium hover:bg-white/10 transition-all">个人日程</button>
+                <div class="ml-8 pl-8 border-l border-white/20 flex items-center space-x-4">
+                    <i class="fas fa-search cursor-pointer hover:scale-110"></i>
+                    <div class="flex items-center space-x-2 bg-white/10 px-3 py-1.5 rounded text-sm cursor-pointer hover:bg-white/20">
+                        <i class="fas fa-user-circle"></i>
+                        <span>宋以宁</span>
+                        <i class="fas fa-caret-down text-[10px]"></i>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto w-full px-6 py-8 flex-1">
+        
+        <div id="page-news" class="page active">
+            <div class="grid grid-cols-12 gap-8">
+                <div class="col-span-8">
+                    <div class="section-card p-6">
+                        <div class="flex items-center justify-between mb-6 border-b pb-2">
+                            <h2 class="text-xl font-bold border-l-4 border-[#003366] pl-3">综合新闻</h2>
+                            <a href="#" class="text-gray-400 text-sm hover:text-[#003366]">查看更多 ></a>
+                        </div>
+                        <div class="flex gap-6">
+                            <div class="w-1/2 group cursor-pointer">
+                                <div class="overflow-hidden rounded shadow-md">
+                                    <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=800" class="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500">
+                                </div>
+                                <h3 class="mt-4 font-bold text-lg group-hover:text-[#003366]">青州大学党委书记赴各院系开展“人工智能+教育”专题调研</h3>
+                                <p class="text-sm text-gray-500 mt-2 line-clamp-2">近期，校党委书记一行深入调研各学院人工智能应用现状，强调数字化转型的紧迫性...</p>
+                            </div>
+                            <div class="w-1/2 space-y-5">
+<div class="flex items-start space-x-4 group cursor-pointer border-b pb-3">
+    <div class="bg-[#003366] text-white text-center p-2 rounded w-16 shrink-0">
+        <div class="text-lg font-bold">5</div>
+        <div class="text-[10px] opacity-70">2026-1</div>
+    </div>
+    <h4 class="text-sm font-medium group-hover:text-[#003366] transition-colors leading-snug">
+        校领导巡查期末考试考场
+    </h4>
+</div>
+                                <div class="flex items-start space-x-4 group cursor-pointer border-b pb-3">
+                                    <div class="bg-gray-100 text-gray-600 text-center p-2 rounded w-16 shrink-0">
+                                        <div class="text-lg font-bold">20</div>
+                                        <div class="text-[10px] opacity-70">2025-12</div>
+                                    </div>
+                                    <h4 class="text-sm font-medium group-hover:text-[#003366] transition-colors leading-snug">校工会成功举办“迎新年”教职工羽毛球友谊赛</h4>
+                                </div>
+                                <div class="flex items-start space-x-4 group cursor-pointer border-b pb-3">
+                                    <div class="bg-gray-100 text-gray-600 text-center p-2 rounded w-16 shrink-0">
+                                        <div class="text-lg font-bold">18</div>
+                                        <div class="text-[10px] opacity-70">2025-12</div>
+                                    </div>
+                                    <h4 class="text-sm font-medium group-hover:text-[#003366] transition-colors leading-snug">教务处：关于做好下学期教材预定工作的通知</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-span-4 space-y-6">
+                    <div class="section-card p-6">
+                        <div class="flex items-center justify-between mb-4 border-b pb-2">
+                            <h2 class="text-lg font-bold">消息提醒</h2>
+                            <span class="bg-red-500 text-white text-[10px] px-2 py-0.5 rounded-full">1</span>
+                        </div>
+                        <ul class="space-y-4">
+                            <li class="flex items-center space-x-3 text-sm text-gray-700 hover:text-[#003366] cursor-pointer">
+                                <i class="fas fa-angle-right text-xs"></i>
+                                <span class="truncate">【重要】专利发明人变更申请结果</span>
+                            </li>
+                            <li class="flex items-center space-x-3 text-sm text-gray-700 hover:text-[#003366] cursor-pointer">
+                                <i class="fas fa-angle-right text-xs"></i>
+                                <span class="truncate">关于填报2026年度预算申报的通知</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="section-card p-6 bg-gradient-to-br from-[#003366] to-[#004d99] text-white">
+                        <h2 class="text-lg font-bold mb-4">快速链接</h2>
+                        <div class="grid grid-cols-2 gap-4 text-xs">
+                            <div class="bg-white/10 p-3 rounded hover:bg-white/20 cursor-pointer flex items-center space-x-2">
+                                <i class="fas fa-at"></i><span>学校邮箱</span>
+                            </div>
+                            <div class="bg-white/10 p-3 rounded hover:bg-white/20 cursor-pointer flex items-center space-x-2">
+                                <i class="fas fa-wifi"></i><span>无线校园</span>
+                            </div>
+                            <div class="bg-white/10 p-3 rounded hover:bg-white/20 cursor-pointer flex items-center space-x-2">
+                                <i class="fas fa-book"></i><span>数字资源</span>
+                            </div>
+                            <div class="bg-white/10 p-3 rounded hover:bg-white/20 cursor-pointer flex items-center space-x-2">
+                                <i class="fas fa-lock"></i><span>VPN登录</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="page-service" class="page">
+            <div class="section-card p-8">
+                <div class="flex justify-between items-center mb-10">
+                    <div>
+                        <h2 class="text-2xl font-bold">服务中心</h2>
+                        <p class="text-gray-400 mt-1">请选择您需要办理的业务，支持在线一键申报</p>
+                    </div>
+                    <div class="flex bg-gray-100 p-1 rounded-lg">
+                        <button class="px-6 py-2 bg-white shadow-sm rounded-md text-sm font-bold">业务导航</button>
+                        <button class="px-6 py-2 text-sm text-gray-500">我的申请</button>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-4 gap-8">
+                    <div class="p-6 border rounded-xl hover:border-[#003366] hover:shadow-lg transition-all cursor-pointer group">
+                        <div class="w-14 h-14 bg-purple-50 text-purple-700 flex items-center justify-center rounded-lg text-2xl mb-4 group-hover:bg-purple-700 group-hover:text-white transition-colors">
+                            <i class="fas fa-user-tie"></i>
+                        </div>
+                        <h3 class="text-lg font-bold">人事事务</h3>
+                        <p class="text-sm text-gray-400 mt-2">教师入职、职称评审、公派出国等12项服务</p>
+                    </div>
+                    <div class="p-6 border rounded-xl hover:border-[#003366] hover:shadow-lg transition-all cursor-pointer group">
+                        <div class="w-14 h-14 bg-blue-50 text-blue-700 flex items-center justify-center rounded-lg text-2xl mb-4 group-hover:bg-blue-600 group-hover:text-white">
+                            <i class="fas fa-flask"></i>
+                        </div>
+                        <h3 class="text-lg font-bold">科研管理</h3>
+                        <p class="text-sm text-gray-400 mt-2">项目立项、经费结题、成果登记等8项服务</p>
+                    </div>
+<a href="system.html" class="block">
+    <div class="p-6 border rounded-xl hover:border-[#003366] hover:shadow-lg transition-all cursor-pointer group">
+        <div class="w-14 h-14 bg-green-50 text-green-700 flex items-center justify-center rounded-lg text-2xl mb-4 group-hover:bg-green-600 group-hover:text-white">
+            <i class="fas fa-calculator"></i>
+        </div>
+        <h3 class="text-lg font-bold">财务管理</h3>
+        <p class="text-sm text-gray-400 mt-2">
+            差旅报销、酬金发放、个税查询等15项服务
+        </p>
+    </div>
+</a>
+
+                    <div class="p-6 border rounded-xl hover:border-[#003366] hover:shadow-lg transition-all cursor-pointer group">
+                        <div class="w-14 h-14 bg-indigo-50 text-indigo-700 flex items-center justify-center rounded-lg text-2xl mb-4 group-hover:bg-indigo-600 group-hover:text-white">
+                            <i class="fas fa-laptop-code"></i>
+                        </div>
+                        <h3 class="text-lg font-bold">信息化服务</h3>
+                        <p class="text-sm text-gray-400 mt-2">校园网开通、账号申诉、软件下载等22项服务</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="page-remind" class="page">
+            <div class="flex gap-8">
+                <div class="w-1/4">
+                    <div class="section-card overflow-hidden">
+                        <div class="p-4 bg-gray-50 border-b font-bold text-gray-700">消息中心</div>
+                        <div class="flex flex-col">
+                            <button class="text-left px-6 py-4 border-l-4 border-[#003366] bg-blue-50 text-[#003366] font-bold">待办事项 (1)</button>
+                            <button class="text-left px-6 py-4 border-l-4 border-transparent hover:bg-gray-50">通知公告 (99+)</button>
+                            <button class="text-left px-6 py-4 border-l-4 border-transparent hover:bg-gray-50">已办结</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="w-3/4">
+                    <div class="section-card p-6">
+                        <div class="flex space-x-8 mb-6 text-sm">
+                            <span class="text-red-600 font-bold bg-red-50 px-3 py-1 rounded">特急 (1)</span>
+                            <span class="text-orange-600 font-bold bg-orange-50 px-3 py-1 rounded">紧急 (0)</span>
+                            <span class="text-blue-600 font-bold bg-blue-50 px-3 py-1 rounded">一般 (0)</span>
+                        </div>
+                        <div class="border rounded divide-y">
+                            <div class="p-6 flex items-center justify-between hover:bg-gray-50 transition-all">
+                                <div>
+                                    <h4 class="font-bold text-gray-800">【重要】专利发明人变更申请结果</h4>
+                                    <p class="text-sm text-gray-400 mt-2 flex space-x-6">
+                                        <span>来源：青州大学知识产权管理平台</span>
+                                        <span>时间：2025/1/7 14:30</span>
+                                    </p>
+                                </div>
+<a href="patent.html"
+   class="inline-block px-6 py-2 border border-[#003366] text-[#003366] rounded 
+          hover:bg-[#003366] hover:text-white transition-all">
+    详情
+</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="bg-gray-800 text-gray-400 py-10 mt-12">
+        <div class="max-w-7xl mx-auto px-6 text-center text-sm">
+            <p>版权所有 © 2026 青州大学信息化建设与管理处 | 临ICP备12345678号</p>
+        </div>
+    </footer>
+
+    <script>
+        function switchPage(pageId) {
+            // 隐藏所有页面
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            // 显示当前页面
+            document.getElementById('page-' + pageId).classList.add('active');
+            
+            // 自动回到页面顶部
+            window.scrollTo({top: 0, behavior: 'smooth'});
+        }
+    </script>
+</body>
+</html>

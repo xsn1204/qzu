@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>青大树洞</title>
+    <style>
+        :root { 
+            --win-blue: #0078d4; 
+            --bg-gray: #f3f3f3; 
+            --text-main: #333; 
+            --window-shadow: 0 8px 30px rgba(0,0,0,0.2);
+        }
+
+        body { 
+            margin: 0; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh; 
+            background: #e2eaf4; 
+            font-family: "Segoe UI", "Microsoft YaHei", sans-serif;
+            width: 100vw; height: 100vh;
+            padding-bottom: 40px; /* 留出任务栏空间 */
+            background: #2c3e50 url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&q=80&w=2070') no-repeat center;
+            background-size: cover;
+            position: relative;
+        }
+
+        /* Windows 窗口容器 */
+        .win-window {
+            width: 850px;
+            height: 650px;
+            background: #fff;
+            box-shadow: var(--window-shadow);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            border: 1px solid #d1d1d1;
+            border-radius: 8px;
+        }
+
+        /* 标题栏 */
+        .window-title-bar {
+            height: 32px;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            padding-left: 12px;
+            border-bottom: 1px solid #eee;
+            user-select: none;
+        }
+        .window-title { flex-grow: 1; font-size: 12px; color: #666; }
+        .win-controls { display: flex; height: 100%; }
+        .control-btn { width: 46px; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 14px; cursor: pointer; transition: 0.2s; }
+        .control-btn:hover { background: #e5e5e5; }
+        .close:hover { background: #e81123; color: white; }
+
+        /* 顶部导航切换 (校园专用) */
+        .nav-tabs { 
+            background: #fff; 
+            display: flex; 
+            justify-content: center; 
+            gap: 30px;
+            padding: 12px 0; 
+            border-bottom: 1px solid #eee; 
+        }
+        .tab { font-size: 14px; color: #888; padding-bottom: 5px; cursor: pointer; position: relative; }
+        .tab.active { color: var(--win-blue); font-weight: bold; }
+        .tab.active::after {
+            content: "";
+            position: absolute;
+            bottom: -5px;
+            left: 15%;
+            width: 70%;
+            height: 3px;
+            background: var(--win-blue);
+            border-radius: 3px;
+        }
+
+        /* 搜索框 */
+        .search-box { padding: 10px 20px; background: #fff; }
+        .search-inner { 
+            background: #f1f3f4; 
+            border-radius: 4px; 
+            padding: 8px 15px; 
+            color: #999; 
+            font-size: 13px; 
+            text-align: center;
+        }
+
+        /* 主内容区 */
+        .main-content {
+            flex-grow: 1;
+            overflow-y: auto;
+            background: var(--bg-gray);
+            padding: 15px 20px;
+        }
+
+        /* 帖子卡片样式 */
+        .post-card {
+            background: #fff;
+            border-radius: 4px;
+            padding: 16px;
+            margin-bottom: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            border: 1px solid #eee;
+        }
+        .post-header { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 12px; }
+        .tag-tree, .tag-wall { padding: 2px 8px; border-radius: 4px; font-weight: bold; }
+        .tag-wall { background: #e6f7ff; color: #1890ff; }
+        .tag-tree { background: #f5f5f5; color: #666; }
+        .post-id { color: #ccc; }
+        .post-content { font-size: 14px; line-height: 1.6; color: var(--text-main); margin-bottom: 12px; }
+        .post-footer { display: flex; justify-content: space-between; font-size: 12px; color: #999; border-top: 1px solid #f5f5f5; padding-top: 10px; }
+        .highlight-clue { color: var(--win-blue); font-weight: bold; }
+
+        /* 板块隐藏逻辑 */
+        .content-section { display: none; }
+        .content-section.active { display: block; }
+
+        /* 我的/设置 页面样式 */
+        .empty-state { text-align: center; padding: 60px 0; color: #999; }
+        .settings-list { background: #fff; border-radius: 4px; border: 1px solid #eee; }
+        .settings-item { padding: 14px 20px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; cursor: pointer; font-size: 14px; }
+        .settings-item:hover { background: #f9f9f9; }
+        .switch-account { color: #d83b01; font-weight: bold; text-align: center; padding: 15px; margin-top: 20px; background: #fff; border: 1px solid #eee; cursor: pointer; }
+
+        /* 底部导航 */
+        .bottom-nav { 
+            height: 60px; 
+            flex-shrink: 0; /* 禁止底部导航被压缩 */
+            background: #fff; 
+            border-top: 1px solid #eee; 
+            display: flex; 
+            justify-content: space-around; 
+            align-items: center; 
+        }
+        .nav-icon { text-align: center; color: #888; font-size: 11px; cursor: pointer; }
+        .nav-icon.active { color: var(--win-blue); }
+        .icon-circle { width: 22px; height: 22px; background: #eee; border-radius: 4px; margin: 0 auto 4px; }
+        .active .icon-circle { background: var(--win-blue); }
+                .progress-indicator {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: rgba(0,0,0,0.6);
+    color: #fff;
+    padding: 6px 10px;
+    border-radius: 8px;
+    font-family: monospace;
+    font-size: 0.85rem;
+    z-index: 9999;
+}
+
+
+/* 仿 Win10 任务栏 */
+.taskbar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 40px;
+    background: rgba(199, 187, 187, 0.85);
+    display: flex;
+    align-items: center;
+    backdrop-filter: blur(5px);
+    z-index: 6000; /* 保证在弹窗之上 */
+    color: white;
+}
+
+        /* 开始按钮 */
+        .start-btn {
+            width: 48px; height: 100%; display: flex; align-items: center; justify-content: center;
+            cursor: pointer; transition: background 0.2s;
+        }
+        .start-btn:hover { background: rgba(255, 255, 255, 0.1); }
+        .start-btn img { width: 20px; height: 20px; filter: invert(1); }
+
+        /* 搜索框 */
+        .search-container {
+            height: 32px; width: 240px; background: rgba(255, 255, 255, 0.9);
+            margin: 0 10px; display: flex; align-items: center; padding: 0 10px;
+            border-radius: 2px;
+        }
+        .search-container input {
+            border: none; background: none; outline: none; width: 100%;
+            font-size: 12px; color: #333;
+        }
+        .search-icon { font-size: 14px; margin-right: 8px; color: #666; }
+
+        /* 快捷图标 */
+        .task-icons { display: flex; height: 100%; align-items: center; gap: 5px; }
+        .task-icon { width: 40px; height: 100%; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+        .task-icon img { width: 22px; height: 22px; }
+
+        /* 系统托盘与时钟 */
+        .tray-area { margin-left: auto; display: flex; align-items: center; padding: 0 10px;color: #000000; }
+        .clock { text-align: center; font-size: 11px; line-height: 1.2; padding: 0 5px; cursor: default; }
+        /* 优化搜索结果项布局 */
+        .search-item {
+            padding: 12px 15px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: background 0.2s;
+        }
+
+        .search-item:hover {
+            background-color: #e5f3ff;
+        }
+
+        /* 搜索文字信息的容器 */
+        .search-item-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .search-item-title {
+            font-size: 13px;
+            font-weight: bold;
+            color: #000;
+        }
+
+        .search-item-type {
+            font-size: 11px;
+            color: #0067b8;
+        }
+/* --- Windows 10 风格窗口 --- */
+        .window {
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 640px; height: 420px; background: #fff; border: 1px solid #1883d7;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3); display: none; flex-direction: column; z-index: 2000;
+        }
+        .window-header { height: 32px; display: flex; justify-content: space-between; align-items: center; padding-left: 10px; user-select: none; }
+        .header-title { font-size: 12px; display: flex; align-items: center; gap: 6px; color: #333; }
+        .header-controls { display: flex; height: 100%; }
+        .control-btn { width: 46px; height: 32px; display: flex; align-items: center; justify-content: center; transition: 0.2s; font-size: 16px; color: #333; }
+        .control-btn:hover { background: #e5e5e5; }
+        .close-btn:hover { background: #e81123; color: white; }
+
+        .window-main { display: flex; flex: 1; border-top: 1px solid #f0f0f0; overflow: hidden; }
+        .window-sidebar { width: 160px; background: #f0f0f0; border-right: 1px solid #e5e5e5; padding: 10px; font-size: 12px; color: #333; }
+        .window-content { flex: 1; padding: 20px; display: grid; grid-template-columns: repeat(auto-fill, 90px); gap: 15px; background: white; align-content: flex-start; }
+        /* 回收站文件图标 */
+        .deleted-item { width: 90px; display: flex; flex-direction: column; align-items: center; cursor: pointer; padding: 8px 4px; border: 1px solid transparent; }
+        .deleted-item:hover { background: #e5f3ff; border: 1px solid #99d1ff; }
+        .deleted-item img { width: 42px; height: 42px; filter: grayscale(100%); opacity: 0.6; }
+        .deleted-item span { font-size: 11px; text-align: center; margin-top: 6px; color: #333; word-break: break-all; }
+   /* 紧贴底部的搜索历史面板 */
+.history-window { 
+    position: fixed; bottom: 40px; left: 0; 
+    width: 320px; height: 450px; 
+    background: rgba(255, 255, 255, 0.98); 
+    border: 1px solid #ccc; border-bottom: none;
+    display: none; flex-direction: column; z-index: 4000;
+    animation: slideUp 0.2s ease-out;
+}
+
+@keyframes slideUp {
+    from { transform: translateY(10px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+/* 修改后的 history-list 样式 */
+.history-list { 
+    flex: 1; 
+    overflow-y: auto; 
+    padding: 10px; 
+    display: flex;           /* 启用 Flex 布局 */
+    flex-direction: column;
+}
+
+/* 新增：提示文字的居中样式 */
+.no-history-msg {
+    margin: auto;            /* 在 Flex 容器中实现完美居中 */
+    color: #999; 
+    font-size: 12px;
+    text-align: center;
+}
+.history-item { 
+    padding: 12px 15px; margin-bottom: 2px;
+    background: #fff; color: #333; cursor: pointer; font-size: 13px; 
+    display: flex; align-items: center; gap: 10px; border-left: 3px solid transparent;
+}
+.history-item:hover { background: #e5f3ff; border-left: 3px solid #0078d7; }
+.history-item::before { content: "🕒"; font-size: 12px; opacity: 0.6; }
+.moment-detail .time {
+    color: #bbb;
+    font-size: 12px;
+    margin-top: 5px;
+}
+                .progress-indicator {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: rgba(0,0,0,0.6);
+    color: #fff;
+    padding: 6px 10px;
+    border-radius: 8px;
+    font-family: monospace;
+    font-size: 0.85rem;
+    z-index: 9999;
+}
+    </style>
+    <div class="progress-indicator">11/35</div>
+</head>
+
+<body>
+<div class="taskbar">
+        <div class="start-btn" onclick="toggleHistory(event)">
+            <img src="https://img.icons8.com/material-outlined/24/ffffff/windows-10.png">
+        </div>
+
+<div class="search-container" style="position: relative;">
+    <span class="search-icon">🔍</span>
+    <input type="text" id="searchInput" placeholder="搜索文件或应用..." disabled oninput="handleExactSearch(this.value)" autocomplete="off">
+
+
+    
+    
+    <div id="searchResults" style="display: none; position: absolute; bottom: 40px; left: 0; width: 100%; background: white; border: 1px solid #ccc; box-shadow: 0 -2px 10px rgba(0,0,0,0.2); color: #333; z-index: 1001;">
+        <div style="padding: 10px; font-size: 11px; border-bottom: 1px solid #eee; background: #f9f9f9; color: #666; letter-spacing: 1px;">最佳匹配</div>
+        <div class="search-item" onclick="recordAndJump('青大心语', 'login.html')">
+            <img src="https://img.icons8.com/color/24/000000/heart-monitor.png" style="width: 24px; height: 24px;">
+            <div class="search-item-info">
+                <div class="search-item-title">青大心语</div>
+                <div class="search-item-type">应用</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="task-icons">
+    <div class="task-icon" onclick="toggleApp('wechatWin')">
+        <img src="wechat.svg">
+    </div>
+    
+    <a href="mailbox.html" class="task-icon">
+        <img src="logo1.png">
+    </a>
+</div>
+        <div class="tray-area">
+            <div class="clock">
+                <div id="time">04:17</div>
+                <div id="date">2025/12/23</div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="win-window">
+    <div class="window-title-bar">
+        <div class="window-title">青大树洞 - 桌面端</div>
+        <div class="win-controls">
+            <div class="control-btn">－</div>
+            <div class="control-btn close">✕</div>
+        </div>
+    </div>
+    
+
+    <div id="channel-tabs" class="nav-tabs">
+        <div class="tab" onclick="switchInnerTab(0, 'hot')">热榜</div>
+        <div class="tab active" onclick="switchInnerTab(1, 'wall')">表白墙</div>
+        <div class="tab" onclick="switchInnerTab(2, 'trade')">交易</div>
+    </div>
+
+    <div class="main-content">
+
+
+        <div id="hot" class="content-section">
+             <div class="post-card" style="border: 1px solid #fff1f0; background: #fff1f0;">
+                <div class="post-header"><span class="tag-tree" style="background:#ff4d4f; color:white;">#紧急避雷</span><span class="post-id">#365889</span></div>
+                <div class="post-content" style="color: #cf1322; font-weight: bold;">            
+                    望周知，后勤部推所谓的“品质校园”，就是把量大好吃的食堂都翻修外包给新供应商了，菜品质量直线下降，价格倒是涨了不少。到底是怎么做到这么精准的首位淘汰的！
+                </div>
+                <div class="post-footer"><span>👍 305</span> <span>💬 260</span> <span>🕒 1个月前</span></div>
+            </div>
+              <div class="post-card" style="border: 1px solid #fff1f0; background: #fff1f0;">
+                <div class="post-header"><span class="tag-tree" style="background:#ff4d4f; color:white;">#大型无语</span><span class="post-id">#365238</span></div>
+                <div class="post-content" style="color: #cf1322; font-weight: bold;">            
+                    🙋弱弱提问：有和我一样很反感熄灯、门禁和早晚自习的大一新生吗？进了贵校活得像在复读高四，对大学生活的自由幻想彻底破灭💔
+                </div>
+                <div class="post-footer"><span>👍 275</span> <span>💬 192</span> <span>🕒 2个月前</span></div>
+            </div>
+        </div>
+        <div id="trade" class="content-section">
+            <div class="post-card">
+                <div class="post-header"><span class="tag-tree">#二手交易</span><span class="post-id">#368950</span></div>
+                <div class="post-content">出九成新《马原》，附送整套手写笔记。</div>
+                <div class="post-footer"><span>💰 50元</span> <span>🕒 1小时前</span></div>
+            </div>
+            <div class="post-card">
+                <div class="post-header"><span class="tag-tree"style="background:#1890ff; color:white;">#校企内推</span><span class="post-id">AD</span></div>
+                <div class="post-content"> 【校企实习】<br>
+                    职责：参与“青苗计划”平台的需求梳理与产品设计<br>
+                    要求：逻辑清晰，具备基础产品思维，熟悉原型工具或有产品项目经验者优先<br>提供有竞争力的实习薪酬，待遇面议</div>
+                 <div class="post-footer"><span>查看详情 ></span></div>
+            </div>
+
+            <div class="post-card">
+                <div class="post-header"><span class="tag-tree">#二手交易</span><span class="post-id">#368231</span></div>
+                <div class="post-content">体育课结课，出羽毛球拍，仅用一学期。</div>
+                <div class="post-footer"><span>💰 60元</span> <span>🕒 1小时前</span></div>
+            </div>
+
+                        <div class="post-card" >
+                <div class="post-header"><span class="tag-tree" style="background:#1890ff; color:white;">#校企内推</span><span class="post-id">AD</span></div>
+                <div class="post-content">            【急招】产业园企业招聘算法实习生<br>
+            主要参与“大规模分布式系统”研发<br>
+            要求：熟悉分布式架构，有竞赛经验者优先<br>
+            表现优异者可获转正机会</div>
+                <div class="post-footer"><span>查看详情 ></span></div>
+            </div>
+        </div>
+
+
+        <div id="wall" class="content-section active">
+                <div class="search-box" style="margin-bottom:12px;">
+        <input 
+            id="search-input"
+            type="text"
+            placeholder="🔍 搜索你感兴趣的话题"
+            onkeydown="handleSearch(event)"
+            style="
+                width: 100%;
+                border: none;
+                outline: none;
+                background: transparent;
+                font-size: 14px;
+            "
+        />
+    </div>
+                        <div class="post-card">
+                <div class="post-header"><span class="tag-tree">#暴躁开麦</span><span class="post-id">#368912</span></div>
+                <div class="post-content">你青冷知识：行车需要礼让行人😓刚有辆直怼着我开过来了，在校园里走路还得躲车，是上学还是生存挑战啊？</div>
+                <div class="post-footer"><span>👍 25</span> <span>💬 8</span> <span>🕒 1小时前</span></div>
+            </div>
+
+                        <div class="post-card">
+                <div class="post-header"><span class="tag-tree">#重金求推</span><span class="post-id">#368845</span></div>
+                <div class="post-content">贵洞有靠谱的玄学大师推荐吗，今年的国自然基金又要开始申报了，求大师给我们组指条明路🙏</div>
+                <div class="post-footer"><span>👍 16</span> <span>💬 20</span> <span>🕒 1小时前</span></div>
+            </div>
+                                    <div class="post-card">
+                <div class="post-header"><span class="tag-tree">#树洞吐槽</span><span class="post-id">#368802</span></div>
+                <div class="post-content">有些行政老师的态度真的离谱，鼻孔朝天还阴阳怪气。这么大的架子居然一点官没有👍👍👍（点名学生处蒋某）</div>
+                <div class="post-footer"><span>👍 28</span> <span>💬 32</span> <span>🕒 2小时前</span></div>
+            </div>
+            <div class="post-card">
+                <div class="post-header"><span class="tag-wall">#校园表白</span><span class="post-id">#368786</span></div>
+                <div class="post-content">捞一下软院的<span class="highlight-clue">syn</span>学姐！今天在理科楼看到她代表学院领奖了，穿西服好飒💗我可以去她实验室楼下送奶茶吗？</div>
+                <div class="post-footer"><span>👍 11</span> <span>💬 15</span> <span>🕒 2小时前</span></div>
+            </div>
+            <div class="post-card">
+                <div class="post-header"><span class="tag-tree">#树洞吐槽</span><span class="post-id">#368612</span></div>
+                <div class="post-content">救命，年末导师说要请全实验室吃饭，i人想找个借口逃了，有什么委婉点的借口吗？</div>
+                <div class="post-footer"><span>👍 6</span> <span>💬 9</span> <span>🕒 2小时前</span></div>
+            </div>
+        </div>
+
+
+        <div id="review" class="content-section">
+             <div class="post-card">
+                <div class="post-header"><span class="tag-wall" style="background:#f6ffed; color:#52c41a;">#考试出分</span><span class="post-id">#369127</span></div>
+                <div class="post-content">老吴的《线性代数B》出分了！谢谢老师高抬贵手，捞的力度比我想象的大！</div>
+                <div class="post-footer"><span>❤️ 18</span> <span>💬 31</span> <span>🕒 1小时前</span></div>
+            </div>
+             <div class="post-card">
+                <div class="post-header"><span class="tag-wall" style="background:#ffefed; color:#ff4d4f;">#课程吐槽</span><span class="post-id">#369021</span></div>
+                <div class="post-content">谁说的《西方艺术鉴赏》只要平时分拿满就保优秀率啊！论文写了1w字才给80，电风扇给分吧💢</div>
+                <div class="post-footer"><span>❤️ 2</span> <span>💬 23</span> <span>🕒 2小时前</span></div>
+            </div>
+            <div class="post-card">
+                <div class="post-header"><span class="tag-tree" style="background:#f6ffed; color:#52c41a;">#好课推荐</span><span class="post-id">#368815</span></div>
+                <div class="post-content">有人知道下学期《操作系统》这门课还开吗？<br>
+                    老师真的超级负责，虽然他总是看起来很累，头发也越来越少……</div>
+                <div class="post-footer"><span>❤️ 11</span> <span>💬 12</span> <span>🕒 5小时前</span></div>
+            </div>
+            <div class="post-card">
+                <div class="post-header"><span class="tag-wall" style="background:#f6ffed; color:#52c41a;">#好课推荐</span><span class="post-id">#368801</span></div>
+                <div class="post-content">《数字电路》陈亮老师：不点名，期末给分极高，考前划重点全是干货！非常推荐！</div>
+                <div class="post-footer"><span>❤️ 8</span> <span>💬 15</span> <span>🕒 8小时前</span></div>
+            </div>
+        </div>
+<div id="my-page" class="content-section">
+    <div style="background:#fff; padding:20px; border-radius:4px; border:1px solid #eee; margin-bottom:15px; display:flex; align-items:center; gap:15px;">
+        <div style="width:50px; height:50px; background:var(--win-blue); border-radius:50%;"></div>
+        <div>
+            <div style="font-weight:bold;">江奕云</div>
+            <div style="font-size:12px; color:#888;">软件工程学院 | 2024级</div>
+        </div>
+    </div>
+
+    
+    <div class="post-card">
+        <div class="post-header"><span class="tag-tree">#树洞求助</span><span class="post-id">#366021</span></div>
+        <div class="post-content">
+            不小心把校园邮箱的密码忘了，输入错误次数过多，直接被锁了，谁能救救😭
+        </div>
+        <div style="background: #f8f9fa; border-radius: 4px; padding: 10px; margin-top: 10px; font-size: 13px;">
+            <div style="margin-bottom: 5px;">
+                <span style="color: var(--win-blue); font-weight: bold;">Alice:</span>
+                我上次也是这情况，打个电话给信息中心办公室，一般会帮你重置密码，他们图省事统一都改成【0p9o8i7u】
+            </div>
+        </div>
+                <div class="post-footer"><span>👍 2</span> <span>💬 1</span> <span>🕒 1个月前</span></div>
+    </div>
+</div>
+
+        <div id="settings-page" class="content-section">
+<h3 style="margin-top: 0; font-size: 18px;">系统设置</h3>
+            <div class="settings-list">
+                <div class="settings-item"><span>个人资料修改</span><span>></span></div>
+                <div class="settings-item"><span>账号与安全</span><span>></span></div>
+                <div class="settings-item"><span>检查更新</span><span>v2.1.0</span></div>
+            </div>
+            <div class="switch-account" onclick="alert('准备离开？先记住「syn」，等你知道了TA是谁，再回来搜索吧:)')">退出账号</div>
+        </div>
+    </div>
+
+    <div class="bottom-nav">
+        <div id="btn-campus" class="nav-icon active" onclick="showMainPage('wall', this)">
+            <div class="icon-circle"></div><span>校园</span>
+        </div>
+        <div id="btn-review" class="nav-icon" onclick="showMainPage('review', this)">
+            <div class="icon-circle"></div><span>课评</span>
+        </div>
+        <div id="btn-mine" class="nav-icon" onclick="showMainPage('my-page', this)">
+            <div class="icon-circle"></div><span>我的</span>
+        </div>
+        <div id="btn-settings" class="nav-icon" onclick="showMainPage('settings-page', this)">
+            <div class="icon-circle"></div><span>设置</span>
+        </div>
+    </div>
+</div>
+
+
+<script>
+function handleSearch(e) {
+    if (e.key !== 'Enter') return;
+
+    // 确保当前就在表白墙
+    if (!document.getElementById('wall').classList.contains('active')) {
+        return;
+    }
+
+    const keyword = e.target.value.trim();
+    const wall = document.getElementById('wall');
+
+    wall.innerHTML = `
+        <div class="search-box" style="margin-bottom:12px;">
+            <input id="search-input"
+                type="text"
+                value="${keyword}"
+                onkeydown="handleSearch(event)"
+                style="width:100%;border:none;outline:none;background:transparent;font-size:14px;"
+            />
+        </div>
+    `;
+
+    if (keyword === '宋以宁') {
+        const hidden = document.getElementById('hidden-song-yining').cloneNode(true);
+        hidden.style.display = 'block';
+        wall.appendChild(hidden);
+    } else {
+        wall.innerHTML += `
+            <div class="post-card" style="text-align:center;color:#999;">
+                没有找到与「${keyword}」相关的内容
+                 <br><br>
+                <span style="font-size:12px;">404: 你确定这是一个还能被搜索的名字吗？</span>
+            </div>
+        `;
+    }
+}
+
+
+
+
+        window.onload = function() {
+        updateClock();
+        setInterval(updateClock, 1000);
+    };
+
+    // 顶部子标签切换 (热榜、表白墙、交易)
+    function switchInnerTab(index, sectionId) {
+        document.querySelectorAll('#channel-tabs .tab').forEach(tab => tab.classList.remove('active'));
+        document.querySelectorAll('#channel-tabs .tab')[index].classList.add('active');
+        
+        document.querySelectorAll('.content-section').forEach(sec => sec.classList.remove('active'));
+        document.getElementById(sectionId).classList.add('active');
+    }
+
+    // 底部大板块切换 (校园、课评、我的、设置)
+    function showMainPage(pageId, el) {
+        document.querySelectorAll('.nav-icon').forEach(icon => icon.classList.remove('active'));
+        el.classList.add('active');
+
+        document.querySelectorAll('.content-section').forEach(sec => sec.classList.remove('active'));
+        document.getElementById(pageId).classList.add('active');
+
+        // 控制顶部导航和搜索框的显示
+        const isCampus = (pageId === 'hot' || pageId === 'wall' || pageId === 'trade');
+        document.getElementById('channel-tabs').style.display = isCampus ? 'flex' : 'none';
+        
+        if(isCampus) { switchInnerTab(1, 'wall'); } // 切回校园默认选表白墙
+    }
+function updateClock() {
+    const now = new Date();
+    
+    // 1. 获取真实的时间并格式化 (时:分)
+    const hours = now.getHours().toString().padStart(2, '0');
+    const minutes = now.getMinutes().toString().padStart(2, '0');
+    const seconds = now.getSeconds().toString().padStart(2, '0'); // 如果你想显示秒，可以使用这个变量
+    
+    // 更新时间显示 (如果你HTML里只有时分，就用这个)
+    document.getElementById('time').innerText = hours + ":" + minutes;
+    
+    // 2. 固定日期为 2025/01/09
+    // 不再使用 now.getFullYear()，直接写死日期
+    document.getElementById('date').innerText = "2026/1/9";
+}
+</script>
+<div id="hidden-song-yining" style="display:none;">
+    <div class="post-card" style="border:1px dashed #dfdeda; background:#fffbe6;">
+        <div class="post-header">
+            <span class="tag-tree" style="background:#adaba7; color:white;">#吃瓜群众</span>
+            <span class="post-id">#349282</span>
+        </div>
+        <div class="post-content">
+             昨天在高新产业园取外卖的时候，碰到软院的宋以宁。她是准备继续读博还是要工作了啊（小声八卦一下
+        </div>
+ <div class="post-footer"><span>❤️ 10</span> <span>💬 11</span> <span>🕒 3个月前</span></div>
+    </div>
+     <div class="post-card" style="border:1px dashed #dfdeda; background:#fffbe6;">
+        <div class="post-header">
+            <span class="tag-tree" style="background:#adaba7; color:white;">#校园表白</span>
+            <span class="post-id">#349112</span>
+        </div>
+        <div class="post-content">
+            慕名到<strong>SIT Lab</strong>参观，有个很温柔的学姐带我转了一圈。打听了一下她叫宋以宁，表白超nice的学姐啊🥺
+        </div>
+ <div class="post-footer"><span>❤️ 12</span> <span>💬 3</span> <span>🕒 6个月前</span></div>
+    </div>
+    </div>
+
+
+
+</body>
+</html>

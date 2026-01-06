@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>实验室寒假离校统计.xlsx - Excel</title>
+    <style>
+        body { background-color: #e6e6e6; margin: 0; padding: 0; display: flex; flex-direction: column; height: 100vh; font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif; overflow: hidden; }
+        
+        /* Excel 顶部绿色标题条 */
+        .excel-top-bar { background: #217346; height: 32px; display: flex; align-items: center; padding: 0 15px; color: white; font-size: 12px; }
+        
+        /* 顶部功能区 (Ribbon) */
+        .ribbon { background: #fff; border-bottom: 1px solid #d1d1d1; }
+        .ribbon-tabs { display: flex; padding-left: 20px; border-bottom: 1px solid #e0e0e0; background: #fff; }
+        .tab { padding: 8px 15px; font-size: 13px; color: #333; cursor: pointer; }
+        .tab.active { color: #217346; border-bottom: 3px solid #217346; font-weight: bold; }
+        .tab:hover:not(.active) { background: #f3f3f3; }
+        
+        /* 单元格编辑栏 */
+        .formula-bar { height: 32px; background: #fff; border-bottom: 1px solid #d1d1d1; display: flex; align-items: center; padding: 0 10px; font-size: 12px; color: #666; }
+        .address-box { width: 60px; border-right: 1px solid #d1d1d1; padding-right: 10px; margin-right: 10px; font-weight: bold; color: #333; }
+
+        /* 表格主视图 */
+        .excel-workspace { flex: 1; display: flex; flex-direction: column; overflow: hidden; background: #fff; }
+        .table-viewport { flex: 1; overflow: auto; position: relative; }
+
+        table { border-collapse: collapse; table-layout: fixed; width: 100%; min-width: 800px; }
+        
+        /* 表头字母和左侧数字 */
+        th { background: #f8f9fa; border: 1px solid #d1d1d1; font-weight: normal; font-size: 12px; color: #666; height: 25px; }
+        .row-index { width: 40px; text-align: center; background: #f8f9fa; }
+        
+        /* 单元格样式 */
+        td { border: 1px solid #d1d1d1; height: 25px; padding: 0 8px; font-size: 13px; color: #333; white-space: nowrap; overflow: hidden; }
+        .header-row td { background: #e2efda; font-weight: bold; color: #217346; text-align: center; }
+        
+        /* 被选中的模拟效果 */
+        .selected { outline: 2px solid #217346; outline-offset: -2px; background: #e9f5ee !important; }
+
+        /* 底部状态栏 */
+        .excel-bottom-tabs { height: 30px; background: #f3f3f3; border-top: 1px solid #d1d1d1; display: flex; align-items: center; padding: 0 10px; font-size: 12px; }
+        .sheet-tab { background: #fff; padding: 4px 15px; border: 1px solid #d1d1d1; border-bottom: none; color: #217346; font-weight: bold; margin-right: 2px; }
+        .status-bar { height: 22px; background: #217346; color: white; display: flex; align-items: center; padding: 0 15px; font-size: 11px; }
+                .progress-indicator {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: rgba(0,0,0,0.6);
+    color: #fff;
+    padding: 6px 10px;
+    border-radius: 8px;
+    font-family: monospace;
+    font-size: 0.85rem;
+    z-index: 9999;
+}
+    </style>
+</head>
+<body>
+    <div class="progress-indicator">2/35</div>
+
+<div class="excel-top-bar">
+    <span style="font-weight: bold;">X</span> &nbsp; 302实验室寒假离校时间统计.xlsx - Excel
+</div>
+
+<div class="ribbon">
+    <div class="ribbon-tabs">
+        <div class="tab">文件</div>
+        <div class="tab active">开始</div>
+        <div class="tab">插入</div>
+        <div class="tab">页面布局</div>
+        <div class="tab">公式</div>
+        <div class="tab">数据</div>
+        <div class="tab">视图</div>
+    </div>
+    <div class="formula-bar">
+        <div class="address-box">A1</div>
+        <div style="color: #bbb;"><i>fx</i></div>
+        <div style="margin-left: 10px;">2026年寒假离校汇总表</div>
+    </div>
+</div>
+
+<div class="excel-workspace">
+    <div class="table-viewport">
+        <table>
+            <thead>
+                <tr>
+                    <th class="row-index"></th>
+                    <th style="width: 120px;">A</th>
+                    <th style="width: 150px;">B</th>
+                    <th style="width: 180px;">C</th>
+                    <th style="width: 250px;">D</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="header-row">
+                    <td class="row-index">1</td>
+                    <td colspan="4" style="background: #217346; color: #fff; text-align: center; font-size: 14px;">2026年寒假离校汇总表</td>
+                </tr>
+                <tr style="background: #f2f2f2; font-weight: bold; text-align: center;">
+                    <td class="row-index">2</td>
+                    <td>学号</td>
+                    <td>姓名</td>
+                    <td>预计离校日期</td>
+                    <td>备注（返乡目的地）</td>
+                </tr>
+                <tr>
+                    <td class="row-index">7</td>
+                    <td>2300114755</td>
+                    <td>张吉惟</td>
+                    <td>2026/01/15</td>
+                    <td>福建省厦门市</td>
+                </tr>
+                <tr>
+                    <td class="row-index">8</td>
+                    <td>2400223098</td>
+                    <td>周梓轩</td>
+                    <td>2026/01/18</td>
+                    <td>湖北省潜江市</td>
+                </tr>
+                <tr>
+                    <td class="row-index">9</td>
+                    <td>2500882145</td>
+                    <td>徐若冰</td>
+                    <td>2026/01/11</td>
+                    <td>四川省南充市</td>
+                </tr>
+                <tr>
+                    <td class="row-index">10</td>
+                    <td>2300114902</td>
+                    <td>沈佳辰</td>
+                    <td>2026/01/14</td>
+                    <td>广东省江门市</td>
+                </tr>
+                                <tr class="selected">
+                    <td class="row-index">4</td>
+                    <td>2400882130</td>
+                    <td>江奕云</td>
+                    <td>2026/01/15</td>
+                    <td>临渊省桐州市</td>
+                </tr>
+                <tr>
+                    <td class="row-index">11</td>
+                    <td>2400223156</td>
+                    <td>韩书瑞</td>
+                    <td>2026/01/10</td>
+                    <td>天津市</td>
+                </tr>
+                <tr>
+                    <td class="row-index">12</td>
+                    <td>2300114667</td>
+                    <td>姜思源</td>
+                    <td>2026/01/20</td>
+                    <td>江苏省淮安市</td>
+                </tr>
+                <tr>
+                    <td class="row-index">13</td>
+                    <td>2500882201</td>
+                    <td>郑天翊</td>
+                    <td>2026/01/09</td>
+                    <td>湖南省株洲市</td>
+                </tr>
+                <tr><td class="row-index">14</td><td></td><td></td><td></td><td></td></tr>
+                <tr><td class="row-index">15</td><td></td><td></td><td></td><td></td></tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="excel-bottom-tabs">
+    <div class="sheet-tab">离校统计表</div>
+    <div style="color: #666; margin-left: 10px; cursor: pointer;">+</div>
+</div>
+
+<div class="status-bar">
+    就绪 &nbsp; | &nbsp; 平均值: -- &nbsp; 计数: 11 &nbsp; 求和: --
+</div>
+
+</body>
+</html>
