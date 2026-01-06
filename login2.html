@@ -19,8 +19,23 @@
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.2);
         }
+        .progress-indicator {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: rgba(0,0,0,0.6);
+    color: #fff;
+    padding: 6px 10px;
+    border-radius: 8px;
+    font-family: monospace;
+    font-size: 0.85rem;
+    z-index: 9999;
+}
+
     </style>
 </head>
+
+<div class="progress-indicator">24/32</div>
 <body class="bg-gradient min-h-screen flex flex-col">
 
 <div class="w-full h-1 bg-[#003366]"></div>

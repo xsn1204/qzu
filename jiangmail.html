@@ -66,8 +66,24 @@
         .file-icon { font-size: 30px; color: #555; }
 
         .placeholder { display: flex; justify-content: center; align-items: center; height: 100%; color: #bbb; font-size: 18px; flex-direction: column; gap: 10px; }
+    
+                .progress-indicator {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: rgba(0,0,0,0.6);
+    color: #fff;
+    padding: 6px 10px;
+    border-radius: 8px;
+    font-family: monospace;
+    font-size: 0.85rem;
+    z-index: 9999;
+}
     </style>
 </head>
+
+<div class="progress-indicator">16/32</div>
+
 <body>
 
     <div class="top-bar">

@@ -308,8 +308,22 @@ body, html {
     /* 如果你的 SVG 是黑色的，可以使用 filter 将其变为微信绿或白色 */
     /* filter: brightness(0) invert(1); // 变全白 */
 }
+                .progress-indicator {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: rgba(0,0,0,0.6);
+    color: #fff;
+    padding: 6px 10px;
+    border-radius: 8px;
+    font-family: monospace;
+    font-size: 0.85rem;
+    z-index: 9999;
+}
     </style>
 </head>
+
+<div class="progress-indicator">32/32</div>
 <body>
 
 <div class="container">

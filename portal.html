@@ -31,8 +31,23 @@
         @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         
         .section-card { @apply bg-white rounded shadow-sm border border-gray-100; }
+                      .progress-indicator {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: rgba(0,0,0,0.6);
+    color: #fff;
+    padding: 6px 10px;
+    border-radius: 8px;
+    font-family: monospace;
+    font-size: 0.85rem;
+    z-index: 9999;
+}
+
     </style>
 </head>
+
+<div class="progress-indicator">25/32</div>
 <body class="min-h-screen flex flex-col">
 
     <div class="bg-gray-100 text-[12px] py-1 px-12 flex justify-between text-gray-500">
