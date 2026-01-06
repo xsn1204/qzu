@@ -150,6 +150,39 @@
     font-size: 0.85rem;
     z-index: 9999;
 }
+.back-btn {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1001; /* 确保在进度条之上 */
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(8px);
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    border: 1px solid rgba(30, 58, 138, 0.1);
+}
+
+.back-btn:hover {
+    background: var(--primary);
+    color: white;
+    transform: translateX(5px);
+    box-shadow: 0 6px 15px rgba(30, 58, 138, 0.2);
+}
+
+/* 全屏模式下微调位置避免遮挡 */
+:fullscreen .back-btn {
+    top: 30px;
+    left: 30px;
+}
 
     </style>
 </head>
@@ -157,7 +190,10 @@
 <body>
 
     <div class="progress-container"><div class="progress-bar" id="progress"></div></div>
-
+<a href="desk.html" class="back-btn">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+    退出
+</a>
     <div class="slide-wrapper">
         <section class="slide active" id="slide-1">
             <div class="content-body" style="text-align: center; display: flex; flex-direction: column; justify-content: center;">
