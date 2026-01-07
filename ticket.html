@@ -4,51 +4,144 @@
     <meta charset="UTF-8">
     <style>
         body {
-    margin: 0;
-    background: #0f0f0f; /* 整个页面黑色 */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    font-family: "SimSun", "STSong", serif;
-    color: #0f0f0f;
-}
+            margin: 0;
+            background: #0f0f0f; /* 整个页面黑色 */
+            display: flex;
+            flex-direction: column; /* 纵向排列 */
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: "SimSun", "STSong", serif;
+            color: #0f0f0f;
+            padding: 40px 20px;
+        }
+
+        /* 车票样式保持不变 */
         .ticket-body {
             width: 500px;
             height: 300px;
-            background: #b8d4e9; /* 经典蓝色底纹 */
+            background: #b8d4e9;
             background: linear-gradient(180deg, #d2e1f0 0%, #b8d4e9 100%);
             border-radius: 10px;
             padding: 20px;
             box-sizing: border-box;
-            font-family: "SimSun", "STSong", serif;
             position: relative;
-            box-shadow: 5px 5px 15px rgba(0,0,0,0.2);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
             border: 1px solid #a1c4e1;
+            margin-bottom: 60px;
         }
 
-        /* 顶部编号 */
         .ticket-no { color: #d4380d; font-size: 18px; font-weight: bold; margin-bottom: 10px; }
-
-        /* 站名区 */
         .station-section { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; }
         .station-name { font-size: 32px; font-weight: 900; color: #000; }
         .train-no { font-size: 24px; font-weight: bold; border-bottom: 2px solid #000; padding: 0 10px; position: relative; }
         .train-no::after { content: '➤'; position: absolute; right: -15px; top: 5px; font-size: 14px; }
-
-        /* 时间与金额区 */
         .info-row { display: flex; justify-content: space-between; margin-top: 15px; font-size: 18px; font-weight: bold; }
-
-        /* 乘客信息区 */
         .passenger-info { margin-top: 40px; font-size: 18px; font-weight: bold; display: flex; justify-content: space-between; }
-
-        /* 二维码区 */
         .qr-code { position: absolute; bottom: 20px; right: 20px; width: 85px; height: 85px; background: #000; padding: 5px; box-sizing: border-box; }
-        .qr-inner { width: 100%; height: 100%; background: #fff; display: flex; align-items: center; justify-content: center; font-size: 10px; text-align: center; }
-
-        /* 底部提示词 */
+        .qr-inner { width: 100%; height: 100%; background: #fff; display: flex; align-items: center; justify-content: center; }
         .footer-tips { position: absolute; bottom: 25px; left: 20px; font-size: 13px; color: #333; line-height: 1.4; }
         .stamp { position: absolute; top: 10px; left: 220px; border: 3px solid rgba(255,0,0,0.2); border-radius: 5px; color: rgba(255,0,0,0.2); font-size: 40px; transform: rotate(-15deg); padding: 5px; font-weight: 900; pointer-events: none; }
+
+        /* 新的诗歌并排样式 */
+        .poem-wrapper {
+            width: 700px; /* 增加宽度以容纳并排文字 */
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            color: #888;
+            line-height: 2;
+            font-size: 15px;
+            position: relative;
+        }
+
+        .poem-column {
+            width: 45%;
+        }
+
+        .poem-en {
+            text-align: left;
+            font-style: italic;
+            border-right: 1px solid #333; /* 增加中间的分隔线感 */
+            padding-right: 25px;
+        }
+
+        .poem-zh {
+            text-align: right;
+            padding-left: 25px;
+            color: #aaa;
+        }
+
+        .poem-author {
+            width: 100%;
+            text-align: center;
+            margin-top: 30px;
+            font-size: 14px;
+            color: #555;
+            letter-spacing: 1px;
+        }
+        <!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            margin: 0;
+            background: #0f0f0f; /* 整个页面黑色 */
+            display: flex;
+            flex-direction: column; 
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: "SimSun", "STSong", serif;
+            color: #0f0f0f;
+            padding: 40px 20px;
+        }
+
+        /* 车票样式 */
+        .ticket-body {
+            width: 500px;
+            height: 300px;
+            background: #b8d4e9;
+            background: linear-gradient(180deg, #d2e1f0 0%, #b8d4e9 100%);
+            border-radius: 10px;
+            padding: 20px;
+            box-sizing: border-box;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border: 1px solid #a1c4e1;
+            margin-bottom: 60px;
+        }
+
+        .ticket-no { color: #d4380d; font-size: 18px; font-weight: bold; margin-bottom: 10px; }
+        .station-section { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; }
+        .station-name { font-size: 32px; font-weight: 900; color: #000; }
+        .train-no { font-size: 24px; font-weight: bold; border-bottom: 2px solid #000; padding: 0 10px; position: relative; }
+        .train-no::after { content: '➤'; position: absolute; right: -15px; top: 5px; font-size: 14px; }
+        .info-row { display: flex; justify-content: space-between; margin-top: 15px; font-size: 18px; font-weight: bold; }
+        .passenger-info { margin-top: 40px; font-size: 18px; font-weight: bold; display: flex; justify-content: space-between; }
+        
+        /* 优化后的二维码区域：确保图片在框内 */
+        .qr-code { 
+            position: absolute; 
+            bottom: 20px; 
+            right: 20px; 
+            width: 85px; 
+            height: 85px; 
+            background: #fff;
+            padding: 5px; /* 留出内边距，让二维码不贴边 */
+            box-sizing: border-box; 
+            border: 1px solid #91adc4;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .qr-code img {
+            max-width: 100%;
+            max-height: 100%;
+            display: block;
+            object-fit: contain; /* 确保图片完整显示且不被拉伸 */
+        }
     </style>
 </head>
 <body>
@@ -84,10 +177,34 @@
     </div>
 
 <div class="qr-code">
-    <div class="qr-inner">
-        <img src="qr.png" alt="QR" style="max-width:100%; max-height:100%; display:block;">
+        <img src="qr.png" alt="二维码">
     </div>
 </div>
+
+<div style="display: flex; flex-direction: column; align-items: center;">
+    <div class="poem-wrapper">
+        <div class="poem-column poem-en">
+            Now the world has gone to bed<br>
+            Darkness won't engulf my head<br>
+            I can see by infra-red<br>
+            How I hate the night<br>
+            Now I lay me down to sleep<br>
+            Try to count electric sheep<br>
+            Sweet dream wishes you can keep<br>
+            How I hate the night
+        </div>
+        <div class="poem-column poem-zh">
+            世界已经上床安睡<br>
+            黑暗却无法将我头脑围困<br>
+            借着红外线我看得清清楚楚<br>
+            我是多么讨厌这夜色<br>
+            现在我躺下准备睡觉<br>
+            试着去数数电子羊<br>
+            甜美的梦愿你留着自己享用<br>
+            我是多么讨厌这夜色
+        </div>
+    </div>
+    <div class="poem-author">—— Marvin《银河系漫游指南》</div>
 </div>
 
 </body>
