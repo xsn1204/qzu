@@ -386,7 +386,7 @@
         <div class="window-title">青大树洞 - 桌面端</div>
         <div class="win-controls">
             <div class="control-btn">－</div>
-            <div class="control-btn close">✕</div>
+            <div class="control-btn close" onclick="closeWindow()">✕</div>
         </div>
     </div>
     
@@ -651,6 +651,9 @@ function updateClock() {
     // 2. 固定日期为 2025/01/09
     // 不再使用 now.getFullYear()，直接写死日期
     document.getElementById('date').innerText = "2026/1/9";
+}
+function closeWindow() {
+    window.location.href = 'desk.html';
 }
 </script>
 <div id="hidden-song-yining" style="display:none;">
