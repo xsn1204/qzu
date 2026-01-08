@@ -435,7 +435,7 @@
 
 <div class="search-container" style="position: relative;">
     <span class="search-icon">🔍</span>
-    <input type="text" id="searchInput" placeholder="搜索文件或应用..." disabled oninput="handleExactSearch(this.value)" autocomplete="off">
+    <input type="text" id="searchInput" placeholder="搜索..." disabled oninput="handleExactSearch(this.value)" autocomplete="off">
 
 
     
@@ -457,9 +457,9 @@
         <img src="wechat.svg">
     </div>
     
-    <a href="mailbox.html" class="task-icon">
-        <img src="logo1.png">
-    </a>
+<a href="mailbox.html" onclick="window.open(this.href, '_blank'); return false;" class="task-icon">
+    <img src="logo1.png">
+</a>
 </div>
         <div class="tray-area">
             <div class="clock">
@@ -495,7 +495,7 @@
                     望周知，后勤部推所谓的“品质校园”，就是把量大好吃的食堂都翻修外包给新供应商了，菜品质量直线下降，价格倒是涨了不少。到底是怎么做到这么精准的首位淘汰的！
                 </div>
                 <div class="post-footer">
-    <span style="cursor: pointer;" onclick="window.location.href='capital.html'">👍 305</span>
+    <span style="cursor: pointer;" onclick="window.open('capital.html', '_blank')">👍 305</span>
     <span>💬 260</span>
     <span>🕒 1个月前</span>
 </div>
@@ -745,7 +745,7 @@ function updateClock() {
     document.getElementById('date').innerText = "2026/1/9";
 }
 function closeWindow() {
-    window.location.href = 'desk.html';
+    window.open('desk.html', '_blank');
 }
 </script>
 <div id="hidden-song-yining" style="display:none;">

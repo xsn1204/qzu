@@ -228,7 +228,7 @@ function handleLogin() {
     errorDisplay.innerText = '';
 
     if (user === 'Marvin' && pass === 'fortytwo') {
-        window.location.href = 'post.html';
+        window.open('post.html', '_blank');
     } else {
         errorDisplay.innerText = '用户名或密码错误！提示：密码为8位英文字母';
     }

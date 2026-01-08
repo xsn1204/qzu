@@ -141,7 +141,7 @@
         // 预设账号校验
         if (user === '2300113473@qzu.edu.cn' && pass === '20010112') {
             // 登录成功，跳转至 portal 页面
-            window.location.href = 'portal.html';
+            window.open('portal.html', '_blank');
         } else {
             // 显示错误提示
             errorMsg.innerHTML = '<i class="fas fa-exclamation-circle mr-1"></i> 账号或密码错误，请重试';

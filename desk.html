@@ -592,8 +592,27 @@
         margin-top: 8px !important;
     }
 
+    #recycleWindow {
+        /* 1. 设置宽度为屏幕的 90%，这样在手机上永远不会顶满 */
+        width: 90% !important; 
+        
+        /* 2. 设置最大宽度为 600px，这样在网页端（大屏）它最多只会到 600px，不会无限拉长 */
+        max-width: 600px !important; 
 
+        /* 3. 高度同理，设置最大高度防止在手机上过高 */
+        height: 400px !important;
+        min-height: 300px !important;
+        max-height: 80vh !important;
 
+        /* 4. 居中对齐补丁 */
+        position: absolute;
+        top: 50% !important;
+        left: 50% !important;
+        transform: translate(-50%, -50%) !important;
+        
+        display: flex;
+        flex-direction: column;
+    }
    </style>
 </head>
 
@@ -648,7 +667,7 @@
             <img src="https://img.icons8.com/color/48/000000/intellij-idea.png" alt="IntelliJ">
             <span>IntelliJ IDEA</span>
         </div>
-        <div class="icon" onclick="window.location.href='chrome.html'">
+        <div class="icon" onclick="window.open('chrome.html', '_blank')">
             <img src="https://img.icons8.com/color/48/000000/chrome.png" alt="Chrome">
             <span>Chrome</span>
         </div>
@@ -661,7 +680,7 @@
             <img src="https://img.icons8.com/color/48/000000/python.png" alt="Python">
             <span>Python</span>
         </div>
-    <div class="icon" onclick="window.location.href='excel.html'">
+    <div class="icon" onclick="window.open('excel.html', '_blank')">
         <img src="excel.png" alt="Excel">
         <span>302实验室寒假离校时间统计.xlsx</span>
     </div>
@@ -818,7 +837,7 @@
                                 <div class="moment-footer">
                                     <span>3天前</span>
                                     <span>
-        <a href="extra2.html" class="like-link">👍 5</a> | 💬 6</span>
+        <a href="extra2.html" class="like-link" target="_blank">👍 5</a> | 💬 6</span>
                                 </div>
                             </div>
                     </div>
@@ -842,12 +861,12 @@
                 </div>
 
 
-                <div class="subs-card" onclick="window.location.href='canteen2.html'">
+                <div class="subs-card" onclick="window.open('canteen2.html', '_blank')">
                     <p style="color:#999; font-size:12px;">QZU小喇叭 2025年11月16日</p>
                     <p style="font-weight:bold; margin-top:5px;">【呕】刚刷到市监局抽检公告，咱学校青川食堂的大肠杆菌超标了整整4倍！说是餐具清洗消毒流程完全不合格[图片.jpg]。
             前几天刚在青川就餐过的UU们，现在自求多福吧... </p>
                 </div>
-                <div class="subs-card" onclick="window.location.href='academic.html'">
+                <div class="subs-card" onclick="window.open('academic.html', '_blank')">
                     <p style="color:#999; font-size:12px;">学术资讯速递 2025年11月2日</p>
                     <p style="font-weight:bold; margin-top:5px;">副教授转岗做保安，努力的你还有方向吗？</p>
                 </div>
@@ -900,9 +919,9 @@
         <img src="wechat.svg">
     </div>
     
-    <a href="mailbox.html" class="task-icon">
-        <img src="logo1.png">
-    </a>
+<a href="mailbox.html" onclick="window.open(this.href, '_blank'); return false;" class="task-icon">
+    <img src="logo1.png">
+</a>
 </div>
         <div class="tray-area">
             <div class="clock">
@@ -973,7 +992,7 @@ function recordAndJump(keyword, url) {
     document.getElementById('searchInput').value = '';
     
     // 4. 执行跳转
-    window.location.href = url;
+   window.open(url, '_blank');
 }
 
     function saveToLocalStorage(keyword) {
@@ -1002,7 +1021,11 @@ function handleExactSearch(val) {
     if (SEARCH_MAP[keyword]) {
         const item = document.createElement('div');
         item.className = 'search-item';
-        item.onclick = () => recordAndJump(keyword, SEARCH_MAP[keyword]);
+        item.onclick = () => {
+    // 如果你想保留原有的记录功能，先执行 record 函数（如果有的话）
+    // 然后强制开启新窗口
+    window.open(SEARCH_MAP[keyword], '_blank');
+};
         item.innerHTML = `
             <img src="https://img.icons8.com/color/24/000000/light.png">
             <div class="search-item-info">
@@ -1035,16 +1058,16 @@ document.getElementById('searchInput').onkeydown = function(e) {
 
 
 
-    // 统一跳转逻辑
+// 统一跳转逻辑
 function jumpTo(text) {
     if (SEARCH_MAP[text]) {
-        window.location.href = SEARCH_MAP[text];
+        // 核心修改：从 window.location.href 改为 window.open
+        window.open(SEARCH_MAP[text], '_blank'); 
     } else if (text === '回收站') {
         openRecycleBin();
     }
     closeWindow('historyWindow');
 }
-
 
     // 面板切换
 function toggleHistory(e) {
@@ -1253,6 +1276,7 @@ function toggleApp(id) {
 });
 
 }
+
 </script>
 
 </body>
