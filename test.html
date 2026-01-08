@@ -3,246 +3,256 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>青州大学 - 官方门户网站</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>404Game - 登录</title>
+
     <style>
-        :root { --qz-main: #003366; --qz-light: #f0f4f8; }
-        body { font-family: "Microsoft YaHei", sans-serif; background-color: #f5f7fa; color: #333; }
-        
-        /* 顶部导航激活状态 */
-        .nav-item::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            width: 0;
-            height: 3px;
-            background: #fff;
-            transition: all 0.3s;
-            transform: translateX(-50%);
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", "Segoe UI", sans-serif;
         }
-        .nav-item:hover::after { width: 100%; }
-        
-        /* 页面切换逻辑 */
-        .page { display: none; }
-        .page.active { display: block; animation: slideUp 0.4s ease-out; }
-        
-        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        
-        .section-card { @apply bg-white rounded shadow-sm border border-gray-100; }
-        
-        .progress-indicator {
+
+        body {
+            height: 100vh;
+            width: 100vw;
+            background: url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&q=80&w=2070') no-repeat center center;
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            overflow: hidden;
+        }
+
+        /* 模糊背景层 */
+        .bg-blur {
             position: fixed;
-            top: 20px;
-            right: 20px;
-            background: rgba(0,0,0,0.6);
-            color: #fff;
-            padding: 6px 10px;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: inherit;
+            filter: blur(8px);
+            z-index: 0;
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.2);
+            z-index: 1;
+        }
+
+        /* 主登录容器 - 手机适配 */
+        .login-container {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            width: 90%; /* 手机端占据 90% 宽度 */
+            max-width: 400px;
+            animation: fadeIn 0.8s ease-out;
+            padding: 20px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 头像区域 - 响应式缩放 */
+        .avatar-box {
+            width: 140px; /* 缩小头像尺寸 */
+            height: 140px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .avatar-box svg {
+            width: 70px;
+            fill: white;
+        }
+
+        h1 {
+            font-size: 28px; /* 减小标题字体 */
+            font-weight: 300;
+            margin-bottom: 20px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        /* 剧情描述框 - 优化移动端间距 */
+        .story-context {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 15px;
             border-radius: 8px;
-            font-family: monospace;
-            font-size: 0.85rem;
-            z-index: 9999;
+            text-align: left;
+            margin-bottom: 25px;
+            font-size: 13px; /* 略微减小字号 */
+            line-height: 1.5;
+            border: 1px solid rgba(255,255,255,0.1);
+            backdrop-filter: blur(15px);
         }
 
-        /* --- 核心适配优化 CSS --- */
-        @media (max-width: 768px) {
-            /* 1. 缩小 Logo 区域，防止占用过多横向空间 */
-            header h1 { font-size: 1rem !important; }
-            header p { display: none; } /* 手机端隐藏副标题 */
-            header .shrink-0 { space-x: 0.5rem !important; }
+        /* 输入框区域 - 保证不超出屏幕 */
+        .input-group {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+            width: 100%;
+        }
 
-            /* 2. 导航栏核心适配：允许横向滚动，不换行 */
-            nav {
-                overflow-x: auto !important;
-                white-space: nowrap !important;
-                display: flex !important;
-                -webkit-overflow-scrolling: touch;
-                padding-bottom: 0px; /* 移除可能的底部间距 */
+        input[type="password"] {
+            flex: 1; /* 自动填充剩余空间 */
+            max-width: 260px;
+            height: 40px; /* 增加点击区域高度 */
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid #ccc;
+            padding: 0 12px;
+            outline: none;
+            color: #333;
+            font-size: 14px;
+        }
+
+        .login-submit {
+            height: 40px;
+            width: 45px;
+            background: rgba(0, 0, 0, 0.6);
+            border: 2px solid #ccc;
+            border-left: none;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* 底部元素处理：小屏幕下隐藏或精简 */
+        .user-list {
+            position: absolute;
+            left: 15px;
+            bottom: 15px;
+            z-index: 2;
+        }
+
+        /* 手机端隐藏非主要用户以节省空间 */
+        @media (max-width: 480px) {
+            .user-item:not(.active) {
+                display: none;
             }
-
-            /* 3. 导航按钮：防止被挤压变窄 */
-            .nav-item {
-                flex-shrink: 0 !important;
-                padding-left: 0.75rem !important;
-                padding-right: 0.75rem !important;
-                font-size: 0.875rem !important;
-            }
-
-            /* 4. 用户区：只留图标，隐藏名字节省空间 */
-            nav .border-l {
-                margin-left: 0.5rem !important;
-                padding-left: 0.5rem !important;
-                flex-shrink: 0 !important;
+            .floating-signature {
+                width: 120px !important; /* 缩小签名图 */
+                right: 15px !important;
+                top: 15px !important;
             }
         }
 
-        /* 隐藏滚动条美化 */
-        .scrollbar-hide::-webkit-scrollbar { display: none; }
-        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
-        nav::-webkit-scrollbar { display: none; }
+        .user-item {
+            display: flex;
+            align-items: center;
+            padding: 8px;
+            margin-bottom: 5px;
+            border-radius: 4px;
+        }
+
+        .user-item.active {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .user-icon {
+            width: 28px;
+            height: 28px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 50%;
+            margin-right: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+
+        .system-icons {
+            position: absolute;
+            right: 20px;
+            bottom: 20px;
+            display: flex;
+            gap: 15px;
+            z-index: 2;
+        }
+
+        .floating-signature {
+            position: fixed;
+            right: 20px;
+            top: 20px;
+            width: 150px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+            opacity: 0.6;
+            z-index: 3;
+        }
+        .floating-signature img { width: 100%; display: block; }
+
     </style>
 </head>
+<body>
+    <div class="bg-blur"></div>
+    <div class="overlay"></div>
 
-<div class="progress-indicator">25/33</div>
-<body class="min-h-screen flex flex-col">
+    <div class="login-container">
+        <div class="avatar-box">
+            <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+        </div>
 
-    <div class="bg-gray-100 text-[10px] md:text-[12px] py-1 px-4 md:px-12 flex justify-between text-gray-500">
-        <div>欢迎访问青州大学门户网站</div>
-        <div class="space-x-3 md:space-x-4">
-            <a href="#" class="hover:text-[#003366]">校友之家</a>
-            <a href="#" class="hover:text-[#003366]">旧版门户</a>
-            <a href="#" class="hover:text-[#003366]">English</a>
+        <h1><strong>404工位消失事件 2.0</strong></h1>
+
+        <div class="story-context">
+            你是<strong>江奕云</strong>。大二寒假前，你从校外实习归来，回到实验室继续搬砖。 <br><br>
+            临近放假，气氛出奇地安静。你登入这台公用电脑，才意识到这里早已少了一个人……
+            <br><br>
+            <em style="color:#bbb; font-size: 12px;">🔔 试着搜索【你自己的名字】开始。</em>
+        </div>
+
+        <div class="input-group">
+            <input type="password" placeholder="输入关键词搜索..." id="pwdInput">
+            <button class="login-submit" id="loginBtn">➔</button>
         </div>
     </div>
 
-    <header class="bg-[#003366] text-white sticky top-0 z-50 shadow-md">
-        <div class="max-w-7xl mx-auto px-4 md:px-6 h-16 md:h-20 flex items-center justify-between overflow-hidden">
-            
-            <div class="flex items-center space-x-2 md:space-x-4 cursor-pointer shrink-0">
-                <div class="bg-white p-1.5 md:p-2 rounded-full">
-                    <img src="logo1.png" alt="青州大学" class="w-6 h-6 md:w-8 md:h-8 object-contain" />
-                </div>
-                <div>
-                    <h1 class="text-xl font-bold tracking-tighter leading-none">青州大学</h1>
-                    <p class="text-[10px] opacity-70 uppercase mt-1">Qingzhou University Portal</p>
-                </div>
-            </div>
-
-            <nav class="flex flex-1 justify-end h-full items-center overflow-x-auto whitespace-nowrap scrollbar-hide ml-2">
-                <button onclick="switchPage('news')" class="nav-item relative px-3 md:px-6 shrink-0 h-full text-sm md:text-base font-medium hover:bg-white/10 transition-all">首页新闻</button>
-                <button onclick="switchPage('service')" class="nav-item relative px-3 md:px-6 shrink-0 h-full text-sm md:text-base font-medium hover:bg-white/10 transition-all">办事大厅</button>
-                <button onclick="switchPage('remind')" class="nav-item relative px-3 md:px-6 shrink-0 h-full text-sm md:text-base font-medium hover:bg-white/10 transition-all">消息提醒</button>
-                <button class="nav-item relative px-3 md:px-6 shrink-0 h-full text-sm md:text-base font-medium hover:bg-white/10 transition-all">个人日程</button>
-
-                <div class="ml-2 pl-2 md:ml-8 md:pl-8 border-l border-white/20 flex items-center space-x-3 md:space-x-4 shrink-0">
-                    <i class="fas fa-search cursor-pointer hover:scale-110 text-sm md:text-base"></i>
-                    <div class="flex items-center space-x-2 bg-white/10 px-2 md:px-3 py-1.5 rounded text-sm cursor-pointer hover:bg-white/20">
-                        <i class="fas fa-user-circle"></i>
-                        <span class="hidden md:inline">宋以宁</span>
-                        <i class="fas fa-caret-down text-[10px]"></i>
-                    </div>
-                </div>
-            </nav>
+    <div class="user-list">
+        <div class="user-item active">
+            <div class="user-icon">👤</div>
+            <span style="font-size: 13px;">Admin</span>
         </div>
-    </header>
+    </div>
 
-    <main class="max-w-7xl mx-auto w-full px-4 md:px-6 py-6 flex-1">
-        <div id="page-news" class="page active">
-            <div class="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-8">
-                <div class="md:col-span-8">
-                    <div class="section-card p-4 md:p-6">
-                        <div class="flex items-center justify-between mb-4 md:mb-6 border-b pb-2">
-                            <h2 class="text-lg md:text-xl font-bold border-l-4 border-[#003366] pl-3">综合新闻</h2>
-                            <a href="#" class="text-gray-400 text-xs md:sm hover:text-[#003366]">更多 ></a>
-                        </div>
-                        <div class="flex flex-col md:flex-row gap-6">
-                            <div class="w-full md:w-1/2 group cursor-pointer">
-                                <div class="overflow-hidden rounded shadow-md">
-                                    <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=800" class="w-full h-40 md:h-48 object-cover group-hover:scale-110 transition-transform duration-500">
-                                </div>
-                                <h3 class="mt-3 font-bold text-base md:text-lg group-hover:text-[#003366]">青州大学党委书记赴各院系开展“人工智能+教育”专题调研</h3>
-                                <p class="text-xs md:text-sm text-gray-500 mt-2 line-clamp-2">近期，校党委书记一行深入调研各学院人工智能应用现状...</p>
-                            </div>
-                            <div class="w-full md:w-1/2 space-y-4">
-                                <div class="flex items-start space-x-4 group cursor-pointer border-b pb-3">
-                                    <div class="bg-[#003366] text-white text-center p-2 rounded w-14 shrink-0">
-                                        <div class="text-base font-bold">5</div>
-                                        <div class="text-[9px] opacity-70">2026-1</div>
-                                    </div>
-                                    <h4 class="text-sm font-medium group-hover:text-[#003366] leading-snug">校领导巡查期末考试考场</h4>
-                                </div>
-                                <div class="flex items-start space-x-4 group cursor-pointer border-b pb-3">
-                                    <div class="bg-gray-100 text-gray-600 text-center p-2 rounded w-14 shrink-0">
-                                        <div class="text-base font-bold">20</div>
-                                        <div class="text-[9px] opacity-70">2025-12</div>
-                                    </div>
-                                    <h4 class="text-sm font-medium group-hover:text-[#003366]">校工会举办“迎新年”教职工羽毛球赛</h4>
-                                </div>
-                                <div class="flex items-start space-x-4 group cursor-pointer border-b pb-3">
-                                    <div class="bg-gray-100 text-gray-600 text-center p-2 rounded w-14 shrink-0">
-                                        <div class="text-base font-bold">18</div>
-                                        <div class="text-[9px] opacity-70">2025-12</div>
-                                    </div>
-                                    <h4 class="text-sm font-medium group-hover:text-[#003366]">关于做好下学期教材预定工作的通知</h4>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+    <div class="system-icons">
+        <svg width="20" height="20" fill="white" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+        <svg width="20" height="20" fill="white" viewBox="0 0 24 24"><path d="M13 3h-2v10h2V3zm4.83 2.17l-1.42 1.42C17.99 7.86 19 9.81 19 12c0 3.87-3.13 7-7 7s-7-3.13-7-7c0-2.19 1.01-4.14 2.58-5.42L6.17 5.17C4.23 6.82 3 9.26 3 12c0 4.97 4.03 9 9 9s9-4.03 9-9c0-2.74-1.23-5.18-3.17-6.83z"/></svg>
+    </div>
 
-                <div class="md:col-span-4 space-y-6">
-                    <div class="section-card p-5">
-                        <div class="flex items-center justify-between mb-4 border-b pb-2">
-                            <h2 class="text-base md:text-lg font-bold">消息提醒</h2>
-                            <span class="bg-red-500 text-white text-[10px] px-2 py-0.5 rounded-full">1</span>
-                        </div>
-                        <ul class="space-y-4">
-                            <li class="flex items-center space-x-3 text-sm text-gray-700">
-                                <i class="fas fa-angle-right text-xs"></i>
-                                <span class="truncate">【重要】专利发明人变更申请结果</span>
-                            </li>
-                            <li class="flex items-center space-x-3 text-sm text-gray-700">
-                                <i class="fas fa-angle-right text-xs"></i>
-                                <span class="truncate">关于填报2026年度预算申报的通知</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div id="page-service" class="page">
-            <div class="section-card p-5 md:p-8">
-                <h2 class="text-xl md:text-2xl font-bold mb-6">服务中心</h2>
-                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-                    <div class="p-4 border rounded-xl flex items-center md:block space-x-4 md:space-x-0">
-                        <div class="w-12 h-12 bg-purple-50 text-purple-700 flex items-center justify-center rounded-lg text-xl shrink-0"><i class="fas fa-user-tie"></i></div>
-                        <div><h3 class="font-bold">人事事务</h3><p class="text-xs text-gray-400">教师入职等服务</p></div>
-                    </div>
-                    <div class="p-4 border rounded-xl flex items-center md:block space-x-4 md:space-x-0">
-                        <div class="w-12 h-12 bg-blue-50 text-blue-700 flex items-center justify-center rounded-lg text-xl shrink-0"><i class="fas fa-flask"></i></div>
-                        <div><h3 class="font-bold">科研管理</h3><p class="text-xs text-gray-400">项目立项等服务</p></div>
-                    </div>
-                    <div class="p-4 border rounded-xl flex items-center md:block space-x-4 md:space-x-0">
-                        <div class="w-12 h-12 bg-green-50 text-green-700 flex items-center justify-center rounded-lg text-xl shrink-0"><i class="fas fa-calculator"></i></div>
-                        <div><h3 class="font-bold">财务管理</h3><p class="text-xs text-gray-400">报销酬金等服务</p></div>
-                    </div>
-                    <div class="p-4 border rounded-xl flex items-center md:block space-x-4 md:space-x-0">
-                        <div class="w-12 h-12 bg-indigo-50 text-indigo-700 flex items-center justify-center rounded-lg text-xl shrink-0"><i class="fas fa-laptop-code"></i></div>
-                        <div><h3 class="font-bold">信息化服务</h3><p class="text-xs text-gray-400">校园网开通等服务</p></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <div id="page-remind" class="page">
-             <div class="section-card p-4">
-                 <h2 class="font-bold mb-4">待办事项</h2>
-                 <div class="border rounded p-4 flex justify-between items-center">
-                     <div>
-                         <h4 class="font-bold text-sm">【重要】专利发明人变更申请结果</h4>
-                         <p class="text-xs text-gray-400">2025/1/7 14:30</p>
-                     </div>
-                     <a href="#" class="px-4 py-1 border border-[#003366] text-[#003366] rounded text-xs">详情</a>
-                 </div>
-             </div>
-        </div>
-
-    </main>
-
-    <footer class="bg-gray-800 text-gray-400 py-6 mt-12">
-        <div class="max-w-7xl mx-auto px-6 text-center text-xs">
-            <p>版权所有 © 2026 青州大学信息化建设与管理处</p>
-        </div>
-    </footer>
+    <div class="floating-signature">
+        <img src="signature.jpg" alt="关键签名">
+    </div>
 
     <script>
-        function switchPage(pageId) {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.getElementById('page-' + pageId).classList.add('active');
-            window.scrollTo({top: 0, behavior: 'smooth'});
-        }
+        const login = () => {
+            window.location.href = 'desk.html';
+        };
+        document.getElementById('loginBtn').addEventListener('click', login);
+        document.getElementById('pwdInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') login();
+        });
     </script>
 </body>
 </html>

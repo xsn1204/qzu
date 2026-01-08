@@ -17,7 +17,7 @@
             height: 100vh;
             width: 100vw;
             /* 使用图片中的洞穴海滩背景 */
-            background: url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&q=80&w=2070') no-repeat center center;
+           
             background-size: cover;
             display: flex;
             justify-content: center;
@@ -191,10 +191,71 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&q=80&w=2070') no-repeat center center;
+background: url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&q=80&w=2070') no-repeat center center;
     background-size: cover;
     filter: blur(8px); /* 模糊程度，可调整 */
     z-index: 0;
+}
+
+/* 修改 .login-container */
+.login-container {
+    width: 90%; /* 从 100% 改为 90% */
+    max-width: 400px;
+}
+
+/* 修改 h1 */
+h1 {
+    font-size: 28px; /* 从 36px 缩小，防止手机上换行太难看 */
+}
+/* 修改 .avatar-box */
+.avatar-box {
+    width: 140px; /* 从 190px 缩小 */
+    height: 140px;
+}
+
+/* 修改 input[type="password"] */
+input[type="password"] {
+    width: 200px; /* 稍微缩短，防止溢出 */
+    height: 40px; /* 增加高度，方便手指点击 */
+}
+
+/* 修改 .login-submit */
+.login-submit {
+    height: 40px;
+}
+@media (max-width: 480px) {
+    /* 隐藏次要用户，防止左下角太乱 */
+    .user-item:not(.active) {
+        display: none;
+    }
+    
+    /* 缩小右上角签名图，防止遮挡中间文字 */
+    .floating-signature {
+        width: 120px !important;
+        top: 15px !important;
+        right: 15px !important;
+    }
+
+    /* 剧情框字号微调 */
+    .story-context {
+        font-size: 13px;
+        padding: 15px;
+    }
+}
+.input-group {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: 100%;
+}
+
+.input-group input {
+    flex: 1;
+    min-width: 0;           /* 🔥关键：允许在 flex 中缩放 */
+}
+
+.input-group button {
+    flex-shrink: 0;         /* 防止按钮压缩 input */
 }
 
 
@@ -221,7 +282,7 @@
         </div>
 
         <div class="input-group">
-            <input type="password" placeholder="已知信息 -> 关键词 -> 搜索 -> 新信息" id="pwdInput">
+            <input type="password" placeholder="已知信息 -> 发现关键词 -> 进行搜索 -> 获得新信息" id="pwdInput">
             <button class="login-submit" id="loginBtn">➔</button>
         </div>
     </div>
