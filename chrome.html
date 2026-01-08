@@ -203,6 +203,71 @@ body {
     font-size: 0.85rem;
     z-index: 9999;
 }
+
+/* --- 书签页 (复现截图样式) --- */
+.bookmarks-view {
+    background: #f8f9fa; /* 稍微偏灰的背景 */
+    height: 100%;
+    width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.bookmarks-panel {
+    width: 100%;
+    max-width: 800px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1); /* 轻微投影 */
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* 顶部搜索框 */
+.bm-search-bar {
+    padding: 16px;
+    border-bottom: 1px solid #f1f3f4;
+}
+.bm-search-input {
+    width: 100%;
+    background: #f1f3f4;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 20px;
+    font-size: 14px;
+    outline: none;
+}
+
+/* 书签行列表 */
+.bm-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 20px;
+    cursor: pointer;
+    transition: background 0.1s;
+}
+.bm-item:hover { background: #f1f3f4; }
+
+.bm-favicon {
+    width: 32px;
+    height: 32px;
+    background: #e8f0fe; /* 截图中的淡蓝色图标框 */
+    border-radius: 6px;
+    margin-right: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+}
+
+.bm-info { display: flex; flex-direction: column; }
+.bm-name { font-size: 13px; color: #202124; margin-bottom: 2px; }
+.bm-url { font-size: 11px; color: #5f6368; }
     </style>
 </head>
 <body>
@@ -237,7 +302,7 @@ body {
         <div class="sidebar">
             <div class="sidebar-item active" id="side-home" onclick="showSection('home')">🏠 主页</div>
             <div class="sidebar-item" id="side-hist" onclick="showSection('history')">📜 历史记录</div>
-            <div class="sidebar-item">📑 书签</div>
+            <div class="sidebar-item" id="side-book" onclick="showSection('bookmarks')">📑 书签</div>
             <div class="sidebar-item">📥 下载内容</div>
         </div>
 
@@ -253,21 +318,49 @@ body {
                 <div class="button-row">
   <div class="g-btn" onclick="handleSearch()">Qoogle搜索</div>
     
-    <div class="g-btn" onclick="showRecommendation()">好剧推荐📺</div>
                 </div>
             </div>
 
             <div id="section-history" class="history-list hidden">
                 <h1 style="font-weight: 400; font-size: 22px; margin-bottom: 30px;">历史记录</h1>
-<div class="history-item" onclick="window.location.href='chufen.html'">
-    <span class="history-time">11月5日</span>
-    <span class="history-title">青州大学 - 关于 2024-2025 学年第二学期违纪学生的处分决定</span>
-</div>
-<div class="history-item" onclick="window.location.href='galaxy.html'">
-    <span class="history-time">10月24日</span>
-    <span class="history-title">Qoogle Gemini</span>
-</div>
+                <div class="history-item" onclick="window.location.href='chufen.html'">
+                    <span class="history-time">11月5日</span>
+                    <span class="history-title">青州大学 - 关于 2024-2025 学年第二学期违纪学生的处分决定</span>
+                </div>
+                <div class="history-item" onclick="window.location.href='galaxy.html'">
+                    <span class="history-time">10月24日</span>
+                    <span class="history-title">Qoogle Gemini</span>
+                </div>
             </div>
+<div id="section-bookmarks" class="bookmarks-view hidden">
+                <div class="bookmarks-panel">
+         
+                    <div class="bm-list">
+                        <div class="bm-item" onclick="window.open('https://m.douban.com/subject_collection/ECPU5ODVQ', '_blank')">
+                            <div class="bm-favicon">📚</div>
+                            <div class="bm-info">
+                                <div class="bm-name">豆瓣科幻小说 Top100</div>
+                                <div class="bm-url">m.douban.com/subject_collection/ECPU5ODVQ</div>
+                            </div>
+                        </div>
+                        <div class="bm-item">
+                            <div class="bm-favicon">🤖</div>
+                            <div class="bm-info">
+                                <div class="bm-name">GitHub · Change is constant. GitHub keeps you ahead. · GitHub</div>
+                                <div class="bm-url">github.com</div>
+                            </div>
+                        </div>
+                        <div class="bm-item">
+                            <div class="bm-favicon" style="background:#fce8e6">🎨</div>
+                            <div class="bm-info">
+                                <div class="bm-name">Hugging Face – The AI community building the future.</div>
+                                <div class="bm-url">https://huggingface.co/</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>
@@ -292,23 +385,48 @@ body {
         }
     }
 
-    function showSection(id) {
-        document.getElementById('section-home').classList.add('hidden');
-        document.getElementById('section-history').classList.add('hidden');
-        
-        if (id === 'home') {
-            document.getElementById('section-home').classList.remove('hidden');
-            document.getElementById('main-content').style.alignItems = 'center';
-            document.getElementById('main-content').style.paddingTop = '80px';
-        } else {
-            document.getElementById('section-history').classList.remove('hidden');
-            document.getElementById('main-content').style.alignItems = 'flex-start';
-            document.getElementById('main-content').style.paddingTop = '0px';
-        }
+function showSection(id) {
+    // 1. 隐藏所有板块
+    document.getElementById('section-home').classList.add('hidden');
+    document.getElementById('section-history').classList.add('hidden');
+    document.getElementById('section-bookmarks').classList.add('hidden');
 
-        document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
-        document.getElementById(id === 'home' ? 'side-home' : 'side-hist').classList.add('active');
+    // 2. 显示目标板块
+    const targetSection = document.getElementById('section-' + id);
+    targetSection.classList.remove('hidden');
+
+    // 3. 关键修复：处理内容区的间距
+    const contentArea = document.getElementById('main-content');
+    if (id === 'home') {
+        contentArea.style.paddingTop = '10vh'; // 主页保持间距，让搜索框居中
+        contentArea.style.alignItems = 'center';
+    } else {
+        contentArea.style.paddingTop = '0';    // 历史和书签页置顶，删去白色多余空间
+        contentArea.style.alignItems = 'stretch'; // 让内容铺满宽度
     }
+
+    // 4. 更新侧边栏高亮状态
+    document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
+    const navId = (id === 'home') ? 'side-home' : (id === 'history' ? 'side-hist' : 'side-book');
+    const sideItem = document.getElementById(navId);
+    if(sideItem) sideItem.classList.add('active');
+
+    // 5. 更新地址栏和标签名
+    const urlEl = document.getElementById('current-url');
+    // 注意：你原代码里没有 id="tab-label" 的元素，建议在 HTML 的 tab 里的 span 加上这个 id
+    const labelEl = document.getElementById('tab-label'); 
+    
+    if (id === 'bookmarks') {
+        urlEl.innerText = 'chrome://bookmarks';
+        if(labelEl) labelEl.innerText = '书签';
+    } else if (id === 'history') {
+        urlEl.innerText = 'chrome://history';
+        if(labelEl) labelEl.innerText = '历史记录';
+    } else {
+        urlEl.innerText = 'https://www.qoogle.com';
+        if(labelEl) labelEl.innerText = 'qoogle';
+    }
+}
 
     function handleSearch() {
         const query = document.getElementById('search-input').value;
