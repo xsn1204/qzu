@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>青大树洞</title>
     <style>
         :root { 
@@ -344,6 +344,83 @@
     font-family: monospace;
     font-size: 0.85rem;
     z-index: 9999;
+}
+/* ===============================
+   📱 手机端强力放大适配
+================================= */
+@media (max-width: 768px) {
+    /* 1. 桌面图标栅格大幅度放大 */
+    .icon-grid {
+        grid-template-columns: repeat(auto-fill, 100px) !important;
+        grid-template-rows: repeat(auto-fill, 130px) !important;
+        gap: 15px !important;
+        padding: 15px !important;
+        height: calc(100% - 65px) !important;
+    }
+
+    .icon {
+        width: 100px !important;
+    }
+
+    .icon img {
+        width: 60px !important; /* 图标大一圈 */
+        height: 60px !important;
+    }
+
+    .icon span {
+        font-size: 14px !important; /* 文字变大 */
+        margin-top: 5px;
+    }
+
+    /* 2. 任务栏显著变高 */
+    .taskbar {
+        height: 65px !important; /* 从40px增加到65px */
+    }
+
+    .desktop {
+        padding-bottom: 65px !important;
+    }
+
+    /* 3. 任务栏内部元素放大 */
+    .start-btn {
+        width: 65px !important;
+    }
+    .start-btn img {
+        width: 30px !important;
+        height: 30px !important;
+    }
+
+    .search-container {
+        height: 45px !important;
+        width: 140px !important; /* 给右边留点空间 */
+    }
+
+    .task-icon {
+        width: 55px !important;
+    }
+    .task-icon img {
+        width: 35px !important;
+        height: 35px !important;
+    }
+
+    .clock {
+        font-size: 13px !important;
+        padding-right: 10px;
+    }
+
+    /* 4. 隐藏手机端不需要的元素，防止重叠 */
+    .sticky-note {
+        display: none; /* 手机端便签通常会挡住图标，建议隐藏或缩小 */
+    }
+
+    /* 5. 微信窗口适配 */
+    .win-window {
+        width: 100% !important;
+        height: calc(100% - 65px) !important;
+        top: 10% !important;
+        left: 0 !important;
+        transform: none !important;
+    }
 }
     </style>
     <div class="progress-indicator">11/33</div>

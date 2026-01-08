@@ -2,6 +2,7 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
         <title>桌面</title>
     <style>
         body, html { margin: 0; padding: 0; height: 100%; overflow: hidden; font-family: "Microsoft YaHei", sans-serif; }
@@ -43,20 +44,20 @@
         .sticky-note p { font-size: 12px; margin: 5px 0; line-height: 1.6; }
         .sticky-note .urgent { color: #dc2626; font-weight: bold; }
 
-/* 仿 Win10 任务栏 */
-.taskbar {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 40px;
-    background: rgba(199, 187, 187, 0.85);
-    display: flex;
-    align-items: center;
-    backdrop-filter: blur(5px);
-    z-index: 6000; /* 保证在弹窗之上 */
-    color: white;
-}
+        /* 仿 Win10 任务栏 */
+        .taskbar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 40px;
+            background: rgba(199, 187, 187, 0.85);
+            display: flex;
+            align-items: center;
+            backdrop-filter: blur(5px);
+            z-index: 6000; /* 保证在弹窗之上 */
+            color: white;
+        }
 
         /* 开始按钮 */
         .start-btn {
@@ -86,37 +87,37 @@
         /* 系统托盘与时钟 */
         .tray-area { margin-left: auto; display: flex; align-items: center; padding: 0 10px;color: #000000; }
         .clock { text-align: center; font-size: 11px; line-height: 1.2; padding: 0 5px; cursor: default; }
-/* 优化搜索结果项布局 */
-.search-item {
-    padding: 12px 15px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    transition: background 0.2s;
-}
+        /* 优化搜索结果项布局 */
+        .search-item {
+            padding: 12px 15px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: background 0.2s;
+        }
 
-.search-item:hover {
-    background-color: #e5f3ff;
-}
+        .search-item:hover {
+            background-color: #e5f3ff;
+        }
 
-/* 搜索文字信息的容器 */
-.search-item-info {
-    display: flex;
-    flex-direction: column;
-}
+        /* 搜索文字信息的容器 */
+        .search-item-info {
+            display: flex;
+            flex-direction: column;
+        }
 
-.search-item-title {
-    font-size: 13px;
-    font-weight: bold;
-    color: #000;
-}
+        .search-item-title {
+            font-size: 13px;
+            font-weight: bold;
+            color: #000;
+        }
 
-.search-item-type {
-    font-size: 11px;
-    color: #0067b8;
-}
-/* --- Windows 10 风格窗口 --- */
+        .search-item-type {
+            font-size: 11px;
+            color: #0067b8;
+        }
+        /* --- Windows 10 风格窗口 --- */
         .window {
             position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
             width: 640px; height: 420px; background: #fff; border: 1px solid #1883d7;
@@ -138,62 +139,61 @@
         .deleted-item img { width: 42px; height: 42px; filter: grayscale(100%); opacity: 0.6; }
         .deleted-item span { font-size: 11px; text-align: center; margin-top: 6px; color: #333; word-break: break-all; }
    /* 紧贴底部的搜索历史面板 */
-.history-window { 
-    position: fixed; bottom: 40px; left: 0; 
-    width: 320px; height: 450px; 
-    background: rgba(255, 255, 255, 0.98); 
-    border: 1px solid #ccc; border-bottom: none;
-    display: none; flex-direction: column; z-index: 4000;
-    animation: slideUp 0.2s ease-out;
-}
+        .history-window { 
+            position: fixed; bottom: 40px; left: 0; 
+            width: 320px; height: 450px; 
+            background: rgba(255, 255, 255, 0.98); 
+            border: 1px solid #ccc; border-bottom: none;
+            display: none; flex-direction: column; z-index: 4000;
+            animation: slideUp 0.2s ease-out;
+        }
 
-@keyframes slideUp {
-    from { transform: translateY(10px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
-}
+        @keyframes slideUp {
+            from { transform: translateY(10px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
 
-/* 修改后的 history-list 样式 */
-.history-list { 
-    flex: 1; 
-    overflow-y: auto; 
-    padding: 10px; 
-    display: flex;           /* 启用 Flex 布局 */
-    flex-direction: column;
-}
+        /* 修改后的 history-list 样式 */
+        .history-list { 
+            flex: 1; 
+            overflow-y: auto; 
+            padding: 10px; 
+            display: flex;           /* 启用 Flex 布局 */
+            flex-direction: column;
+        }
 
-/* 新增：提示文字的居中样式 */
-.no-history-msg {
-    margin: auto;            /* 在 Flex 容器中实现完美居中 */
-    color: #999; 
-    font-size: 12px;
-    text-align: center;
-}
-.history-item { 
-    padding: 12px 15px; margin-bottom: 2px;
-    background: #fff; color: #333; cursor: pointer; font-size: 13px; 
-    display: flex; align-items: center; gap: 10px; border-left: 3px solid transparent;
-}
-.history-item:hover { background: #e5f3ff; border-left: 3px solid #0078d7; }
-.history-item::before { content: "🕒"; font-size: 12px; opacity: 0.6; }
+        /* 新增：提示文字的居中样式 */
+        .no-history-msg {
+            margin: auto;            /* 在 Flex 容器中实现完美居中 */
+            color: #999; 
+            font-size: 12px;
+            text-align: center;
+        }
+        .history-item { 
+            padding: 12px 15px; margin-bottom: 2px;
+            background: #fff; color: #333; cursor: pointer; font-size: 13px; 
+            display: flex; align-items: center; gap: 10px; border-left: 3px solid transparent;
+        }
+        .history-item:hover { background: #e5f3ff; border-left: 3px solid #0078d7; }
+        .history-item::before { content: "🕒"; font-size: 12px; opacity: 0.6; }
 
         /* --- 微信窗口容器 (Win10风格) --- */
-/* --- 微信窗口容器 (Win10风格) --- */
-.win-window {
-    position: fixed;         /* 更改为 fixed */
-    top: 50%;                /* 垂直居中 */
-    left: 50%;               /* 水平居中 */
-    transform: translate(-50%, -50%); /* 抵消自身长宽的一半实现完美居中 */
-    width: 870px; 
-    height: 620px;
-    background: #fff; 
-    border: 1px solid var(--win-blue);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-    display: none; 
-    flex-direction: column; 
-    z-index: 1000;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
-    font-size: 14px;
-}
+        .win-window {
+            position: fixed;         /* 更改为 fixed */
+            top: 50%;                /* 垂直居中 */
+            left: 50%;               /* 水平居中 */
+            transform: translate(-50%, -50%); /* 抵消自身长宽的一半实现完美居中 */
+            width: 870px; 
+            height: 620px;
+            background: #fff; 
+            border: 1px solid var(--win-blue);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            display: none; 
+            flex-direction: column; 
+            z-index: 1000;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+            font-size: 14px;
+        }
         .win-header {
             height: 32px; background: #fff; display: flex; justify-content: space-between;
             align-items: center; padding-left: 10px; cursor: move; border-bottom: 1px solid #eee;
@@ -205,11 +205,11 @@
 
         /* --- 微信内部内容样式 --- */
         /* 确保主体撑满除去标题栏后的空间 */
-.wechat-body {
-    flex: 1;
-    display: flex;
-    overflow: hidden;
-}
+        .wechat-body {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+        }
         .sidebar { width: 50px; background: #2e2e2e; display: flex; flex-direction: column; align-items: center; padding-top: 20px; }
         .nav-icon { color: #919191; font-size: 20px; margin-bottom: 25px; cursor: pointer; }
         .nav-icon.active { color: var(--wechat-green); }
@@ -222,151 +222,151 @@
         .avatar { width: 40px; height: 40px; border-radius: 4px; margin-right: 10px; background: #ccc; display: flex; align-items: center; justify-content: center; color: white; }
 
         .main-view { flex: 1; background: #f5f5f5; display: flex; flex-direction: column; position: relative; }
-.view-header {
-    height: 60px; /* 稍微加高到 60px 更有空间感 */
-    padding: 0 25px;
-    display: flex;  font-size: 15px;
-    justify-content: space-between; /* 左右分布 */
-    align-items: center;
-    border-bottom: 1px solid #e7e7e7;
-    background: #f5f5f5;
-}
+        .view-header {
+            height: 60px; /* 稍微加高到 60px 更有空间感 */
+            padding: 0 25px;
+            display: flex;  font-size: 15px;
+            justify-content: space-between; /* 左右分布 */
+            align-items: center;
+            border-bottom: 1px solid #e7e7e7;
+            background: #f5f5f5;
+        }
 
-/* 模拟右侧的更多操作图标 */
-.view-header::after {
-    content: "···"; 
-    font-size: 20px;
-    color: #888;
-    cursor: pointer;
-}
-.msg-bubble {
-    position: relative;
-    background: #fff;
-    padding: 9px 12px;  line-height: 1.4;
-    border-radius: 4px;
-    max-width: 70%;
-    font-size: 1em;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
-}
+        /* 模拟右侧的更多操作图标 */
+        .view-header::after {
+            content: "···"; 
+            font-size: 20px;
+            color: #888;
+            cursor: pointer;
+        }
+        .msg-bubble {
+            position: relative;
+            background: #fff;
+            padding: 9px 12px;  line-height: 1.4;
+            border-radius: 4px;
+            max-width: 70%;
+            font-size: 1em;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
 
-/* 添加气泡小尖角 */
-.msg-bubble::before {
-    content: "";
-    position: absolute;
-    left: -6px;
-    top: 10px;
-    border-width: 6px 6px 6px 0;
-    border-style: solid;
-    border-color: transparent #fff transparent transparent;
-}
-/* --- Moments Style --- */
-#moments-content {
-    flex: 1; /* 占据剩余垂直高度 */
-    height: 100%;
-    padding: 20px 40px;
-    overflow-y: auto; /* 允许滚动 */
-    background: #f7f7f7;
-    display: flex;
-    flex-direction: column;
-    min-height: 0; /* 防止内部内容撑破容器 */
-}
+        /* 添加气泡小尖角 */
+        .msg-bubble::before {
+            content: "";
+            position: absolute;
+            left: -6px;
+            top: 10px;
+            border-width: 6px 6px 6px 0;
+            border-style: solid;
+            border-color: transparent #fff transparent transparent;
+        }
+        /* --- Moments Style --- */
+        #moments-content {
+            flex: 1; /* 占据剩余垂直高度 */
+            height: 100%;
+            padding: 20px 40px;
+            overflow-y: auto; /* 允许滚动 */
+            background: #f7f7f7;
+            display: flex;
+            flex-direction: column;
+            min-height: 0; /* 防止内部内容撑破容器 */
+        }
 
-.moment {
-    display: flex;
-    background: #fff;
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-    margin-bottom: 20px;
-}
-.moment-body {
-    flex: 1;
-}
-.moment .avatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 4px; /* 或方角 4px */
-    margin-right: 15px;
-    flex-shrink: 0;
-    /* 向下移动头像 */
-    margin-top: 15px; /* 或使用 top: 10px; */
-}
+        .moment {
+            display: flex;
+            background: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+        }
+        .moment-body {
+            flex: 1;
+        }
+        .moment .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 4px; /* 或方角 4px */
+            margin-right: 15px;
+            flex-shrink: 0;
+            /* 向下移动头像 */
+            margin-top: 15px; /* 或使用 top: 10px; */
+        }
 
 
-.moment-detail {
-    flex: 1;
-}
+        .moment-detail {
+            flex: 1;
+        }
 
-.moment .m-name {
-    color: #576b95;
-    font-weight: bold;
-    font-size: 15px;
-    margin-bottom: 2px;
-}
+        .moment .m-name {
+            color: #576b95;
+            font-weight: bold;
+            font-size: 15px;
+            margin-bottom: 2px;
+        }
 
-.moment-detail p {
-    margin: 0 0 4px 0; /* 内容和时间间距 */
-    font-size: 14px;
-}
+        .moment-detail p {
+            margin: 0 0 4px 0; /* 内容和时间间距 */
+            font-size: 14px;
+        }
 
-.moment-detail .time {
-    color: #bbb;
-    font-size: 12px;
-    margin-top: 5px;
-}
+        .moment-detail .time {
+            color: #bbb;
+            font-size: 12px;
+            margin-top: 5px;
+        }
 
-/* 可选：朋友圈图片网格 */
-.moment-image-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 100px);
-    gap: 5px;
-    margin-bottom: 10px;
-}
+        /* 可选：朋友圈图片网格 */
+        .moment-image-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 100px);
+            gap: 5px;
+            margin-bottom: 10px;
+        }
 
-.moment-image-grid img {
-    width: 100px;
-    height: 100px;
-    object-fit: cover;
-    border-radius: 4px;
-    background: #eee;
-}
+        .moment-image-grid img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 4px;
+            background: #eee;
+        }
 
         /* 公众号卡片 */
         .subs-card { background: #fff; margin: 15px; padding: 15px; border-radius: 4px; cursor: pointer; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
-/* 压缩左侧会话列表中标题与预览的上下间距 */
-.list-item h4 {
-    margin: 0;
-    font-size: 14px;
-    line-height: 1.2;
-}
+        /* 压缩左侧会话列表中标题与预览的上下间距 */
+        .list-item h4 {
+            margin: 0;
+            font-size: 14px;
+            line-height: 1.2;
+        }
 
-.list-item p {
-    margin: 4px 0 0;
-    font-size: 12px;
-    line-height: 1.3;
-    color: #888;
-}
-.moments-title {
-    font-weight: bold;        /* 加粗 */
-    font-size: 16px;          /* 可调整大小 */
-    text-align: center;       /* 居中 */
-    padding: 10px 0;          /* 上下间距 */
-    background: #f7f7f7;      /* 可选：背景色 */
-    border-bottom: 1px solid #e0e0e0; /* 可选：底部分割线 */
-}
+        .list-item p {
+            margin: 4px 0 0;
+            font-size: 12px;
+            line-height: 1.3;
+            color: #888;
+        }
+        .moments-title {
+            font-weight: bold;        /* 加粗 */
+            font-size: 16px;          /* 可调整大小 */
+            text-align: center;       /* 居中 */
+            padding: 10px 0;          /* 上下间距 */
+            background: #f7f7f7;      /* 可选：背景色 */
+            border-bottom: 1px solid #e0e0e0; /* 可选：底部分割线 */
+        }
 
         .progress-indicator {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    background: rgba(0,0,0,0.6);
-    color: #fff;
-    padding: 6px 10px;
-    border-radius: 8px;
-    font-family: monospace;
-    font-size: 0.85rem;
-    z-index: 9999;
-}
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.6);
+            color: #fff;
+            padding: 6px 10px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 0.85rem;
+            z-index: 9999;
+        }
         .moment-footer {
             display: flex;
             justify-content: space-between;
@@ -375,28 +375,224 @@
                 margin-top: 6px;
         }
         .like-link {
-    color: inherit;
-    text-decoration: none;
-    cursor: pointer;
+            color: inherit;
+            text-decoration: none;
+            cursor: pointer;
+                }
+
+        .like-link:hover {
+            color: #07c160; /* 微信绿 */
+        }
+
+
+        .deleted-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;       /* 图标和文字间距 */
+            cursor: pointer;
+        }
+
+
+        .deleted-item span {
+            color: #8B0000;   /* 深红文字 */
+            font-weight: bold; /* 可选，加粗更醒目 */
+        }
+        /* ===============================
+   📱 手机端强力放大适配
+================================= */
+@media (max-width: 768px) {
+    /* 1. 桌面图标栅格大幅度放大 */
+    .icon-grid {
+        grid-template-columns: repeat(auto-fill, 100px) !important;
+        grid-template-rows: repeat(auto-fill, 130px) !important;
+        gap: 15px !important;
+        padding: 15px !important;
+        height: calc(100% - 65px) !important;
+    }
+
+    .icon {
+        width: 100px !important;
+    }
+
+    .icon img {
+        width: 60px !important; /* 图标大一圈 */
+        height: 60px !important;
+    }
+
+    .icon span {
+        font-size: 14px !important; /* 文字变大 */
+        margin-top: 5px;
+    }
+
+    /* 2. 任务栏显著变高 */
+    .taskbar {
+        height: 65px !important; /* 从40px增加到65px */
+    }
+
+    .desktop {
+        padding-bottom: 65px !important;
+    }
+
+    /* 3. 任务栏内部元素放大 */
+    .start-btn {
+        width: 65px !important;
+    }
+    .start-btn img {
+        width: 30px !important;
+        height: 30px !important;
+    }
+
+    .search-container {
+        height: 45px !important;
+        width: 140px !important; /* 给右边留点空间 */
+    }
+
+    .task-icon {
+        width: 55px !important;
+    }
+    .task-icon img {
+        width: 35px !important;
+        height: 35px !important;
+    }
+
+    .clock {
+        font-size: 13px !important;
+        padding-right: 10px;
+    }
+
+    /* 4. 隐藏手机端不需要的元素，防止重叠 */
+    .sticky-note {
+        display: none; /* 手机端便签通常会挡住图标，建议隐藏或缩小 */
+    }
+
+/* 5. 微信窗口适配：不全屏，四周留空隙 */
+    .win-window {
+        /* 设置宽度和高度为屏幕的 90%，四周留出 5% 的空隙 */
+        width: 92vw !important; 
+        height: 75vh !important; 
+        
+        /* 居中定位 */
+        top: 50% !important;
+        left: 50% !important;
+        transform: translate(-50%, -55%) !important; /* 向上偏移一点，给底部任务栏留视觉空间 */
+        
+        /* 圆角和阴影增强悬浮感 */
+        border-radius: 8px !important;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.5) !important;
+        
+        /* 内部内容适配 */
+        display: none; /* 初始隐藏逻辑不变 */
+        flex-direction: column;
+    }
+
+    /* 微信内部内容自动适配缩小后的窗口 */
+    .wechat-body {
+        height: 100%;
+    }
+
+    /* 6. 微信内部比例适配：chat-list 变宽 */
+    .sidebar {
+        width: 40px !important; /* 侧边栏稍微收窄 */
+    }
+
+    .chat-list {
+        width: 20% !important; /* 从固定的 220px 改为占窗口的 35% */
+        min-width: 100px; /* 防止过窄 */
+    }
+
+    .list-item {
+        height: 60px !important; /* 增加高度，方便手指触碰 */
+        padding: 8px !important;
+    }
+
+    .list-item .avatar {
+        width: 35px !important;
+        height: 35px !important;
+        margin-right: 8px !important;
+    }
+
+    .list-item h4 {
+        font-size: 13px !important; /* 缩小标题字号适配宽度 */
+    }
+
+    .list-item p {
+        display: none; /* 手机端宽度有限，建议隐藏预览文字，只留标题 */
+    }
+
+    .main-view {
+        flex: 1; /* 右侧聊天区域占据剩余空间 */
+    }
+
+    .view-header {
+        height: 50px !important;
+        padding: 0 15px !important;
+    }
 }
+    .window {
+         /* 设置宽度和高度为屏幕的 90%，四周留出 5% 的空隙 */
+        width: 92vw !important; 
+        height: 75vh !important; 
+        
+        /* 居中定位 */
+        top: 50% !important;
+        left: 50% !important;
+        transform: translate(-50%, -55%) !important; /* 向上偏移一点，给底部任务栏留视觉空间 */
+        
+        /* 圆角和阴影增强悬浮感 */
+        border-radius: 8px !important;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.5) !important;
+        
+        /* 内部内容适配 */
+        display: none; /* 初始隐藏逻辑不变 */
+        flex-direction: column;
+    }
+    #moments-content {
+        padding: 10px 15px !important; /* 显著缩小外边距 */
+    }
 
-.like-link:hover {
-    color: #07c160; /* 微信绿 */
-}
+    .moment {
+        padding: 12px !important;
+        margin-bottom: 12px !important;
+        /* 如果窗口特别窄，可以开启垂直布局（可选） */
+        /* flex-direction: column; */
+    }
+
+    .moment .avatar {
+        width: 35px !important;
+        height: 35px !important;
+        margin-right: 10px !important;
+        margin-top: 5px !important; /* 手机端头像上移一点更对齐 */
+    }
+
+    .moment .m-name {
+        font-size: 14px !important;
+    }
+
+    .moment-body p {
+        font-size: 13px !important; /* 内容文字微调 */
+        line-height: 1.5 !important;
+    }
+
+    /* 朋友圈图片网格适配：最关键部分 */
+    .moment-image-grid {
+        /* 将原本固定的 100px 改为按比例分配，确保不溢出 */
+        grid-template-columns: repeat(3, 1fr) !important; 
+        gap: 4px !important;
+        max-width: 220px; /* 限制总宽度 */
+    }
+
+    .moment-image-grid img {
+        width: 100% !important; /* 宽度跟随栅格比例 */
+        height: auto !important;
+        aspect-ratio: 1 / 1; /* 保持正方形 */
+    }
+
+    .moment-footer {
+        font-size: 11px !important;
+        margin-top: 8px !important;
+    }
 
 
-.deleted-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;       /* 图标和文字间距 */
-    cursor: pointer;
-}
-
-
-.deleted-item span {
-    color: #8B0000;   /* 深红文字 */
-    font-weight: bold; /* 可选，加粗更醒目 */
-}
 
    </style>
 </head>
