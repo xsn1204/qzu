@@ -297,6 +297,72 @@
                 padding: 10px 15px;
             }
         }
+/* --- 手机端适配：最简洁修复滑动与按钮 --- */
+        @media screen and (max-width: 768px) {
+            /* 1. 允许 body 响应内容高度 */
+            body, html {
+                overflow: auto; 
+                height: auto;
+            }
+
+            .sidebar { display: none; }
+
+            /* 2. 容器高度自适应，不再锁死 100vh */
+            .container {
+                display: block; /* 手机端改回标准文档流，防止 flex 导致的无法滚动 */
+                height: auto;
+            }
+
+            .main-content {
+                display: block;
+            }
+
+            /* 3. 编辑区：去掉 flex 限制，让它随内容撑开 */
+            .editor-container {
+                overflow: visible; 
+                padding: 10px 0;
+            }
+
+            .editor-paper {
+                width: 100%;
+                padding: 30px 20px;
+                min-height: auto;
+                margin-bottom: 0;
+                box-shadow: none;
+            }
+
+            .input-title { font-size: 22px; }
+
+            /* 4. 底部栏：固定在屏幕底部，不遮挡最后的内容 */
+            .bottom-bar {
+                position: sticky;
+                bottom: 0;
+                padding: 15px;
+                padding-bottom: calc(15px + env(safe-area-inset-bottom));
+                flex-direction: column;
+                height: auto;
+                background: #191919; /* 对应你的夜间模式背景 */
+                border-top: 1px solid var(--border-color);
+                z-index: 1000;
+            }
+
+            .status-info { margin-bottom: 10px; font-size: 11px; text-align: center; }
+
+            .actions {
+                display: flex;
+                width: 100%;
+                gap: 10px;
+            }
+
+            .btn {
+                flex: 1;
+                margin: 0;
+                padding: 12px 0;
+                text-align: center;
+            }
+            
+            .top-nav, .rich-toolbar { padding: 8px 15px; }
+        }
     </style>
 </head>
 
