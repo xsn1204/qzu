@@ -23,29 +23,30 @@
         }
 
         body {
-            line-height: 1.8; /* 简介页文字行距稍大，易读 */
+            line-height: 1.8; 
             color: var(--text-dark);
             background-color: var(--bg-light);
             font-size: 16px;
         }
-                        .progress-indicator {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    background: rgba(0,0,0,0.6);
-    color: #fff;
-    padding: 6px 10px;
-    border-radius: 8px;
-    font-family: monospace;
-    font-size: 0.85rem;
-    z-index: 9999;
-}
 
-        /* --- 通用页头结构（模拟） --- */
+        .progress-indicator {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.6);
+            color: #fff;
+            padding: 6px 10px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 0.85rem;
+            z-index: 9999;
+        }
+
+        /* --- 通用页头结构 --- */
         .page-header {
             background-color: var(--qz-blue);
             color: var(--text-light);
-            padding: 40px 0;
+            padding: 40px 20px;
             text-align: center;
             margin-bottom: 20px;
         }
@@ -53,10 +54,12 @@
             font-size: 2.5em;
             font-weight: 500;
         }
+
         /* --- 主导航栏 --- */
         .navbar {
             background-color: var(--qz-blue);
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            overflow-x: auto;
         }
 
         .nav-list {
@@ -66,6 +69,7 @@
             padding: 0;
             margin: 0 auto;
             max-width: 1400px;
+            white-space: nowrap;
         }
 
         .nav-list a {
@@ -75,13 +79,14 @@
             font-size: 1.1em;
             font-weight: 500;
             transition: background-color 0.3s;
+            text-decoration: none; /* 默认导航栏不显示下划线 */
         }
 
-        .nav-list a:hover {
+        .nav-list a:hover:not(.disabled) {
             background-color: var(--qz-gold);
             color: var(--text-dark);
         }
-        
+
         /* --- 主体内容布局 --- */
         .main-container {
             width: 80%;
@@ -93,14 +98,13 @@
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
         }
 
-        /* --- 侧边栏/二级导航（模拟） --- */
         .content-wrapper {
             display: flex;
             gap: 30px;
         }
 
         .sidebar {
-            flex: 0 0 200px; /* 固定宽度 */
+            flex: 0 0 200px;
             padding-top: 10px;
         }
 
@@ -116,8 +120,14 @@
             border-bottom: 1px solid #eee;
             font-size: 0.95em;
             color: var(--text-dark);
+            text-decoration: none; /* 默认无下划线 */
         }
-        
+
+        /* 关键修改：只有非禁用的链接（如心理服务）显示下划线 */
+        .sidebar a:not(.disabled) {
+            text-decoration: underline;
+        }
+
         .sidebar a:hover, .sidebar .active {
             background-color: #f0f0f0;
             color: var(--qz-blue);
@@ -126,10 +136,11 @@
         .sidebar .active {
             border-left: 4px solid var(--qz-blue);
             padding-left: 11px;
+            text-decoration: none; /* 当前激活项通常不需要下划线 */
         }
 
         /* --- 文章正文区 --- */
-        .main-content-body { flex: 1; }
+        .main-content-body { flex: 1; min-width: 0; }
         .article-title {
             font-size: 24px;
             color: var(--text-dark);
@@ -157,15 +168,14 @@
         }
         .attachment-link {
             color: #d4380d;
-            text-decoration: none;
+            text-decoration: underline; /* 附件链接保留下划线 */
             display: inline-flex;
             align-items: center;
             font-weight: 500;
         }
-        .attachment-link:hover { text-decoration: underline; }
-        .pdf-icon { width: 20px; margin-right: 8px; }
+        .pdf-icon { width: 20px; margin-right: 8px; flex-shrink: 0; }
 
-        /* --- 页脚 (同步 intro.html) --- */
+        /* --- 页脚 --- */
         .footer {
             background-color: #333;
             color: #ccc;
@@ -174,48 +184,43 @@
             font-size: 0.85em;
             margin-top: 40px;
         }
-.navbar a.disabled {
-    text-decoration: none;   /* 无下划线 */
-    cursor: default;         /* 非链接鼠标 */
-    pointer-events: none;    /* 禁止点击 */
-}
 
-/* hover 时也不变化 */
-.navbar a.disabled:hover {
-    text-decoration: none;
-}
+        /* 禁用状态处理 */
+        .navbar a.disabled, .sidebar a.disabled {
+            cursor: default;
+            pointer-events: none;
+            text-decoration: none !important; /* 强制禁用项无下划线 */
+        }
 
-.sidebar a.disabled {
-    text-decoration: none;   /* 无下划线 */
-    cursor: default;         /* 非链接鼠标 */
-    pointer-events: none;    /* 禁止点击 */
-}
-
-/* hover 时也不变化 */
-.sidebar a.disabled:hover {
-    text-decoration: none;
-}
-
-
-
+        /* 响应式媒体查询 (手机端) */
+        @media (max-width: 768px) {
+            .nav-list a { padding: 12px 15px; font-size: 1rem; }
+            .page-header h1 { font-size: 1.8em; }
+            .main-container { width: 95%; padding: 20px; }
+            .content-wrapper { flex-direction: column; }
+            .sidebar { flex: none; width: 100%; margin-bottom: 20px; }
+            .sidebar ul { display: flex; flex-wrap: wrap; background: #fff; }
+            .sidebar li { flex: 1 1 50%; }
+            .sidebar a { border: 1px solid #eee; text-align: center; border-bottom: none; }
+            .article-title { font-size: 20px; }
+        }
     </style>
 </head>
 <body>
     <div class="progress-indicator">6/33</div>
 
-<nav class="navbar">
-    <ul class="nav-list">
-        <li><a href="#" class="disabled">首页</a></li>
-        <li><a href="#" class="disabled">学校概况</a></li>
-        <li><a href="#" class="disabled">人才培养</a></li>
-        <li><a href="#" class="disabled">科学研究</a></li>
-        <li><a href="#" class="disabled">招生就业</a></li>
-        <li><a href="#" class="disabled">国际交流</a></li>
-        <li><a href="#" class="disabled">机构设置</a></li>
-        <li><a href="#" class="disabled">公共服务</a></li>
-    </ul>
-</nav>
-
+    <nav class="navbar">
+        <ul class="nav-list">
+            <li><a href="#" class="disabled">首页</a></li>
+            <li><a href="#" class="disabled">学校概况</a></li>
+            <li><a href="#" class="disabled">人才培养</a></li>
+            <li><a href="#" class="disabled">科学研究</a></li>
+            <li><a href="#" class="disabled">招生就业</a></li>
+            <li><a href="#" class="disabled">国际交流</a></li>
+            <li><a href="#" class="disabled">机构设置</a></li>
+            <li><a href="#" class="disabled">公共服务</a></li>
+        </ul>
+    </nav>
 
     <div class="page-header">
         <h1>学生工作</h1>
@@ -225,28 +230,25 @@
     <div class="main-container">
         <div class="content-wrapper">
             <div class="sidebar">
-<ul>
-    <li><a href="#" class="disabled">通知公告</a></li>
-    <li><a href="#" class="active">规章制度</a></li>
-    <li><a href="#" class="disabled">典型人物</a></li>
-    <li><a href="#" class="disabled">管理工作</a></li>
-    <li><a href="qdxy.html">心理服务</a></li>
-</ul>
-
+                <ul>
+                    <li><a href="#" class="disabled">通知公告</a></li>
+                    <li><a href="#" class="active">规章制度</a></li>
+                    <li><a href="#" class="disabled">典型人物</a></li>
+                    <li><a href="#" class="disabled">管理工作</a></li>
+                    <li><a href="qdxy.html">心理服务</a></li>
+                </ul>
             </div>
-
+            
             <div class="main-content-body">
                 <h1 class="article-title">青州大学关于 2024-2025 学年第二学期违纪学生的处分决定</h1>
                 <div class="article-meta">
                     日期：2025-04-22 &nbsp;&nbsp; 来源：学生工作办公室
                 </div>
-
                 <div class="article-body">
                     <p>各系、各办、全体同学：</p>
                     <p>为维护学校正常的教育教学秩序和生活秩序，建设优良学风，根据《青州大学学生违纪处分规定》，经学校研究决定，对在 2024-2025 学年第二学期违反校纪校规的20名学生给予相应纪律处分。具体名单见附件。</p>
                     <p>希望广大同学引以为戒，自觉遵守校规纪律。</p>
                 </div>
-
                 <div class="attachment-box">
                     <p style="font-weight:bold; margin-bottom:10px; color:var(--qz-blue);">附件：</p>
                     <a href="chufen2.html" class="attachment-link">
@@ -260,8 +262,6 @@
 
     <footer class="footer">
         青州大学党委宣传部出品 | 青ICP备 19000001号-1
-    </footer>
-
     </footer>
 </body>
 </html>

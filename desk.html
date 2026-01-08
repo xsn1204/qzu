@@ -177,17 +177,23 @@
 .history-item::before { content: "🕒"; font-size: 12px; opacity: 0.6; }
 
         /* --- 微信窗口容器 (Win10风格) --- */
-        .win-window {
-            position: absolute; top: 50px; left: 250px;
-            width: 870px; height: 620px;
-            background: #fff; border: 1px solid var(--win-blue);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            display: none; flex-direction: column; z-index: 1000;
-                font-family: -apple-system, BlinkMacSystemFont,
-                 "Segoe UI", "PingFang SC",
-                 "Microsoft YaHei", sans-serif;
-    font-size: 14px; /* 微信正文基准 */
-        }
+/* --- 微信窗口容器 (Win10风格) --- */
+.win-window {
+    position: fixed;         /* 更改为 fixed */
+    top: 50%;                /* 垂直居中 */
+    left: 50%;               /* 水平居中 */
+    transform: translate(-50%, -50%); /* 抵消自身长宽的一半实现完美居中 */
+    width: 870px; 
+    height: 620px;
+    background: #fff; 
+    border: 1px solid var(--win-blue);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    display: none; 
+    flex-direction: column; 
+    z-index: 1000;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+    font-size: 14px;
+}
         .win-header {
             height: 32px; background: #fff; display: flex; justify-content: space-between;
             align-items: center; padding-left: 10px; cursor: move; border-bottom: 1px solid #eee;

@@ -19,7 +19,7 @@
             height: 100%;
             font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "PingFang SC", "Microsoft YaHei", sans-serif;
             background-color: var(--bg-gray);
-            overflow: hidden; /* 防止网页整体出现双滚动条 */
+            overflow: hidden; 
         }
 
         .container {
@@ -88,7 +88,6 @@
             min-width: 0;
         }
 
-        /* 顶部导航与工具栏 */
         .top-nav {
             background: #fff;
             padding: 10px 25px;
@@ -97,6 +96,8 @@
             gap: 25px;
             font-size: 14px;
             flex-shrink: 0;
+            overflow-x: auto; /* 手机端支持横滑 */
+            white-space: nowrap;
         }
 
         .top-nav-item.active { color: var(--wechat-green); font-weight: 500; }
@@ -109,6 +110,7 @@
             align-items: center;
             gap: 15px;
             flex-shrink: 0;
+            overflow-x: auto; /* 手机端支持横滑 */
         }
 
         .tool-icon {
@@ -117,9 +119,9 @@
             background: #f8f8f8;
             border: 1px solid #ddd;
             border-radius: 2px;
+            flex-shrink: 0;
         }
 
-        /* 滚动容器：解决“划拉不动”的关键 */
         .editor-container {
             flex: 1;
             overflow-y: auto; 
@@ -130,20 +132,18 @@
             min-height: 0; 
         }
 
-        /* 编辑纸张：解决“看不到标题”的关键（确保白色背景和内边距存在） */
         .editor-paper {
             width: 90%;
             max-width: 750px;
             background: #fff;
             padding: 60px 80px;
             box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-            min-height: 1200px; /* 保证高度产生滚动 */
-            margin-bottom: 60px; /* 底部留白确保滑到底 */
+            min-height: 1200px; 
+            margin-bottom: 60px; 
             box-sizing: border-box;
             flex-shrink: 0;
         }
 
-        /* 标题：解决不换行导致的显示不全 */
         .input-title {
             font-size: 28px;
             font-weight: 600;
@@ -166,7 +166,6 @@
             display: block;
         }
 
-        /* 正文排版 */
         .editor-body {
             font-size: 16px;
             color: var(--text-main);
@@ -215,123 +214,101 @@
             border: none;
         }
 
-        .btn:hover { opacity: 0.8; }
+        /* --- 夜间模式 --- */
         :root {
-    /* 夜间模式色彩定义 */
-    --bg-gray: #111111;       /* 整体背景：极深灰 */
-    --editor-bg: #1e1e1e;     /* 编辑器纸张：深灰 */
-    --sidebar-bg: #191919;    /* 侧边栏 */
-    --nav-bg: #191919;        /* 顶部导航 */
-    --border-color: #333333;  /* 边框：深色 */
-    --wechat-green: #07c160;  
-    --text-gray: #888888;
-    --text-main: #d1d1d1;     /* 主文字：浅白 */
-    --text-link: #576b95;     /* 链接色 */
-}
+            --bg-gray: #111111;
+            --editor-bg: #1e1e1e;
+            --sidebar-bg: #191919;
+            --nav-bg: #191919;
+            --border-color: #333333;
+            --wechat-green: #07c160;
+            --text-gray: #888888;
+            --text-main: #d1d1d1;
+            --text-link: #576b95;
+        }
 
-body, html {
-    background-color: var(--bg-gray);
-    color: var(--text-main);
-}
+        body, html {
+            background-color: var(--bg-gray);
+            color: var(--text-main);
+        }
 
-/* --- 左侧预览栏夜间适配 --- */
-.sidebar {
-    background: var(--sidebar-bg);
-}
+        .sidebar { background: var(--sidebar-bg); }
+        .logo { color: #fff; }
+        .preview-card { background: #262626; border-color: var(--border-color); }
+        .top-nav, .rich-toolbar, .bottom-bar { background: var(--nav-bg); border-color: var(--border-color); color: var(--text-main); }
+        .tool-icon { background: #2a2a2a; border-color: #444; }
+        .editor-paper { background: var(--editor-bg); box-shadow: 0 4px 20px rgba(0,0,0,0.5); color: var(--text-main); }
+        .input-title { color: #ffffff; }
+        .input-author { background: transparent; color: var(--text-link); }
+        .btn { background: #2c2c2c; border-color: #444; color: #ccc; }
+        .btn-primary { background: var(--wechat-green); color: #fff; }
+        .sidebar-logo-img { width: 22px; height: 22px; margin-right: 10px; display: block; }
+        .progress-indicator { position: fixed; top: 20px; right: 20px; background: rgba(0,0,0,0.6); color: #fff; padding: 6px 10px; border-radius: 8px; font-family: monospace; font-size: 0.85rem; z-index: 9999; }
 
-.logo { color: #fff; }
+        /* --- 手机端适配关键修改 --- */
+        @media screen and (max-width: 768px) {
+            .sidebar {
+                display: none; /* 隐藏侧边栏 */
+            }
 
-.preview-card {
-    background: #262626;
-    border-color: var(--border-color);
-}
+            .editor-container {
+                padding: 10px 0; /* 减少四周留白 */
+            }
 
-/* --- 主编辑区夜间适配 --- */
-.top-nav, .rich-toolbar, .bottom-bar {
-    background: var(--nav-bg);
-    border-color: var(--border-color);
-    color: var(--text-main);
-}
+            .editor-paper {
+                width: 100%; /* 纸张撑满屏幕 */
+                padding: 30px 20px; /* 减少内边距 */
+                box-shadow: none; /* 手机端不需要阴影 */
+                min-height: auto;
+            }
 
-.tool-icon {
-    background: #2a2a2a;
-    border-color: #444;
-}
+            .input-title {
+                font-size: 22px; /* 缩小标题字体 */
+            }
 
-/* --- 核心：编辑纸张夜间模式 --- */
-.editor-paper {
-    background: var(--editor-bg); /* 纸张变暗 */
-    box-shadow: 0 4px 20px rgba(0,0,0,0.5); /* 阴影加深 */
-    color: var(--text-main);
-}
+            .bottom-bar {
+                padding: 0 15px;
+                flex-direction: column; /* 纵向排列或更紧凑 */
+                height: auto;
+                padding-bottom: 15px;
+                padding-top: 10px;
+            }
 
-.input-title {
-    color: #ffffff; /* 标题用纯白增加对比 */
-}
+            .status-info {
+                margin-bottom: 10px;
+            }
 
-.input-author {
-    background: transparent;
-    color: var(--text-link);
-}
+            .actions {
+                display: flex;
+                width: 100%;
+                justify-content: space-between;
+            }
 
-.editor-body {
-    color: var(--text-main);
-}
-
-/* --- 按钮夜间模式 --- */
-.btn {
-    background: #2c2c2c;
-    border-color: #444;
-    color: #ccc;
-}
-
-.btn-primary {
-    background: var(--wechat-green);
-    color: #fff;
-    border: none;
-}
-.logo {
-    font-size: 18px;
-    font-weight: bold;
-    margin-bottom: 30px;
-    display: flex;
-    align-items: center;
-    color: #ffffff; /* 夜间模式文字设为白色 */
-}
-
-/* 针对本地 SVG 的样式控制 */
-.sidebar-logo-img {
-    width: 22px;   /* 略小于登录页，更符合侧边栏比例 */
-    height: 22px;
-    margin-right: 10px;
-    display: block;
-    /* 如果你的 SVG 是黑色的，可以使用 filter 将其变为微信绿或白色 */
-    /* filter: brightness(0) invert(1); // 变全白 */
-}
-                .progress-indicator {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    background: rgba(0,0,0,0.6);
-    color: #fff;
-    padding: 6px 10px;
-    border-radius: 8px;
-    font-family: monospace;
-    font-size: 0.85rem;
-    z-index: 9999;
-}
+            .btn {
+                padding: 8px 12px;
+                margin-left: 0;
+                flex: 1;
+                margin: 0 5px;
+                text-align: center;
+                font-size: 12px;
+            }
+            
+            .top-nav, .rich-toolbar {
+                padding: 10px 15px;
+            }
+        }
     </style>
 </head>
 
-<div class="progress-indicator">33/33</div>
 <body>
+<div class="progress-indicator">33/33</div>
 
 <div class="container">
     <aside class="sidebar">
         <div class="logo">
-        <img src="wechat1.svg" alt="logo" class="sidebar-logo-img">
-        <span>服务号</span>
-    </div>
+            <img src="wechat1.svg" alt="logo" class="sidebar-logo-img">
+            <span>服务号</span>
+        </div>
         <div class="preview-card">
             <div class="preview-img">
                 <div class="preview-title">实名举报：关于软件工程学院副院长高成安严重违纪行为的说明</div>
@@ -344,17 +321,16 @@ body, html {
         <header class="top-nav">
              <div class="top-nav-item">视频</div>
             <div class="top-nav-item">图片 ⌵</div>
-                      <div class="top-nav-item">音频</div>
+            <div class="top-nav-item">音频</div>
             <div class="top-nav-item active">内容编辑</div>
             <div class="top-nav-item">小程序</div>
-
             <div class="top-nav-item">模板</div>
         </header>
 
         <div class="rich-toolbar">
             <div class="tool-icon"></div><div class="tool-icon"></div>
-            <div style="font-size: 13px; color: #666;">字体 ⌵</div>
-            <div style="font-size: 13px; color: #666;">17px ⌵</div>
+            <div style="font-size: 13px; color: #666; flex-shrink: 0;">字体 ⌵</div>
+            <div style="font-size: 13px; color: #666; flex-shrink: 0;">17px ⌵</div>
         </div>
 
         <div class="editor-container">
@@ -387,9 +363,9 @@ body, html {
         <footer class="bottom-bar">
             <div class="status-info">04:20 已保存 正文字数 607</div>
             <div class="actions">
-                 <button class="btn" onclick="window.location.href='finalX1.html'">保存为草稿</button>
+                 <button class="btn" onclick="window.location.href='finalX1.html'">存草稿</button>
                    <button class="btn" onclick="window.location.href='finalX2.html'">删除</button>
-                <button class="btn" onclick="window.location.href='finalX3.html'">发布</button>
+                <button class="btn btn-primary" onclick="window.location.href='finalX3.html'">发布</button>
             </div>
         </footer>
     </main>

@@ -2,68 +2,82 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>青州大学聘用合同书 - 核心条款详情</title>
     <style>
-        body { background: #f0f2f5; font-family: "FangSong", "SimSun", serif; padding: 40px; color: #1a1a1a; }
+        /* 基础样式保持不变 */
+        body { background: #f0f2f5; font-family: "FangSong", "SimSun", serif; padding: 20px; color: #1a1a1a; margin: 0; }
+        
         .contract-page { 
-            max-width: 800px; margin: 0 auto; background: #fff; padding: 80px 100px; 
+            max-width: 800px; margin: 0 auto; background: #fff; padding: 40px 50px; 
             box-shadow: 0 0 20px rgba(0,0,0,0.1); position: relative; line-height: 2;
+            box-sizing: border-box; /* 确保Padding不撑破宽度 */
         }
-        .header { text-align: center; margin-bottom: 50px; }
-        .header h1 { font-size: 28px; border-bottom: 2px solid #000; display: inline-block; padding-bottom: 5px; }
+        
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { font-size: 24px; border-bottom: 2px solid #000; display: inline-block; padding-bottom: 5px; }
         
         .section-title { font-weight: bold; font-size: 18px; margin: 30px 0 10px; }
-        .content { font-size: 16px; text-indent: 2em; text-align: justify; }
-/* 优化后的红色条款框样式 */
-.clause-red {
-    border: 2px solid rgba(255, 0, 0, 0.4);
-    background: rgba(255, 0, 0, 0.04);
-    /* 增加上下 padding 使框看起来更大，左右为 0 确保文字对齐 */
-    padding: 15px 0; 
-    margin: 15px 0;
-    text-indent: 2em;
-    width: 100%;
-    display: block;
-}
+        .content { font-size: 16px; text-indent: 2em; text-align: justify; word-break: break-all; }
 
-/* 确保红色框内的条款标题与普通条款一样加粗 */
-.clause-red strong {
-    font-weight: bold;
-    color: #000; /* 甚至可以稍微加深颜色突出重点 */
-}
-        .handwritten-note { 
-            position: absolute; right: -120px; top: 50%; width: 180px; 
-            font-family: "KaiTi", "STKaiti", cursive; color: #d4380d; 
-            font-size: 14px; transform: rotate(5deg); line-height: 1.4;
+        .clause-red {
+            border: 2px solid rgba(255, 0, 0, 0.4);
+            background: rgba(255, 0, 0, 0.04);
+            padding: 15px 10px; 
+            margin: 15px 0;
+            text-indent: 2em;
+            width: 100%;
+            display: block;
+            box-sizing: border-box;
         }
-        .handwritten-note::before { content: "← "; }
 
-        .footer { margin-top: 80px; display: flex; justify-content: space-between; }
-        .sign-area { width: 200px; border-bottom: 1px solid #000; display: inline-block; text-indent: 0; }
+        .clause-red strong { font-weight: bold; color: #000; }
+        
+        /* 手写批注在手机端改为显示在下方，避免遮挡 */
+        .handwritten-note { 
+            position: relative; right: 0; top: 0; width: 100%; 
+            font-family: "KaiTi", "STKaiti", cursive; color: #d4380d; 
+            font-size: 14px; margin: 20px 0; line-height: 1.4;
+        }
 
-        /* 模拟公章快照 */
+        .footer { margin-top: 50px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 20px; }
+        .sign-area { width: 160px; border-bottom: 1px solid #000; display: inline-block; text-indent: 0; }
+
         .seal-placeholder { 
-            position: absolute; bottom: 60px; right: 100px; width: 120px; height: 120px; 
+            position: absolute; bottom: 40px; right: 40px; width: 100px; height: 100px; 
             border: 2px dashed rgba(255, 0, 0, 0.3); border-radius: 50%; 
             display: flex; align-items: center; justify-content: center; 
-            color: rgba(255, 0, 0, 0.2); font-size: 12px; transform: rotate(-15deg);
+            color: rgba(255, 0, 0, 0.2); font-size: 10px; transform: rotate(-15deg);
+            pointer-events: none;
         }
-                        .progress-indicator {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    background: rgba(0,0,0,0.6);
-    color: #fff;
-    padding: 6px 10px;
-    border-radius: 8px;
-    font-family: monospace;
-    font-size: 0.85rem;
-    z-index: 9999;
-}
+
+
+        .progress-indicator {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.6);
+            color: #fff;
+            padding: 6px 10px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 0.85rem;
+            z-index: 9999;
+        }
+        /* --- 手机端专项适配策略 --- */
+        @media screen and (max-width: 600px) {
+            body { padding: 10px; }
+            .contract-page { padding: 30px 20px; }
+            .header h1 { font-size: 20px; }
+            .content { font-size: 15px; line-height: 1.8; }
+            .footer { flex-direction: column; }
+            .seal-placeholder { opacity: 0.5; width: 80px; height: 80px; right: 20px; bottom: 20px; }
+        }
     </style>
 </head>
-<div class="progress-indicator">21/33</div>
 <body>
+
+<div class="progress-indicator">21/33</div>
 
 <div class="contract-page">
     <div class="header">
@@ -73,31 +87,30 @@
 
     <div class="section-title">第六章 考核与解聘</div>
     
-    <div class="content">
-        <strong>第三十一条</strong> 事业单位工作人员年度考核不确定档次的，按照下列规定办理：<br>
-        (一) 不得增加薪级工资；<br>
-        (二) 相应核减绩效工资；<br>
-        (三) 本考核年度不计算为现聘岗位等级的任职年限，连续两年不确定档次的，视情况调整工作岗位。
+<div class="content">
+        <strong>第三十一条</strong> 事业单位工作人员年度考核不确定档次的，按照下列规定办理：
+        <div style="margin-left: 2em; text-indent: 0;">
+            (一) 不得增加薪级工资；<br>
+            (二) 相应核减绩效工资；<br>
+            (三) 本考核年度不计算为现聘岗位等级的任职年限，连续两年不确定档次的，视情况调整工作岗位。
+        </div>
     </div>
 
     <div class="content">
         <strong>第三十二条</strong> 事业单位工作人员聘期考核被确定为合格档次且所聘岗位存续的，经本人、单位协商一致，可以续订聘用合同。
     </div>
 
-
-<div class="content clause-red">
-    <strong>第三十三条</strong> 
-    聘期考核被确定为不合格档次的，合同期满一般不再续聘；特殊情况确需续订聘用合同的，应当报经主管机关审核同意。
-</div>
-
+    <div class="content clause-red">
+        <strong>第三十三条</strong> 
+        聘期考核被确定为不合格档次的，合同期满一般不再续聘；特殊情况确需续订聘用合同的，应当报经主管机关审核同意。
+    </div>
 
     <div class="section-title">第七章 违约责任</div>
 
-
-<div class="content clause-red">
-    <strong>第三十四条</strong>
-    乙方聘期内因个人原因离职，须全额返还甲方（青州大学）已发放的安家费、科研启动经费及人才补贴。若考核不合格转入专技十级岗，乙方须服从甲方岗位调整安排。
-</div>
+    <div class="content clause-red">
+        <strong>第三十四条</strong>
+        乙方聘期内因个人原因离职，须全额返还甲方（青州大学）已发放的安家费、科研启动经费及人才补贴。若考核不合格转入专技十级岗，乙方须服从甲方岗位调整安排。
+    </div>
 
     <div class="section-title">第八章 附则</div>
     <div class="content">
@@ -111,7 +124,6 @@
 
     <div class="seal-placeholder">骑缝章已核验</div>
 </div>
-
 
 </body>
 </html>
