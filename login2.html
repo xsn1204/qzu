@@ -90,12 +90,18 @@
                     </div>
 
                     <div class="flex items-center justify-between text-sm">
-                        <label class="flex items-center text-gray-600">
-                            <input type="checkbox" class="rounded text-[#003366] focus:ring-[#003366] mr-2"> 记住账号
-                        </label>
-                        <a href="#" class="text-[#003366] hover:underline">忘记密码？</a>
-                    </div>
+                   <label class="flex items-center text-gray-600">
+        <input type="checkbox" class="rounded text-[#003366] focus:ring-[#003366] mr-2"> 记住账号
+    </label>
+    <a href="#" id="forgotBtn" class="text-[#003366] hover:underline">忘记密码？</a>
+</div>
 
+<div id="cakeTip" class="hidden text-center text-xl mt-2 animate-bounce">
+    🎂
+</div>
+
+                    <div class="flex items-center justify-between text-sm">
+ 
                     <button onclick="handleLogin()" 
                         class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-bold text-white bg-[#003366] hover:bg-[#004d99] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#003366] transition-colors">
                         登 录
@@ -146,6 +152,19 @@
             }, 3000);
         }
     }
+    // 忘记密码点击事件
+document.getElementById('forgotBtn').addEventListener('click', function(e) {
+    e.preventDefault(); // 阻止网页跳转
+    const cakeTip = document.getElementById('cakeTip');
+    
+    // 显示蛋糕提示
+    cakeTip.classList.remove('hidden');
+    
+    // 3秒后自动消失
+    setTimeout(() => {
+        cakeTip.classList.add('hidden');
+    }, 3000);
+});
 
     // 支持回车登录
     document.addEventListener('keypress', function (e) {
@@ -156,6 +175,7 @@
     </script>
         </div>
     </div>
+    
 </div>
 </body>
 </html>

@@ -248,7 +248,7 @@ body {
                 </div>
                 <div class="search-box-wrapper">
                     <span style="position: absolute; left: 15px; color: #9aa0a6;">🔍</span>
-                    <input type="text" class="search-box" placeholder="在 qoogle 上搜索" id="search-input">
+                    <input type="text" class="search-box" placeholder="来Qoogle搜索你爱看的剧集🎈" id="search-input">
                 </div>
                 <div class="button-row">
   <div class="g-btn" onclick="handleSearch()">Qoogle搜索</div>
@@ -333,21 +333,7 @@ function handleSearch() {
     }
 }
 
-// Function for the "好剧推荐📺" button
-function showRecommendation() {
-    // Check if the message already exists to avoid duplicates
-    if (!document.getElementById('recommend-msg')) {
-        const msg = document.createElement('div');
-        msg.id = 'recommend-msg';
-        msg.style.marginTop = '20px';
-        msg.style.color = '#5f6368';
-        msg.style.fontSize = '14px';
-        msg.innerText = '来Qoogle搜索你爱看的剧集🎈';
-        
-        // Append it under the search container
-        document.getElementById('section-home').appendChild(msg);
-    }
-}
+
 </script>
 
 </body>
