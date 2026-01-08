@@ -2,6 +2,7 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>青大树洞</title>
     <style>
         :root { 
@@ -24,6 +25,7 @@
             margin: 0; 
             overflow: hidden; /* 禁止整个页面滚动 */
             display: flex; 
+            overflow: hidden;
             justify-content: center; 
             align-items: center; 
             height: 100vh; 
@@ -35,6 +37,10 @@
             background-size: cover;
             position: relative;
             background-attachment: fixed;
+            /* --- 添加下面这两行 --- */
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    
         }
 
         /* Windows 窗口容器 */
@@ -150,26 +156,31 @@
         .nav-icon.active { color: var(--win-blue); }
         .icon-circle { width: 22px; height: 22px; background: #eee; border-radius: 4px; margin: 0 auto 4px; }
         .active .icon-circle { background: var(--win-blue); }
-        .win-window {
-    position: fixed; /* 不随滚动 */
+/* 修改 bbq.html 中的 .win-window 部分 */
+.win-window {
+    position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 850px;
-    height: 650px;
+    width: 95vw;          /* 手机端占据 95% 屏幕宽度 */
+    max-width: 850px;     /* 电脑端最大 850px */
+    height: 90vh;         /* 占据 90% 屏幕高度，防止溢出 */
+    max-height: 650px;    /* 电脑端最大 650px */
     background: #fff;
-    box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+    box-shadow: var(--window-shadow);
     border-radius: 8px;
     display: flex;
     flex-direction: column;
+    overflow: hidden;    /* 必须隐藏溢出，依靠内部 main-content 滚动 */
+    z-index: 1000;
 }
 .main-content {
-    flex-grow: 1;
-    overflow-y: auto; /* 只让内部滚动 */
+    flex: 1;             /* 自动占据除了标题栏和底部导航外的所有空间 */
+    overflow-y: auto;    /* 允许垂直滚动 */
+    -webkit-overflow-scrolling: touch; /* 优化手机端滚动体验 */
     padding: 15px 20px;
     background: var(--bg-gray);
 }
-
 
                 .progress-indicator {
     position: fixed;
