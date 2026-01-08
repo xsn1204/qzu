@@ -43,6 +43,52 @@
     font-size: 0.85rem;
     z-index: 9999;
 }
+@media (max-width: 768px) {
+    /* 1. 隐藏 Logo 区域和英文/标题 */
+    header .max-w-7xl div.flex.items-center:first-child {
+        display: none !important;
+    }
+
+    /* 2. 核心：强制 Header 及其容器宽度 100%，消除白边 */
+    header, 
+    header .max-w-7xl, 
+    header .flex.justify-between {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: var(--qz-main) !important; /* 强制背景色撑满全屏 */
+    }
+
+    /* 3. 去掉阴影，让过渡更平滑 */
+    header {
+        box-shadow: none !important;
+    }
+
+    /* 4. 让导航栏撑满且按钮平分空间 */
+    header nav {
+        display: flex !important;
+        width: 100% !important;
+        justify-content: space-around !important; /* 按钮均匀分布 */
+        padding: 12px 0 !important;
+    }
+
+    /* 5. 按钮样式：去掉所有边框和底色，只留文字 */
+    .nav-item {
+        color: white !important;
+        font-size: 13px !important;
+        padding: 4px 0 !important;
+        margin: 0 !important;
+        position: relative;
+        flex: 1; /* 让每个按钮平分宽度 */
+        text-align: center;
+    }
+
+    /* 6. 调整主体内容位置，紧贴导航 */
+    main {
+        padding-top: 0 !important;
+    }
+}
 
     </style>
 </head>
