@@ -613,6 +613,43 @@
         display: flex;
         flex-direction: column;
     }
+    /* 点赞链接基础样式 */
+.like-link {
+    display: inline-flex;
+    align-items: center;
+    background: #eef2f7; /* 浅灰色背景 */
+    color: #003366 !important; /* 调整为你学校的主色调 */
+    padding: 2px 8px;
+    border-radius: 12px;
+    text-decoration: none !important;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+}
+
+/* 鼠标悬浮时的效果：变蓝、变亮 */
+.like-link:hover {
+    background: #e0e9f5;
+    border-color: #003366;
+    transform: scale(1.05); /* 整体微放大 */
+}
+
+/* 大拇指图标跳动动画 */
+.like-link:hover .thumb-icon {
+    animation: thumbJump 0.4s ease-out;
+}
+
+@keyframes thumbJump {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.4) rotate(-15deg); }
+    100% { transform: scale(1); }
+}
+
+/* 装饰文字样式 */
+.comment-count {
+    color: #666;
+    margin-left: 10px;
+}
    </style>
 </head>
 
@@ -836,8 +873,12 @@
 
                                 <div class="moment-footer">
                                     <span>3天前</span>
-                                    <span>
-        <a href="extra2.html" class="like-link" target="_blank">👍 5</a> | 💬 6</span>
+                                 <span class="text-sm text-gray-400 mt-2 flex items-center">
+    <a href="extra2.html" class="like-link" target="_blank">
+        <span class="thumb-icon">👍</span> 5
+    </a> 
+    <span class="comment-count">| 💬 6</span>
+</span>
                                 </div>
                             </div>
                     </div>
