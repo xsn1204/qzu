@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>专家智库 - 青州高新技术产业开发区</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .gov-bg { background-color: #f6f8fa; }
+        .sidebar-active { border-left: 4px solid #1a569d; background-color: #eef4fb; }
+        .expert-card { border-top: 5px solid #1a569d; }
+        .stamp-blue { 
+            border: 3px solid rgba(26, 86, 157, 0.4); 
+            color: rgba(26, 86, 157, 0.4);
+            transform: rotate(-20deg);
+            font-family: "SimHei";
+            background: rgba(255,255,255,0.8);
+        }
+        .photo-box { 
+            width: 200px; 
+            height: 260px; 
+            background: #f0f0f0; 
+            border: 1px solid #ddd; 
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+                        .progress-indicator {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: rgba(0,0,0,0.6);
+    color: #fff;
+    padding: 6px 10px;
+    border-radius: 8px;
+    font-family: monospace;
+    font-size: 0.85rem;
+    z-index: 9999;
+}
+    </style>
+</head>
+<div class="progress-indicator">extra8/33</div>
+<body class="gov-bg font-sans">
+
+<div class="bg-[#1a569d] text-white py-2 px-10 text-xs flex justify-between items-center">
+    <div class="flex items-center space-x-2">
+        <span class="font-bold">青州高新技术产业开发区管理委员会</span>
+    </div>
+    <div class="opacity-80">当前位置：专家智库 > 专家详情</div>
+</div>
+
+<div class="max-w-6xl mx-auto flex mt-8 gap-6 pb-20">
+    <div class="w-1/4 space-y-2">
+        <div class="bg-white p-4 shadow-sm text-sm text-gray-600 cursor-pointer hover:bg-gray-50">政企服务通道</div>
+        <div class="bg-white p-4 shadow-sm text-sm text-gray-600 cursor-pointer hover:bg-gray-50">园区招商政策</div>
+        <div class="bg-white p-4 shadow-sm text-sm text-gray-800 sidebar-active font-bold">专家顾问委员会</div>
+        <div class="bg-white p-4 shadow-sm text-sm text-gray-600 cursor-pointer hover:bg-gray-50">扶持资金申报公示</div>
+    </div>
+
+    <div class="w-3/4 space-y-6">
+        <div class="bg-white p-8 shadow-md expert-card relative">
+            <div class="absolute top-10 right-10 stamp-blue p-2 px-4 rounded text-xl font-bold z-10">
+                园区首席咨询专家
+            </div>
+
+            <div class="flex gap-8 items-start">
+                <div class="photo-box shadow-inner">
+                    <div class="text-center">
+                        <svg class="w-16 h-16 text-gray-300 mx-auto" fill="currentColor" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                        <p class="text-xs text-gray-400 mt-2">[教授照片]</p>
+                    </div>
+                </div>
+
+                <div class="flex-grow">
+                    <h1 class="text-3xl font-bold text-gray-900 border-b pb-4 mb-4">
+                        高成安 
+                        <span class="text-lg font-normal text-gray-500 ml-2">教授 / 博士生导师</span>
+                    </h1>
+                    <div class="space-y-3 text-sm text-gray-700">
+                        <p><strong class="w-24 inline-block">现任职务：</strong>青州大学软件工程学院副院长</p>
+                        <p><strong class="w-24 inline-block">园区衔级：</strong>青州高新区产业转型升级首席顾问</p>
+                        <p><strong class="w-24 inline-block">擅长领域：</strong>分布式系统、算法架构、智慧城市资源配置</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white p-8 shadow-md space-y-10">
+            <section>
+                <h3 class="text-lg font-bold text-[#1a569d] border-b-2 border-[#1a569d] pb-2 mb-6 flex items-center">
+                    <span class="mr-2">●</span> 政策通道
+                </h3>
+                <div class="grid grid-cols-2 gap-6">
+                    <div class="p-5 bg-blue-50 border border-blue-100 rounded-sm">
+                        <h4 class="font-bold text-blue-900 text-sm mb-3">初创企业孵化评审</h4>
+                        <p class="text-xs text-blue-800 leading-relaxed">
+                            负责园区“种子轮”扶持资金的学术初审。2024年经手评审企业42家，累计拨付专项补贴金1,200万元。
+                        </p>
+                    </div>
+                    <div class="p-5 bg-blue-50 border border-blue-100 rounded-sm">
+                        <h4 class="font-bold text-blue-900 text-sm mb-3">产学研绿色通道</h4>
+                        <p class="text-xs text-blue-800 leading-relaxed">
+                            建立“SIT实验室-产业园”直通机制，实验室专利可直接进入园区转化库，享受减免税收及租金返还政策。
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h3 class="text-lg font-bold text-[#1a569d] border-b-2 border-[#1a569d] pb-2 mb-6 flex items-center">
+                    <span class="mr-2">●</span> 历史顾问项目清单
+                </h3>
+                <table class="w-full text-sm text-left border-collapse border border-gray-200">
+                    <thead class="bg-gray-100 text-gray-700">
+                        <tr>
+                            <th class="p-3 border border-gray-200">顾问企业/项目</th>
+                            <th class="p-3 border border-gray-200">企业性质</th>
+                            <th class="p-3 border border-gray-200">专家职责</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-600">
+                        <tr>
+                            <td class="p-3 border border-gray-200 font-medium">青州智核科技有限公司</td>
+                            <td class="p-3 border border-gray-200">高校科技服务项目</td>
+                            <td class="p-3 border border-gray-200 text-xs">入园资格背书、合规性评估</td>
+                        </tr>
+                        <tr>
+                            <td class="p-3 border border-gray-200 font-medium">青源数字科技有限公司</td>
+                            <td class="p-3 border border-gray-200">高校软件开发项目</td>
+                            <td class="p-3 border border-gray-200 text-xs">项目中期评估、外包资源调度</td>
+                        </tr>
+                        <tr class="bg-gray-50">
+                            <td class="p-3 border border-gray-200 font-medium">中远智控科技发展有限公司</td>
+                            <td class="p-3 border border-gray-200">重大技术攻关项目</td>
+                            <td class="p-3 border border-gray-200 text-xs ">项目首席科学家、外协资金结转审核</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <div class="bg-yellow-50 p-5 border-l-4 border-yellow-400 text-xs text-yellow-900 leading-loose">
+                <strong>💡 专家提示：</strong>高成安教授目前拥有“产业园科研用地优先配置申请”的专家意见权。所有涉及软件工程方向的项目，需经由其所在专家委员会签署推荐函方可获得高新区专项补贴奖励。
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer class="py-10 bg-gray-200 text-center text-gray-500 text-xs">
+    青州高新技术产业开发区管理委员会 版权所有 © 2024-2025
+</footer>
+
+</body>
+</html>

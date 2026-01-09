@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>QZ-HR-2025-SE-042.pdf - 系统预览</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #525659; margin: 0; padding: 0; font-family: "SimSun", "STSong", serif; }
+        
+        /* 模拟PDF工具栏 */
+        .pdf-toolbar {
+            background-color: #323639;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            color: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        /* PDF 页面模拟 */
+        .pdf-page {
+            background-color: white;
+            width: 800px;
+            margin: 30px auto;
+            padding: 60px 80px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.5);
+            min-height: 1100px;
+            position: relative;
+        }
+
+        .pdf-header {
+            border-bottom: 2px solid #000;
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .table-standard {
+            width: 100%;
+            border-collapse: collapse;
+            border: 1.5px solid black;
+        }
+        .table-standard th, .table-standard td {
+            border: 1px solid black;
+            padding: 10px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        .table-standard th { background-color: #f2f2f2; font-weight: bold; }
+
+        /* 电子签章样式 */
+        .e-stamp {
+            position: absolute;
+            bottom: 80px;
+            right: 100px;
+            width: 150px;
+            height: 150px;
+            border: 3px solid rgba(217, 48, 37, 0.6);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(217, 48, 37, 0.6);
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+            transform: rotate(-15deg);
+            border-style: double;
+        }
+
+        .highlight-red { color: #d93025; font-weight: bold; }
+                              .progress-indicator {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: rgba(0,0,0,0.6);
+    color: #fff;
+    padding: 6px 10px;
+    border-radius: 8px;
+    font-family: monospace;
+    font-size: 0.85rem;
+    z-index: 9999;
+}
+    </style>
+</head>
+<div class="progress-indicator">extra9/33</div>
+<body>
+
+    <div class="pdf-toolbar text-sm">
+        <div class="flex items-center space-x-4">
+            <span>📄 QZ-HR-2025-SE-042.pdf</span>
+            <span class="opacity-50">|</span>
+            <span>1 / 1</span>
+            <span class="opacity-50">|</span>
+            <div class="flex items-center space-x-2">
+                <button class="hover:bg-gray-600 px-2 rounded">-</button>
+                <input type="text" value="100%" class="w-12 bg-gray-700 text-center text-xs border-none" readonly>
+                <button class="hover:bg-gray-600 px-2 rounded">+</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="pdf-page">
+        <div class="pdf-header">
+            <div style="font-size: 12px;">青州大学软件工程学院文件</div>
+            <div style="font-size: 12px;">[内部存档 · 严禁拷贝]</div>
+        </div>
+
+        <h1 class="text-center text-2xl font-bold mb-10">关于2025年度第二批次人才引进考核结果的报告</h1>
+
+        <p class="mb-4">学校人事处、人才办：</p>
+        <p class="mb-8" style="text-indent: 2em;">经软件工程学院学术委员会及党政联席会议审议，现将本年度第二批次拟聘青年教师及续聘考核意见汇报如下：</p>
+
+<table class="table-standard">
+    <thead>
+        <tr>
+            <th>序号</th>
+            <th>姓名</th>
+            <th>性别</th>
+            <th>学历/学位</th>
+            <th>拟聘/在聘岗位</th>
+            <th>专业方向</th>
+            <th>备注说明</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+
+        <tr>
+            <td>1</td>
+            <td>陈墨</td>
+            <td>男</td>
+            <td>博士</td>
+            <td>特聘教授</td>
+            <td>人工智能安全</td>
+            <td>海外高层次人才引进</td>
+        </tr>
+            <tr style="background-color: #fff1f0;"> <td>2</td>
+                   <td style="font-weight: bold; color: #d93025;">蒋新宇</td>
+            <td>男</td>
+            <td>博士</td>
+            <td>特聘副研究员</td>
+            <td>软件工程</td>
+            <td style="color: #d93025;">拟破格引进</td>
+        </tr>
+                <tr>
+            <td>3</td>
+            <td>周瑞康</td>
+            <td>男</td>
+            <td>博士</td>
+            <td>助理教授</td>
+            <td>软件工程</td>
+            <td>面试待定</td>
+        </tr>
+        <tr>
+            <td>4</td>
+            <td>王思凯</td>
+            <td>男</td>
+            <td>博士</td>
+            <td>讲师</td>
+            <td>软件工程</td>
+            <td>正常入职</td>
+        </tr>
+
+        <tr>
+            <td>5</td>
+            <td>赵倩</td>
+            <td>女</td>
+            <td>博士</td>
+            <td>讲师</td>
+            <td>软件工程</td>
+            <td>正常入职</td>
+        </tr>
+
+    </tbody>
+</table>
+
+<div class="mt-10 space-y-6">
+    <h4 class="font-bold border-b-2 border-black pb-2 mb-4">单位预审及审批意见</h4>
+    
+    <div class="relative p-4 border border-dashed border-gray-400 bg-gray-50">
+        <div class="text-sm space-y-3 text-gray-800 leading-relaxed">
+            <p><strong>学院学术委员会意见：</strong></p>
+            <p style="text-indent: 2em;">
+                经对本批次人才引进及考核人员进行综合评估，拟聘人员符合学院重点学科建设需求。
+            </p>
+            
+            <div class="pt-4">
+                <p><strong>院领导批示意见：</strong></p>
+                <div class="mt-2" style="font-family: 'Kaiti', 'STKaiti', serif; font-size: 18px; color: #1a1a1a;">
+                    同意学术委员会评估意见。
+                </div>
+            </div>
+        </div>
+
+        <div class="absolute bottom-4 right-10 flex flex-col items-center">
+            <div style="font-family: 'Brush Script MT', 'Cursive', 'STKaiti'; font-size: 32px; color: #000; transform: rotate(-2deg); margin-bottom: -5px;">
+                高成安
+            </div>
+            <div style="font-size: 14px; font-family: 'SimSun'; border-top: 1px solid #000; padding-top: 2px;">
+                2025年 12月 8日
+            </div>
+        </div>
+    </div>
+</div>
+
+        <div class="e-stamp">
+            青州大学<br>软件工程学院<br>2025-12-08
+        </div>
+
+    </div>
+
+</body>
+</html>
