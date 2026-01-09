@@ -422,6 +422,44 @@
         transform: none !important;
     }
 }
+.hot-like-btn {
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+    background: linear-gradient(135deg, #ff9a00, #ff5a00); /* 亮眼的橙色渐变 */
+    color: white !important;
+    padding: 3px 12px;
+    border-radius: 50px; /* 胶囊状 */
+    font-weight: bold;
+    font-size: 12px;
+    box-shadow: 0 4px 10px rgba(255, 90, 0, 0.3);
+    transition: all 0.2s ease;
+    user-select: none;
+    animation: glow-pulse 2s infinite; /* 呼吸灯效果 */
+}
+
+.hot-like-btn:hover {
+    transform: scale(1.1) translateY(-2px);
+    box-shadow: 0 6px 15px rgba(255, 90, 0, 0.5);
+    filter: brightness(1.1);
+}
+
+.hot-like-btn .thumb-wrapper {
+    margin-right: 4px;
+    font-size: 12px;
+}
+
+/* 呼吸灯动画：让它自己微微闪烁吸引注意力 */
+@keyframes glow-pulse {
+    0% { box-shadow: 0 0 0 0 rgba(255, 154, 0, 0.4); }
+    70% { box-shadow: 0 0 0 10px rgba(255, 154, 0, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(255, 154, 0, 0); }
+}
+
+/* 点击时的反馈 */
+.hot-like-btn:active {
+    transform: scale(0.95);
+}
     </style>
     <div class="progress-indicator">11/33</div>
 </head>
@@ -495,7 +533,10 @@
                     望周知，后勤部推所谓的“品质校园”，就是把量大好吃的食堂都翻修外包给新供应商了，菜品质量直线下降，价格倒是涨了不少。到底是怎么做到这么精准的首位淘汰的！
                 </div>
                 <div class="post-footer">
-    <span style="cursor: pointer;" onclick="window.open('capital.html', '_blank')">👍 305</span>
+<span class="hot-like-btn" onclick="window.open('capital.html', '_blank')">
+    <span class="thumb-wrapper">👍</span>
+    <span class="like-count">305</span>
+</span>
     <span>💬 260</span>
     <span>🕒 1个月前</span>
 </div>
