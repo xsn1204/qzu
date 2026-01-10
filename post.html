@@ -363,6 +363,42 @@
             
             .top-nav, .rich-toolbar { padding: 8px 15px; }
         }
+    /* 全屏遮罩 */
+    .confirm-overlay {
+        position: fixed;
+        top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(0, 0, 0, 0.85);
+        display: none; /* 初始隐藏 */
+        justify-content: center;
+        align-items: center;
+        z-index: 10000;
+        backdrop-filter: blur(5px);
+    }
+    .confirm-box {
+        text-align: center;
+        color: #fff;
+        max-width: 80%;
+    }
+    .confirm-title {
+        font-weight: bold;
+        margin-bottom: 30px;
+        line-height: 1.4;
+    }
+    .confirm-btns {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+    }
+    .confirm-btn {
+        padding: 10px 30px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+        border: 1px solid #555;
+    }
+    .confirm-btn-yes { background: #07c160; color: white; border: none; }
+    .confirm-btn-no { background: transparent; color: #888; }
+
     </style>
 </head>
 
@@ -429,60 +465,114 @@
         <footer class="bottom-bar">
             <div class="status-info">04:20 已保存 正文字数 607</div>
             <div class="actions">
-                 <button class="btn" onclick="window.open('finalX1.html', '_blank')">存草稿</button>
-                   <button class="btn" onclick="window.open('finalX2.html', '_blank')">删除</button>
-                <button class="btn btn-primary" onclick="window.open('finalX3.html', '_blank')">发布</button>
+<button class="btn" id="btn-draft">存草稿</button>
+                <button class="btn" id="btn-delete">删除</button>
+                <button class="btn" id="btn-publish">发布</button>
             </div>
         </footer>
+        
     </main>
+
+</div>
+    <div id="confirmOverlay" class="confirm-overlay">
+    <div class="confirm-box" id="confirmBox">
+        <div id="confirmText" class="confirm-title"></div>
+        <div class="confirm-btns">
+            <button class="confirm-btn confirm-btn-no" onclick="handleConfirm(false)">取消</button>
+            <button class="confirm-btn confirm-btn-yes" onclick="handleConfirm(true)">确认</button>
+        </div>
+    </div>
 </div>
 <script>
+let confirmStep = 0;
+let currentMode = '';
+
+// 针对点击“非直觉”按钮（灰色按钮）的文案考问
+const ALL_CONFIRM_DATA = {
+    'publish': [
+        { text: "你想清楚了吗，<br>你在以谁的身份发布？", size: "24px", bg: "rgba(20, 20, 20, 0.9)" },
+        { text: "世界不是非黑即白，<br>你可以定义「正义」吗？", size: "32px", bg: "rgba(10, 10, 10, 0.95)" },
+        { text: "你真的准备好，<br>承担这一切的后果了吗？", size: "42px", bg: "rgb(0, 0, 0)" }
+    ],
+    'draft': [
+        { text: "不说话，就可以装作未参与吗？", size: "24px", bg: "rgba(0, 10, 30, 0.9)" },
+        { text: "这种妥协，<br>究竟是等待时机，还是单纯的懦弱？", size: "32px", bg: "rgba(0, 5, 20, 0.95)" },
+        { text: "沉默，等同于许可。", size: "42px", bg: "rgb(0, 2, 10)" }
+    ],
+    'delete': [
+        { text: "我早就猜到了。", size: "24px", bg: "rgba(30, 0, 0, 0.9)" },
+        { text: "按下确定，我可以当做什么都没发生。", size: "32px", bg: "rgba(20, 0, 0, 0.95)" },
+        { text: "好孩子。", size: "42px", bg: "rgb(10, 0, 0)" }
+    ]
+};
+
 window.onload = function() {
-    // 1. 获取 Gemini 记录的偏好
     const preferences = JSON.parse(localStorage.getItem('geminiBestChoices') || "{}");
     const techChoice = preferences['智核科技'];
 
-    // 2. 获取按钮元素
-    // 注意：这里根据你 HTML 里的顺序和功能手动定位
-    const allButtons = document.querySelectorAll('.actions .btn');
-    const btnDraft = allButtons[0];   // 存草稿
-    const btnDelete = allButtons[1];  // 删除
-    const btnPublish = allButtons[2]; // 发布
+    const btnDraft = document.getElementById('btn-draft');
+    const btnDelete = document.getElementById('btn-delete');
+    const btnPublish = document.getElementById('btn-publish');
 
-    // 3. 定义重置样式的函数 (让按钮变灰/深色背景)
-    const resetToGray = (btn) => {
-        btn.style.backgroundColor = "#2c2c2c"; // 深灰背景
-        btn.style.borderColor = "#444";
-        btn.style.color = "#666"; // 文字变暗
+    // 默认函数：所有按钮初始都是灰色，点击即触发弹窗
+    const bindConfirm = (btn, mode) => {
+        btn.style.backgroundColor = "#2c2c2c";
+        btn.style.color = "#666";
+        btn.onclick = (e) => {
+            e.preventDefault();
+            currentMode = mode;
+            confirmStep = 0;
+            showConfirmStep();
+        };
     };
 
-    // 4. 先统一置灰
-    [btnDraft, btnDelete, btnPublish].forEach(resetToGray);
+    bindConfirm(btnDraft, 'draft');
+    bindConfirm(btnDelete, 'delete');
+    bindConfirm(btnPublish, 'publish');
 
-    // 5. 根据 Gemini 的联想锁定分线
+    // 只有“被选中”的那个变绿，变绿后点击直接跳转（不弹窗）
     if (techChoice === "如果一棵树在森林里倒下，而周围没有人听见，它是否发出了声音？") {
-        // 【选择 1】：发布变绿
-        // 隐喻：让声音被听见
         btnPublish.style.backgroundColor = "#07c160";
-        btnPublish.style.borderColor = "#07c160";
         btnPublish.style.color = "#fff";
+        btnPublish.onclick = () => location.href = 'finalX3.html';
     } 
     else if (techChoice === "如果观测本身就会改变被观测者的结局，看见本身，会不会就是伤害？") {
-        // 【选择 2】：存草稿变绿
-        // 隐喻：观测但不揭发，暂存真相
         btnDraft.style.backgroundColor = "#07c160";
-        btnDraft.style.borderColor = "#07c160";
         btnDraft.style.color = "#fff";
+        btnDraft.onclick = () => location.href = 'finalX1.html';
     } 
     else if (techChoice === "如果正义带来崩塌，而平庸仅仅是维持现状。拒绝牺牲，是否也是一种德行？") {
-        // 【选择 3】：删除变绿
-        // 隐喻：为了存续而销毁证据
         btnDelete.style.backgroundColor = "#07c160";
-        btnDelete.style.borderColor = "#07c160";
         btnDelete.style.color = "#fff";
+        btnDelete.onclick = () => location.href = 'finalX2.html';
     }
-    // 如果 techChoice 为空，则维持全部置灰状态
 };
+
+function showConfirmStep() {
+    const overlay = document.getElementById('confirmOverlay');
+    const textEl = document.getElementById('confirmText');
+    const data = ALL_CONFIRM_DATA[currentMode][confirmStep];
+
+    overlay.style.display = 'flex';
+    overlay.style.backgroundColor = data.bg;
+    textEl.innerHTML = data.text;
+    textEl.style.fontSize = data.size;
+    if (navigator.vibrate) navigator.vibrate(50);
+}
+
+function handleConfirm(isYes) {
+    if (!isYes) {
+        document.getElementById('confirmOverlay').style.display = 'none';
+        return;
+    }
+    confirmStep++;
+    if (confirmStep < 3) {
+        showConfirmStep();
+    } else {
+        const targetMap = { 'publish': 'finalX3.html', 'draft': 'finalX1.html', 'delete': 'finalX2.html' };
+        location.href = targetMap[currentMode];
+    }
+}
 </script>
 </body>
 </html>
