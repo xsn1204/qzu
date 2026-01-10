@@ -673,7 +673,7 @@
 
 #gemini-ai-text {
     color: #e0e0e0 !important;
-    line-height: 2; /* 增加行间距 */
+    line-height: 1.8; /* 增加行间距 */
     display: block;  /* 确保属性生效 */
     margin-bottom: 10px;
 }
@@ -681,6 +681,14 @@
 #gemini-options {
     background: #252525 !important;
     border-top: 1px solid #333 !important;
+}
+.gemini-opt-btn {
+    transition: all 0.3s ease;
+}
+/* 鼠标悬停在已禁用的按钮上时不产生位移或高亮 */
+.gemini-opt-btn:disabled:hover {
+    transform: none !important;
+    background: #333 !important;
 }
 
 @keyframes thumbJump {
@@ -1111,15 +1119,15 @@ const GEMINI_DATA = {
         "这个年代，还有人用BBS发帖求助？"
     ],
     answers: [
-        "如果确实无法完成博士学位，常见的出路包括：<br>1. 申请转硕（Master out），拿硕士学位毕业；<br>2. 凭借科研背景进入企业研发部，企业更看重解决问题的实战能力；<br>3. 跨行进入技术咨询、科技媒体或项目管理领域。<br>学位并非职业生涯的唯一入场券。",
+        "如果确实无法完成博士学位，常见的出路包括：<br>1. 申请转硕（Master out），拿硕士学位毕业；<br>2. 凭借科研背景进入企业研发部，企业更看重解决问题的实战能力；<br>3. 跨行进入技术咨询、科技媒体或项目管理领域。<br>⚠️学位并非职业生涯的唯一入场券。",
         "在大多数公共论坛，管理员可以通过后台记录查看到发帖人的IP地址。<br>结合网络运营商的实名信息，相关部门在合规流程下是可以追溯到发帖人真实身份的。<br>因此，网络空间并非绝对匿名，建议文明发言并保护个人隐私。",
-        "是的，BBS在学术圈、垂直技术社区和高校内网中依然不可替代。原因主要有三点：<br>长效索引与沉淀：即时通讯软件的消息是流式的，很难被搜索引擎二次检索。BBS 的帖子具有“长尾效应”，五年前的一个求助贴和下方的专业回复，至今可能还在为后来者提供参考。<br>深度讨论的氛围：不同于碎片化表达，BBS 的版块化管理更适合发布逻辑清晰的长篇求助，这对于科研探讨、复杂技术排障或深度经验分享至关重要。<br>半封闭的信任感：许多高校或某些私有实验室BBS）具有准入门槛，这种“圈内人”的身份认同使得求助者更容易获得高质量、真实的内部建议。"
+        "是的，BBS在学术圈、垂直技术社区和高校内网中依然不可替代。原因主要有三点：<br>1. 长效索引与沉淀：即时通讯软件的消息是流式的，很难被搜索引擎二次检索。BBS 的帖子具有“长尾效应”，五年前的一个求助贴和下方的专业回复，至今可能还在为后来者提供参考。<br>2. 深度讨论的氛围：不同于碎片化表达，BBS 的版块化管理更适合发布逻辑清晰的长篇求助，这对于科研探讨、复杂技术排障或深度经验分享至关重要。<br>3. 半封闭的信任感：许多高校或某些私有实验室的BBS，具有准入门槛，这种“圈内人”的身份认同使得求助者更容易获得高质量、真实的内部建议。"
     ]
 },
     'SIT Lab': {
         options: ["如何判断导师是否Push？", "实验室助理通常负责什么？", "程序员到底对“HelloWorld”有什么执念？"],
         answers: [
-            "1. 看实验室文化：观察实验室其他同学的状态，他们是否按时提交任务、导师是否频繁跟进。<br>2. 看导师的沟通习惯：Push型导师通常会定期 check-in，设立明确的里程碑或进度要求，甚至主动询问你的进展。<br>3. 问过去的学生：向学长学姐了解导师的管理风格，有些导师表面温和，但实际对进度要求严格。<br>⚡小技巧：面试或进实验室前，可以直接问导师“您一般如何跟进学生的进度？”来试探其 Push 强度。",
+            "1. 看实验室文化：观察实验室其他同学的状态，他们是否按时提交任务、导师是否频繁跟进。<br>2. 看导师的沟通习惯：Push型导师通常会定期check-in，设立明确的里程碑或进度要求，甚至主动询问你的进展（通过面对面沟通、阶段总结、实验室聚餐等方式）。<br>3. 问过去的学生：向学长学姐了解导师的管理风格，有些导师表面温和，但实际对进度要求严格。<br>⚡小技巧：面试或进实验室前，可以直接问导师“您一般如何跟进学生的进度？”来试探其Push强度。",
             "学术实验室的助理通常由本科高年级或研究生担任，需要有一定专业基础、责任心和细心，<br>工作主要包括管理仪器设备、整理实验数据和文档、处理部分行政事务和报销，以及维护实验室环境和安全，有时也辅助科研或教学，是保障实验顺利进行、积累科研经验的基础岗位。",
             "“HelloWorld”之所以成为程序员的象征，是因为它起源于最早的编程书籍，是学习一门新语言或测试新环境的经典入门程序，标志着程序员与计算机首次成功“对话”。带来编写程序的最初喜悦与成就感，成为了编程文化和传统的标志。"
         ]
@@ -1127,21 +1135,21 @@ const GEMINI_DATA = {
     '青大树洞': {
         options: ["什么是电风扇给分？", "学校食堂都是谁在经营？", "国自然基金申请难度有多大？"],
         answers: [
-         "“电风扇给分”指的是一种独特的判卷方式 ：<br>把一堆卷子放在一起，用电风扇一吹，卷子飘得最远的就是成绩不好的。因为字写得少，卷子轻，自然飘得越远。而字写得多的卷子自然重，就落在了近处。<br>💡 考试一定要把卷子写满，不管会不会，先把自己的认真学习的态度展示给老师:) ",
+         "“电风扇给分”指的是一种独特的判卷方式 ：<br>把一堆卷子放在一起，用电风扇一吹，卷子飘得最远的就是成绩不好的。因为字写得少，卷子轻，自然飘得越远。而字写得多的卷子自然重，就落在了近处。<br>💡考试一定要把卷子写满，不管会不会，先把自己的认真学习的态度展示给老师 :) ",
         "根据教育部门的相关规定，高校食堂通常采用“校方监管+多元化经营”模式：<br>1. 学校直营：通常为基础伙食保障窗口，由后勤集团直接负责，享受政策补贴，价格较低。<br>2. 社会化外包：特色档口、奶茶店及部分独立餐厅通常外包给具备资质的第三方餐饮公司（如快餐品牌或专业团膳公司）。<br>3. 监管机制：无论何种经营主体，食品安全与定价均受学校后勤管理部门及当地市场监管局共同监督。",
         "国家自然科学基金（NSF）的申请难度被公认为学术界的“金字塔尖”。其难度体现在：<br>1. 资助率：平均资助率通常维持在15%-20%左右，这意味着约80%的项目会被淘汰。<br>2. 评审机制：采用匿名评审制度，对申请人的科研背景、课题的前沿性、技术路线的可行性及预期成果有极其严格的要求。<br>3. 竞争强度：随着博士人才存量增加，青年基金和面上项目的竞争已从“比拼学术水平”进化到“比拼综合实力与创新细节”。建议申请者提前一年准备申请书。"
         ]
     },
 '智核科技': {
     options: [
-        "大学青年教师考核不通过，有什么出路？", 
-        "提交的专利还可以改发明人吗？", 
-        "写作疗法有用吗？"
+        "如果一棵树在森林里倒下，而周围没有人听见，它是否发出了声音？", 
+        "如果观测本身就会改变被观测者的结局，看见本身，会不会就是伤害？", 
+        "如果正义带来崩塌，而平庸仅仅是维持现状。拒绝牺牲，是否也是一种德行？"
     ],
     answers: [
-        "大学青年教师如果未能通过首聘期考核（俗称非升即走），通常有以下几条职业路径：<br>首先是选择学术降维，流动到非一流高校或地方学院，这些学校往往对有高水平研究背景的教师有需求。<br>其次是转岗，在校内申请转为行政、教辅或实验员岗位，虽然失去了教师编制，但能保留体制内身份。<br>最后是进入企业，尤其是理工科教师可以凭借科研积累进入头部企业研发部，薪资通常优于高校。<br>此外，部分教师也会选择出国做博士后或者进行创业，将科研成果转化为商业价值。",
-        "在专利申请过程中，发明人是可以进行变更的。如果专利还处于受理阶段，可以通过向专利局提交著录项目变更申报书来修改。<br>如果专利已经授权，变更流程会更加严格，通常需要提交证明文件，说明为何初始申报时出现了漏报、错报或者发明人顺序错误。<br>需要注意的是，发明人必须是对发明创造的实质性特点作出创造性贡献的人。单纯负责组织工作、提供物质支持或辅助工作的人员不能被列为发明人。<br>变更发明人可能涉及权属争议，建议在变更前达成书面协议，以避免后续的法律风险。",
-        "写作疗法作为一种心理干预手段，在临床和自我康复领域被证明是有效的。<br>它的核心逻辑在于通过叙事化过程，将模糊的负面情绪转化为具体的文字符号，从而实现情绪的外部化和客观化。<br>这种方法能帮助个体重新梳理压力事件，减轻焦虑感和抑郁情绪，甚至能增强免疫系统功能。常见的形式包括表达性写作和自由书写，即在规定时间内不间断地记录内心感受而不考虑语法逻辑。虽然它对于轻中度压力管理效果显著，但对于严重的心理疾患，写作疗法通常作为辅助手段，仍需配合专业的心理咨询或药物治疗。"
+        "树发出了震动，但没有发出“声音”。<br>物理上的空气波动是客观事实，但“声音”是灵魂与世界的相遇。若无感官去承接那份震荡，它便只是一场寂静的起伏。这告诉我们：世界的一半是由客观构成的，而另一半，是由我们的觉知完成的。",
+        "看见即是某种程度的剥夺。<br>这种由于介入而导致的真相扭曲或状态改变，本质上是对被观测者自足性的一种破坏。但真正的问题不在于是否看见，而在于：看见之后，是控制、利用，还是克制与守护。",
+        "拒绝成为牺牲的祭品，本身就是对生命的敬畏。<br>宏大的正义若要以摧毁每一个具体的幸福为代价，那这种正义往往带着狂热的虚伪。在崩塌的边缘，选择守住一个普通人的生活，不去盲目地为了某种口号而自我毁灭，这是一种诚实的德行。存续，有时就是最难的抵抗。"
     ]
 }
 };
@@ -1176,32 +1184,115 @@ function openGeminiChat(keyword) {
     const chatWin = document.getElementById('gemini-chat-win');
     chatWin.style.display = 'flex';
     
-    const optionsArea = document.getElementById('gemini-options');
+const optionsArea = document.getElementById('gemini-options');
     const aiText = document.getElementById('gemini-ai-text');
     
-   aiText.innerHTML = `
-    <div style="font-size: 18px; color: white; margin-bottom: 8px;">
-        关于“${keyword}”，你最想了解哪个方向的深度联想？
-    </div>
-`;
-    optionsArea.innerHTML = ''; // 清空旧选项
+    // 调整后的 AI 提示文字样式：更大字体、更现代的字体族、更大的行间距
+    aiText.innerHTML = `
+        <div style="
+            font-size: 20px; 
+            color: #4285f4; 
+            margin-bottom: 15px; 
+            font-weight: 600; 
+            line-height: 1.6; 
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            letter-spacing: 0.5px;
+            text-shadow: 0px 0px 1px rgba(66,133,244,0.2);
+        ">
+            关于“${keyword}”，<br>你最想了解哪个方向？
+        </div>
+    `;
+    optionsArea.innerHTML = '';
     
-    const data = GEMINI_DATA[keyword];
+const data = GEMINI_DATA[keyword];
     data.options.forEach((opt, index) => {
         const btn = document.createElement('button');
-        btn.className = 'gemini-opt-btn';
+        btn.className = 'gemini-opt-btn'; // 统一类名
         btn.innerText = opt;
+        
+        // 点击选项仅切换内容，不锁定
         btn.onclick = () => {
-            aiText.innerHTML = `
-        <div style="font-size: 18px; font-weight: bold; color: #4285f4; margin-bottom: 8px;">
-            ${opt}
-        </div>
+            // 增加渐显动画效果
+            aiText.style.opacity = 0;
+            
+            setTimeout(() => {
+                aiText.innerHTML = `
+                    <div style="
+                        font-size: 18px; 
+                        font-weight: 600; 
+                        color: #4285f4; 
+                        margin-bottom: 12px;
+                        font-family: 'Segoe UI', sans-serif;
+                        letter-spacing: 0.5px;
+                    ">
+                        ${opt}
+                    </div>
 
-            ${data.answers[index]}
-    `;
+                    <div style="
+                        font-size: 14px; 
+                        color: #f0f0f0; 
+                        line-height: 1.8; 
+                        font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+                        letter-spacing: 0.2px;
+                        word-break: break-word;
+                    ">
+                        ${data.answers[index]}
+                    </div>
+
+                    <div style="
+                        margin-top: 25px; 
+                        border-top: 1px solid rgba(255,255,255,0.1); 
+                        padding-top: 15px; 
+                        text-align: right;
+                    ">
+                        <button id="best-fit-btn" onclick="confirmBestChoice(this, '${keyword}', '${opt}')" 
+                            style="
+                                background: #4285f4; 
+                                color: white; 
+                                border: none; 
+                                padding: 10px 20px; 
+                                border-radius: 8px; 
+                                cursor: pointer; 
+                                font-size: 12px; 
+                                font-weight: 500;
+                                transition: all 0.2s;
+                                box-shadow: 0 4px 12px rgba(66, 133, 244, 0.3);
+                            "
+                            onmouseover="this.style.background='#5a95f5'"
+                            onmouseout="this.style.background='#4285f4'"
+                        >
+                            👍 最佳联想
+                        </button>
+                    </div>
+                `;
+                aiText.style.opacity = 1;
+                aiText.style.transition = 'opacity 0.4s ease';
+            }, 50);
         };
         optionsArea.appendChild(btn);
     });
+}
+function confirmBestChoice(clickedBtn, keyword, choice) {
+    // 1. 禁用上方所有选项按钮并置灰
+    const allOptBtns = document.querySelectorAll('.gemini-opt-btn');
+    allOptBtns.forEach(btn => {
+        btn.disabled = true;
+        btn.style.opacity = '0.4';
+        btn.style.filter = 'grayscale(100%)';
+        btn.style.cursor = 'not-allowed';
+    });
+
+    // 2. 记录到 localStorage
+    let bestMemories = JSON.parse(localStorage.getItem('geminiBestChoices') || "{}");
+    bestMemories[keyword] = choice;
+    localStorage.setItem('geminiBestChoices', JSON.stringify(bestMemories));
+
+    // 3. 更新点赞按钮自身状态
+    clickedBtn.innerHTML = "✅ 已存入深度记忆";
+    clickedBtn.style.background = "#07c160";
+    clickedBtn.disabled = true;
+
+    console.log("已存入记忆库：", bestMemories);
 }
 
 function closeGeminiUI(id) {
@@ -1466,7 +1557,22 @@ msgBox.innerHTML = `
     `;
         }
     }
+function saveBestMemory(keyword, choice) {
+    // 1. 获取现有存储
+    let bestMemories = JSON.parse(localStorage.getItem('geminiBestChoices') || "{}");
+    
+    // 2. 记录当前关键词的最后一次选择
+    bestMemories[keyword] = choice;
+    localStorage.setItem('geminiBestChoices', JSON.stringify(bestMemories));
+    
+    // 3. 视觉反馈：改变按钮状态
+    const btn = document.getElementById('best-fit-btn');
+    btn.innerHTML = "✅ 已存入深度记忆";
+    btn.style.background = "#555";
+    btn.disabled = true;
 
+    console.log(`已记录偏好：${keyword} -> ${choice}`); // 调试用
+}
     
     // 切换窗口显示/隐藏
 function toggleApp(id) {

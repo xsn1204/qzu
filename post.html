@@ -211,7 +211,7 @@
         .btn-primary {
             background: var(--wechat-green);
             color: #fff;
-            border: none;
+            border: 1px solid var(--border-color);
         }
 
         /* --- 夜间模式 --- */
@@ -436,6 +436,53 @@
         </footer>
     </main>
 </div>
+<script>
+window.onload = function() {
+    // 1. 获取 Gemini 记录的偏好
+    const preferences = JSON.parse(localStorage.getItem('geminiBestChoices') || "{}");
+    const techChoice = preferences['智核科技'];
 
+    // 2. 获取按钮元素
+    // 注意：这里根据你 HTML 里的顺序和功能手动定位
+    const allButtons = document.querySelectorAll('.actions .btn');
+    const btnDraft = allButtons[0];   // 存草稿
+    const btnDelete = allButtons[1];  // 删除
+    const btnPublish = allButtons[2]; // 发布
+
+    // 3. 定义重置样式的函数 (让按钮变灰/深色背景)
+    const resetToGray = (btn) => {
+        btn.style.backgroundColor = "#2c2c2c"; // 深灰背景
+        btn.style.borderColor = "#444";
+        btn.style.color = "#666"; // 文字变暗
+    };
+
+    // 4. 先统一置灰
+    [btnDraft, btnDelete, btnPublish].forEach(resetToGray);
+
+    // 5. 根据 Gemini 的联想锁定分线
+    if (techChoice === "如果一棵树在森林里倒下，而周围没有人听见，它是否发出了声音？") {
+        // 【选择 1】：发布变绿
+        // 隐喻：让声音被听见
+        btnPublish.style.backgroundColor = "#07c160";
+        btnPublish.style.borderColor = "#07c160";
+        btnPublish.style.color = "#fff";
+    } 
+    else if (techChoice === "如果观测本身就会改变被观测者的结局，看见本身，会不会就是伤害？") {
+        // 【选择 2】：存草稿变绿
+        // 隐喻：观测但不揭发，暂存真相
+        btnDraft.style.backgroundColor = "#07c160";
+        btnDraft.style.borderColor = "#07c160";
+        btnDraft.style.color = "#fff";
+    } 
+    else if (techChoice === "如果正义带来崩塌，而平庸仅仅是维持现状。拒绝牺牲，是否也是一种德行？") {
+        // 【选择 3】：删除变绿
+        // 隐喻：为了存续而销毁证据
+        btnDelete.style.backgroundColor = "#07c160";
+        btnDelete.style.borderColor = "#07c160";
+        btnDelete.style.color = "#fff";
+    }
+    // 如果 techChoice 为空，则维持全部置灰状态
+};
+</script>
 </body>
 </html>
