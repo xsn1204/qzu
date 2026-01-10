@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -638,6 +639,49 @@
 .like-link:hover .thumb-icon {
     animation: thumbJump 0.4s ease-out;
 }
+@keyframes slideInRight {
+    from { transform: translateX(110%); }
+    to { transform: translateX(0); }
+}
+
+/* 选项按钮：夜间模式 */
+.gemini-opt-btn {
+    background: #2d2d2d; 
+    border: 1px solid #4285f4; 
+    color: #e0e0e0; 
+    padding: 10px 12px; 
+    border-radius: 8px; 
+    cursor: pointer; 
+    text-align: left; 
+    font-size: 13px; 
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.gemini-opt-btn:hover { 
+    background: #3d3d3d; 
+    border-color: #669df6;
+    color: #ffffff;
+    transform: translateX(5px); /* 悬浮时轻微右移 */
+}
+
+/* 聊天窗口：夜间模式补丁 */
+#gemini-chat-win {
+    background: #1e1e1e !important; /* 纯深色背景 */
+    border: 1px solid #333 !important;
+}
+
+#gemini-ai-text {
+    color: #e0e0e0 !important;
+    line-height: 2; /* 增加行间距 */
+    display: block;  /* 确保属性生效 */
+    margin-bottom: 10px;
+}
+
+#gemini-options {
+    background: #252525 !important;
+    border-top: 1px solid #333 !important;
+}
 
 @keyframes thumbJump {
     0% { transform: scale(1); }
@@ -650,9 +694,31 @@
     color: #666;
     margin-left: 10px;
 }
+
    </style>
 </head>
+<div id="gemini-toast" style="display: none; position: fixed; bottom: 80px; right: 20px; width: 300px; background: rgba(30, 30, 30, 0.95); color: white; border-radius: 8px; padding: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); z-index: 9999; cursor: pointer; border-left: 4px solid #4285f4; animation: slideInRight 0.3s ease;">
+    <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+        <div style="display: flex; gap: 10px;">
+        
+            <span style="font-weight: bold; font-size: 14px;">✨ Gemini 思考伙伴</span>
+        </div>
+        <span onclick="event.stopPropagation(); closeGeminiUI('gemini-toast')" style="opacity: 0.6; font-size: 18px;">&times;</span>
+    </div>
+    <p style="font-size: 13px; margin: 10px 0 0; color: #ccc;">我注意到你正在查询关键词，需要进行深度联想吗？</p>
+</div>
 
+<div id="gemini-chat-win" style="display: none; position: fixed; bottom: 100px; right: 20px; width: 350px; background: #fff; border-radius: 12px; box-shadow: 0 15px 50px rgba(0,0,0,0.2); z-index: 10000; flex-direction: column; overflow: hidden; border: 1px solid #e0e0e0;">
+    <div style="background: #1a1a1a; color: white; padding: 15px; display: flex; justify-content: space-between; align-items: center;">
+        <span style="font-weight: bold;">✨ Gemini 思考伙伴</span>
+        <span onclick="closeGeminiUI('gemini-chat-win')" style="cursor: pointer; font-size: 20px;">&times;</span>
+    </div>
+    <div id="gemini-content" style="height: 300px; overflow-y: auto; padding: 15px; font-size: 14px; line-height: 1.6; color: #333;">
+        <p id="gemini-ai-text">请选择你感兴趣的方向：</p>
+    </div>
+    <div id="gemini-options" style="padding: 10px; border-top: 1px solid #eee; background: #f9f9f9; display: flex; flex-direction: column; gap: 8px;">
+        </div>
+</div>
 
 <div id="recycleWindow" class="window" style="display: none;">
         <div class="window-header">
@@ -1036,7 +1102,111 @@ function recordAndJump(keyword, url) {
     // 4. 执行跳转
    window.open(url, '_blank');
 }
+// 定义不同关键词对应的 AI 内容
+const GEMINI_DATA = {
+'回廊': {
+    options: [
+        "师兄博士毕不了业，他还能有什么出路？", 
+        "在公共论坛发帖，会被追踪IP查出真实身份吗？", 
+        "这个年代，还有人用BBS发帖求助？"
+    ],
+    answers: [
+        "如果确实无法完成博士学位，常见的出路包括：<br>1. 申请转硕（Master out），拿硕士学位毕业；<br>2. 凭借科研背景进入企业研发部，企业更看重解决问题的实战能力；<br>3. 跨行进入技术咨询、科技媒体或项目管理领域。<br>学位并非职业生涯的唯一入场券。",
+        "在大多数公共论坛，管理员可以通过后台记录查看到发帖人的IP地址。<br>结合网络运营商的实名信息，相关部门在合规流程下是可以追溯到发帖人真实身份的。<br>因此，网络空间并非绝对匿名，建议文明发言并保护个人隐私。",
+        "是的，BBS在学术圈、垂直技术社区和高校内网中依然不可替代。原因主要有三点：<br>长效索引与沉淀：即时通讯软件的消息是流式的，很难被搜索引擎二次检索。BBS 的帖子具有“长尾效应”，五年前的一个求助贴和下方的专业回复，至今可能还在为后来者提供参考。<br>深度讨论的氛围：不同于碎片化表达，BBS 的版块化管理更适合发布逻辑清晰的长篇求助，这对于科研探讨、复杂技术排障或深度经验分享至关重要。<br>半封闭的信任感：许多高校或某些私有实验室BBS）具有准入门槛，这种“圈内人”的身份认同使得求助者更容易获得高质量、真实的内部建议。"
+    ]
+},
+    'SIT Lab': {
+        options: ["如何判断导师是否Push？", "实验室助理通常负责什么？", "程序员到底对“HelloWorld”有什么执念？"],
+        answers: [
+            "1. 看实验室文化：观察实验室其他同学的状态，他们是否按时提交任务、导师是否频繁跟进。<br>2. 看导师的沟通习惯：Push型导师通常会定期 check-in，设立明确的里程碑或进度要求，甚至主动询问你的进展。<br>3. 问过去的学生：向学长学姐了解导师的管理风格，有些导师表面温和，但实际对进度要求严格。<br>⚡小技巧：面试或进实验室前，可以直接问导师“您一般如何跟进学生的进度？”来试探其 Push 强度。",
+            "学术实验室的助理通常由本科高年级或研究生担任，需要有一定专业基础、责任心和细心，<br>工作主要包括管理仪器设备、整理实验数据和文档、处理部分行政事务和报销，以及维护实验室环境和安全，有时也辅助科研或教学，是保障实验顺利进行、积累科研经验的基础岗位。",
+            "“HelloWorld”之所以成为程序员的象征，是因为它起源于最早的编程书籍，是学习一门新语言或测试新环境的经典入门程序，标志着程序员与计算机首次成功“对话”。带来编写程序的最初喜悦与成就感，成为了编程文化和传统的标志。"
+        ]
+    },
+    '青大树洞': {
+        options: ["什么是电风扇给分？", "学校食堂都是谁在经营？", "国自然基金申请难度有多大？"],
+        answers: [
+         "“电风扇给分”指的是一种独特的判卷方式 ：<br>把一堆卷子放在一起，用电风扇一吹，卷子飘得最远的就是成绩不好的。因为字写得少，卷子轻，自然飘得越远。而字写得多的卷子自然重，就落在了近处。<br>💡 考试一定要把卷子写满，不管会不会，先把自己的认真学习的态度展示给老师:) ",
+        "根据教育部门的相关规定，高校食堂通常采用“校方监管+多元化经营”模式：<br>1. 学校直营：通常为基础伙食保障窗口，由后勤集团直接负责，享受政策补贴，价格较低。<br>2. 社会化外包：特色档口、奶茶店及部分独立餐厅通常外包给具备资质的第三方餐饮公司（如快餐品牌或专业团膳公司）。<br>3. 监管机制：无论何种经营主体，食品安全与定价均受学校后勤管理部门及当地市场监管局共同监督。",
+        "国家自然科学基金（NSF）的申请难度被公认为学术界的“金字塔尖”。其难度体现在：<br>1. 资助率：平均资助率通常维持在15%-20%左右，这意味着约80%的项目会被淘汰。<br>2. 评审机制：采用匿名评审制度，对申请人的科研背景、课题的前沿性、技术路线的可行性及预期成果有极其严格的要求。<br>3. 竞争强度：随着博士人才存量增加，青年基金和面上项目的竞争已从“比拼学术水平”进化到“比拼综合实力与创新细节”。建议申请者提前一年准备申请书。"
+        ]
+    },
+'智核科技': {
+    options: [
+        "大学青年教师考核不通过，有什么出路？", 
+        "提交的专利还可以改发明人吗？", 
+        "写作疗法有用吗？"
+    ],
+    answers: [
+        "大学青年教师如果未能通过首聘期考核（俗称非升即走），通常有以下几条职业路径：<br>首先是选择学术降维，流动到非一流高校或地方学院，这些学校往往对有高水平研究背景的教师有需求。<br>其次是转岗，在校内申请转为行政、教辅或实验员岗位，虽然失去了教师编制，但能保留体制内身份。<br>最后是进入企业，尤其是理工科教师可以凭借科研积累进入头部企业研发部，薪资通常优于高校。<br>此外，部分教师也会选择出国做博士后或者进行创业，将科研成果转化为商业价值。",
+        "在专利申请过程中，发明人是可以进行变更的。如果专利还处于受理阶段，可以通过向专利局提交著录项目变更申报书来修改。<br>如果专利已经授权，变更流程会更加严格，通常需要提交证明文件，说明为何初始申报时出现了漏报、错报或者发明人顺序错误。<br>需要注意的是，发明人必须是对发明创造的实质性特点作出创造性贡献的人。单纯负责组织工作、提供物质支持或辅助工作的人员不能被列为发明人。<br>变更发明人可能涉及权属争议，建议在变更前达成书面协议，以避免后续的法律风险。",
+        "写作疗法作为一种心理干预手段，在临床和自我康复领域被证明是有效的。<br>它的核心逻辑在于通过叙事化过程，将模糊的负面情绪转化为具体的文字符号，从而实现情绪的外部化和客观化。<br>这种方法能帮助个体重新梳理压力事件，减轻焦虑感和抑郁情绪，甚至能增强免疫系统功能。常见的形式包括表达性写作和自由书写，即在规定时间内不间断地记录内心感受而不考虑语法逻辑。虽然它对于轻中度压力管理效果显著，但对于严重的心理疾患，写作疗法通常作为辅助手段，仍需配合专业的心理咨询或药物治疗。"
+    ]
+}
+};
 
+// 别名映射
+const ALIAS_MAP = {
+    '青州智核科技有限公司': '智核科技',
+    '青州智核科技': '智核科技',
+    'SIT LAB': 'SIT Lab',
+    'sit lab': 'SIT Lab'
+};
+
+// 修改原有的跳转函数
+const originalRecordAndJump = recordAndJump;
+recordAndJump = function(keyword, url) {
+    originalRecordAndJump(keyword, url); // 执行原逻辑
+    
+    let key = ALIAS_MAP[keyword] || keyword;
+    if (GEMINI_DATA[key]) {
+        showGeminiToast(key);
+    }
+};
+
+function showGeminiToast(keyword) {
+    const toast = document.getElementById('gemini-toast');
+    toast.style.display = 'block';
+    toast.onclick = () => openGeminiChat(keyword);
+}
+
+function openGeminiChat(keyword) {
+    closeGeminiUI('gemini-toast');
+    const chatWin = document.getElementById('gemini-chat-win');
+    chatWin.style.display = 'flex';
+    
+    const optionsArea = document.getElementById('gemini-options');
+    const aiText = document.getElementById('gemini-ai-text');
+    
+   aiText.innerHTML = `
+    <div style="font-size: 18px; color: white; margin-bottom: 8px;">
+        关于“${keyword}”，你最想了解哪个方向的深度联想？
+    </div>
+`;
+    optionsArea.innerHTML = ''; // 清空旧选项
+    
+    const data = GEMINI_DATA[keyword];
+    data.options.forEach((opt, index) => {
+        const btn = document.createElement('button');
+        btn.className = 'gemini-opt-btn';
+        btn.innerText = opt;
+        btn.onclick = () => {
+            aiText.innerHTML = `
+        <div style="font-size: 18px; font-weight: bold; color: #4285f4; margin-bottom: 8px;">
+            ${opt}
+        </div>
+
+            ${data.answers[index]}
+    `;
+        };
+        optionsArea.appendChild(btn);
+    });
+}
+
+function closeGeminiUI(id) {
+    document.getElementById(id).style.display = 'none';
+}
     function saveToLocalStorage(keyword) {
         let history = JSON.parse(localStorage.getItem('searchHistory') || "[]");
         if (!history.includes(keyword)) {
@@ -1063,10 +1233,8 @@ function handleExactSearch(val) {
     if (SEARCH_MAP[keyword]) {
         const item = document.createElement('div');
         item.className = 'search-item';
-        item.onclick = () => {
-    // 如果你想保留原有的记录功能，先执行 record 函数（如果有的话）
-    // 然后强制开启新窗口
-    window.open(SEARCH_MAP[keyword], '_blank');
+item.onclick = () => {
+    recordAndJump(keyword, SEARCH_MAP[keyword]);
 };
         item.innerHTML = `
             <img src="https://img.icons8.com/color/24/000000/light.png">
