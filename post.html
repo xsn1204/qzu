@@ -531,17 +531,17 @@ window.onload = function() {
     bindConfirm(btnPublish, 'publish');
 
     // 只有“被选中”的那个变绿，变绿后点击直接跳转（不弹窗）
-    if (techChoice === "如果一棵树在森林里倒下，而周围没有人听见，它是否发出了声音？") {
+    if (techChoice === "一棵树在森林里倒下，而周围没有人听见，它是否发出了声音？") {
         btnPublish.style.backgroundColor = "#07c160";
         btnPublish.style.color = "#fff";
         btnPublish.onclick = () => location.href = 'finalX3.html';
     } 
-    else if (techChoice === "如果观测本身就会改变被观测者的结局，看见本身，会不会就是伤害？") {
+    else if (techChoice === "如果观测本身会改变被观测者的结局，看见，会不会就是伤害？") {
         btnDraft.style.backgroundColor = "#07c160";
         btnDraft.style.color = "#fff";
         btnDraft.onclick = () => location.href = 'finalX1.html';
     } 
-    else if (techChoice === "如果正义带来崩塌，而平庸仅仅是维持现状。拒绝牺牲，是否也是一种德行？") {
+    else if (techChoice === "即便选择不选择，那是否也是一种选择？") {
         btnDelete.style.backgroundColor = "#07c160";
         btnDelete.style.color = "#fff";
         btnDelete.onclick = () => location.href = 'finalX2.html';
