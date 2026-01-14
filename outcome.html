@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI面试评分报告</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .score-bar { transition: width 1.5s ease-in-out; }
+        /* 优化后的圆环进度条 */
+.radial-progress { 
+    position: relative; 
+    width: 120px; 
+    height: 120px; 
+    border-radius: 50%; 
+    /* 确保容器本身是圆形的 */
+    display: grid;
+    place-items: center;
+    /* conic-gradient 后面的 0 是为了让颜色过渡没有毛边 */
+    background: conic-gradient(#10b981 88%, #1e293b 0); 
+}
+
+.radial-progress::after { 
+    content: "88"; 
+    position: absolute; 
+    /* inset 控制圆环的粗细，10px 意味着圆环厚度为 10px */
+    inset: 10px; 
+    background: #0f172a; 
+    border-radius: 50%; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    font-size: 1.5rem; 
+    font-weight: bold; 
+    color: #10b981; 
+    /* 增加一个微弱的内阴影，让它看起来更有深度 */
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+}
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-200 font-sans p-6">
+
+    <div class="max-w-6xl mx-auto">
+        <header class="flex justify-between items-end mb-8">
+            <div>
+                <h1 class="text-3xl font-bold bg-gradient-to-r from-blue-400 to-emerald-400 bg-clip-text text-transparent">面试评估报告</h1>
+                <p class="text-slate-500 mt-2">岗位：AI内容营销专家 | 候选人 ID: CN-9527</p>
+            </div>
+            <div class="text-right">
+                <div class="text-xs text-slate-500 uppercase tracking-widest mb-1">综合胜任力得分</div>
+                <div class="text-5xl font-black text-emerald-500">88<span class="text-xl text-slate-600">/100</span></div>
+            </div>
+        </header>
+
+        <div class="grid grid-cols-12 gap-6">
+            
+            <div class="col-span-12 lg:col-span-4 flex flex-col gap-6">
+                <div class="glass rounded-3xl p-6">
+                    <h3 class="text-blue-400 font-bold mb-6 flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+                        能力象限
+                    </h3>
+                    <div class="space-y-5">
+                        <div>
+                            <div class="flex justify-between text-xs mb-1"><span>AI Prompt 工程力</span><span class="text-emerald-400">92%</span></div>
+                            <div class="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
+                                <div class="bg-emerald-500 h-full score-bar" style="width: 92%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-xs mb-1"><span>人群痛点洞察</span><span class="text-blue-400">85%</span></div>
+                            <div class="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
+                                <div class="bg-blue-500 h-full score-bar" style="width: 85%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-xs mb-1"><span>内容创意度</span><span class="text-purple-400">78%</span></div>
+                            <div class="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
+                                <div class="bg-purple-500 h-full score-bar" style="width: 78%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-xs mb-1"><span>品牌调性把控</span><span class="text-amber-400">88%</span></div>
+                            <div class="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
+                                <div class="bg-amber-500 h-full score-bar" style="width: 88%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass rounded-3xl p-6 bg-blue-600/5">
+                    <h3 class="text-slate-300 font-bold mb-4">AI 协同深度评估</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">
+                        候选人展现了极强的<span class="text-blue-400">“Co-Pilot”意识</span>。不仅能使用基础指令，还能通过结构化 Prompt 引导 AI 进行深度思考（如：指定思维链路），减少了 60% 的无效生成，具有极高的生产力潜能。
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-span-12 lg:col-span-5 flex flex-col gap-6">
+                <div class="glass rounded-3xl p-8 flex-1 border-emerald-500/20">
+                    <div class="flex items-start justify-between mb-8">
+                        <div>
+                            <span class="px-3 py-1 bg-emerald-500/10 text-emerald-500 text-xs rounded-full border border-emerald-500/20">推荐入职</span>
+                            <h2 class="text-2xl font-bold mt-4">人才画像：AI 增强型创意专家</h2>
+                        </div>
+                        <div class="flex flex-col items-center justify-center gap-2">
+    <div class="radial-progress shadow-lg shadow-emerald-500/10"></div>
+    <span class="text-[10px] text-slate-500 uppercase tracking-tighter">综合评分</span>
+</div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4 mb-8">
+                        <div class="bg-slate-900/50 p-4 rounded-2xl border border-slate-800">
+                            <div class="text-slate-500 text-xs mb-1">等效职场经验</div>
+                            <div class="text-xl font-bold text-slate-200">3-5 年经验</div>
+                            <div class="text-[10px] text-slate-400 mt-1">资深文案/内容策划职级</div>
+                        </div>
+                        <div class="bg-slate-900/50 p-4 rounded-2xl border border-slate-800">
+                            <div class="text-slate-500 text-xs mb-1">擅长方向</div>
+                            <div class="text-xl font-bold text-blue-400">效率工具 / B端营销</div>
+                            <div class="text-[10px] text-slate-400 mt-1">逻辑严密，科技感塑造力强</div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <h4 class="text-sm font-bold text-slate-300">专家点评：</h4>
+                        <ul class="text-sm text-slate-400 space-y-3">
+                            <li class="flex items-start gap-2">
+                                <span class="text-emerald-500 mt-1">●</span>
+                                能够精准捕捉“折叠屏”与“职场效率”的连接点，文案具备极强的转化诱导力。
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-emerald-500 mt-1">●</span>
+                                AI 调优路径清晰，通过【痛点-解决方案】框架有效规避了 AI 生成内容的“机械感”。
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-span-12 lg:col-span-3 flex flex-col gap-6">
+                <div class="glass rounded-3xl p-6">
+                    <h3 class="text-amber-400 font-bold mb-4">进阶建议</h3>
+                    <div class="space-y-4">
+                        <div class="border-l-2 border-amber-500/30 pl-4 py-1">
+                            <p class="text-xs text-slate-300 font-bold">情感共鸣不足</p>
+                            <p class="text-[11px] text-slate-500 mt-1">虽然效率描述到位，但可以尝试加入更多生活化场景的感性叙述。</p>
+                        </div>
+                        <div class="border-l-2 border-slate-700 pl-4 py-1">
+                            <p class="text-xs text-slate-300 font-bold">多模态尝试</p>
+                            <p class="text-[11px] text-slate-500 mt-1">建议下一步尝试使用 AI 生成分镜脚本，扩充视频营销维度。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-auto space-y-3">
+                    <button class="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-4 rounded-2xl font-bold transition-all shadow-lg shadow-emerald-900/20">
+                        生成正式录用 Offer
+                    </button>
+                    <button class="w-full bg-slate-800 hover:bg-slate-700 text-slate-300 py-4 rounded-2xl font-bold transition-all">
+                        存入人才库
+                    </button>
+                    <button onclick="window.history.back()" class="w-full text-slate-500 text-xs py-2 hover:text-slate-300 transition">
+                        ← 返回工作台重新调整
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+</html>

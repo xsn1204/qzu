@@ -1,195 +1,147 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="UTF-8" />
-<title>404工位消失事件2.0：冬假</title>
-
-<style>
-html, body {
-    margin: 0;
-    width: 100%;
-    height: 100%;
-    font-family: "Microsoft YaHei", "Segoe UI", sans-serif;
-   /* 核心代码：设置图片路径、居中并铺满 */
-    background: url('back.png') no-repeat center center fixed;
-    background-size: cover; 
-    overflow: hidden;
-}
-
-.hero-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;      /* 水平居中 */
-    justify-content: center;   /* 垂直居中 */
-    gap: 40px; 
-    
-    /* --- 核心修改部分 --- */
-    width: 100vw;             /* 占据视口全宽 */
-    height: 100vh;            /* 占据视口全高，实现垂直居中的关键 */
-    /* -------------------- */
-    
-    transform: translateY(-5%); /* 这里的偏移可以根据视觉微调，或者删除 */
-}
-
-/* ====== 突出放大的按钮 ====== */
-.enter-btn {
-    padding: 15px 60px;
-    font-size: 36px; /* 超大字号 */
-    font-weight: 900;
-    color: #5d3a00;
-    background: linear-gradient(135deg, #ffd98a, #ff9f2e);
-    border: 4px solid #ffffff;
-    border-radius: 100px;
-    cursor: pointer;
-    text-transform: uppercase;
-    letter-spacing: 4px;
-    box-shadow: 
-        0 15px 40px rgba(255, 159, 46, 0.6),
-        0 0 0 10px rgba(255, 255, 255, 0.1);
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    animation: glow-pulse 2s infinite;
-}
-
-@keyframes glow-pulse {
-    0% { transform: scale(1); box-shadow: 0 10px 30px rgba(255, 159, 46, 0.5); }
-    50% { transform: scale(1.05); box-shadow: 0 20px 60px rgba(255, 159, 46, 0.9); }
-    100% { transform: scale(1); box-shadow: 0 10px 30px rgba(255, 159, 46, 0.5); }
-}
-
-
-.enter-btn:hover {
-    transform: scale(1.1) translateY(-5px);
-    background: linear-gradient(135deg, #ffffff, #ffd98a);
-    box-shadow: 0 25px 50px rgba(255, 217, 138, 0.8);
-}
-
-/* ====== 文本内容 ====== */
-.text-content {
-    text-align: center;
-    color: #ffffff;
-    /* 强力投影确保在各种背景图下都能看清 */
-    text-shadow: 
-        0 4px 20px rgba(0, 0, 0, 0.8),
-        0 0 40px rgba(0, 0, 0, 0.4);
-}
-
-.sub-title {
-    font-size: 36px;
-    letter-spacing: 10px;
-    margin-bottom: 10px;
-    opacity: 0.9;
-    font-weight: 300;
-    color: #ffffff;
-}
-
-.main-title {
-    font-size: 56px; /* 醒目的标题大小 */
-    font-weight: bold;
-    margin: 0;
-}
-
-.main-title span {
-     font-size: 72px; 
-    color: #ffd98a;
-    position: relative;
-}
-
-/* ====== 简单的任务栏保持一点代入感 (可选) ====== */
-.simple-taskbar {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    height: 5px;
-    background: rgba(255, 217, 138, 0.5);
-    box-shadow: 0 0 20px rgba(255, 217, 138, 0.3);
-}
-/* 针对“正式上线”文字增加上方间距 */
-.sub-title {
-    margin-top: 40px; /* 根据需要调整像素值 */
-}
-
-/* 或者针对标题增加下方间距 */
-.main-title {
-    margin-bottom: 20px;
-}
-
-/* 副标题容器：为了让火苗定位 */
-.sub-title {
-    position: relative; /* 核心：让火苗相对于它定位 */
-    display: inline-block; /* 核心：让容器宽度等于文字宽度 */
-     font-size: 36px;
-    letter-spacing: 10px;
-    margin-bottom: 10px;
-    opacity: 0.9;
-    font-weight: 300;
-    color: rgba(0, 0, 0, 0.8);
-
-}
-
-/* 火苗样式 */
-.flame {
-    position: absolute;
-    top: 8px;             /* 调整垂直位置，使其对齐文字中心 */
-    right: -30px;         /* 调整水平位置，放在“线”字的右边 */
-    width: 14px;
-    height: 27px;
-    background: radial-gradient(circle at 50% 20%, #ffd37a, #ff9f2e);
-    border-radius: 50% 50% 50% 50%;
-    box-shadow: 0 0 12px rgba(255,180,80,0.9);
-    animation: flicker 0.1s infinite alternate;
-}
-
-/* 火苗抖动动画 */
-@keyframes flicker {
-    0% { transform: scale(1) rotate(-2deg); opacity: 0.8; }
-    100% { transform: scale(1.1) rotate(2deg); opacity: 1; }
-}
-
-.hero-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 40px; 
-    width: 100vw;
-    height: 100vh;
-    
-    /* 核心代码：背景模糊效果 */
-    /* 注意：这会模糊容器背后的内容 */
-    backdrop-filter: blur(4px); 
-    
-    /* 可选：加一点半透明底色，增强质感 */
-    background: rgba(0, 0, 0, 0.2); 
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI内容营销面试</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .glass { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); }
+        .typing { border-right: 2px solid #60a5fa; animation: blink 0.7s infinite; }
+        @keyframes blink { 50% { border-color: transparent; } }
+    </style>
 </head>
+<body class="bg-slate-950 text-slate-200 font-sans">
 
-<body>
+    <div class="flex h-screen p-4 gap-4">
+        
+        <aside class="w-1/4 flex flex-col gap-4">
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 flex-1">
+                <h2 class="text-blue-400 font-bold mb-4 flex items-center gap-2">
+                    <span class="w-3 h-3 bg-blue-500 rounded-full animate-pulse"></span>
+                    AI招聘官
+                </h2>
+                <div id="chat-box" class="space-y-4 text-sm leading-relaxed">
+                    <div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700">
+                        <p class="text-slate-400 text-xs mb-1">系统指令 - 10:00</p>
+                        你好！请针对“折叠屏手机”的职场精英人群，完成一次内容营销交付。
+                    </div>
+                    <div class="bg-blue-900/20 p-3 rounded-lg border border-blue-800/50">
+                        <p class="text-blue-400 text-xs mb-1">面试题</p>
+                        请输出一份内容策略框架，并生成一篇小红书文案。重点考察你的 AI 调优能力。
+                    </div>
+                </div>
+            </div>
+        </aside>
 
-    <div class="hero-container">
-        <div class="enter-btn" onclick="startGame()">网页解谜游戏</div>
+      <main class="w-2/4 flex flex-col gap-4">
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 flex flex-col h-full">
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-emerald-400 font-bold">AI 工作台 (Interactive Agent)</h2>
+            <div class="flex gap-2">
+                <select class="bg-slate-950 border border-slate-700 text-xs text-slate-300 rounded px-2 py-1 outline-none focus:border-emerald-500">
+                    <option>GPT-4o (Reasoning)</option>
+                    <option>Claude 3.5 Sonnet</option>
+                    <option>DeepSeek-V3 (Creative)</option>
+                </select>
+                <button class="text-[10px] bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 px-2 py-1 rounded hover:bg-emerald-500/20 transition">配置参数</button>
+            </div>
+        </div>
 
-      <div class="text-content">
-    <h1 class="main-title">404工位消失事件 <span>2.0：冬假</span></h1>
-    
-    <div class="sub-title">
-        摸鱼速归
-        <div class="flame"></div>
+        <div class="mb-4 flex-1 flex flex-col">
+            <div class="flex justify-between items-end mb-2">
+                <label class="text-xs text-slate-500">Prompt Editor / 指令编排：</label>
+                <div class="flex gap-3 text-[10px] text-slate-400">
+                    <span class="cursor-pointer hover:text-emerald-400">● 营销模板</span>
+                    <span class="cursor-pointer hover:text-emerald-400">● 结构化数据</span>
+                    <span class="cursor-pointer hover:text-emerald-400">● 角色扮演</span>
+                </div>
+            </div>
+            
+            <div class="relative flex-1 group">
+                <div contenteditable="true" class="w-full h-full bg-slate-950 border border-slate-700 p-6 rounded-lg font-mono text-sm text-emerald-500/90 shadow-lg shadow-emerald-500/5 focus:outline-none focus:border-emerald-500/50 overflow-y-auto leading-relaxed">
+                    <span class="text-slate-500">// 系统提示词 (System Prompt)</span><br>
+                    "你是一位资深内容营销专家。请为折叠屏手机撰写小红书文案。<br><br>
+                    <span class="text-slate-500">// 约束条件 (Constraints)</span><br>
+                    要求：采用【痛点-解决方案-金句】结构；风格偏向极简科技感；<br>
+                    加入 #职场效率 #数码测评 等标签"
+                </div>
+                <div class="absolute bottom-3 right-3 text-[10px] text-slate-600 font-mono">
+                    Tokens: 128 / Context: 128k
+                </div>
+            </div>
+        </div>
+
+        <div class="h-28 bg-slate-950/30 border border-dashed border-slate-800 rounded-lg p-3 overflow-y-auto custom-scrollbar">
+            <div class="flex items-center gap-2 mb-2">
+                <div class="w-2 h-2 bg-emerald-500 animate-pulse rounded-full"></div>
+                <p class="text-[10px] text-slate-500 italic">Agent 正在执行链式思考 (CoT)...</p>
+            </div>
+            <ul class="space-y-1.5 text-[11px] font-mono">
+                <li class="flex gap-2 text-slate-500">
+                    <span class="text-emerald-500/50">1.</span>
+                    <span>正在检索候选人过往案例库 (RAG)... 完成</span>
+                </li>
+                <li class="flex gap-2 text-slate-500">
+                    <span class="text-emerald-500/50">2.</span>
+                    <span>正在应用小红书爆款算法模型... 进行中</span>
+                </li>
+            </ul>
+        </div>
+        
+        <button class="mt-4 w-full py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-sm font-bold shadow-lg shadow-emerald-900/20 transition-all active:scale-[0.98]">
+            运行指令 (Execute Prompt)
+        </button>
     </div>
-</div>
+</main>
+        <section class="w-1/4 flex flex-col gap-4">
+            <div class="bg-white rounded-3xl p-0 overflow-hidden h-full shadow-2xl flex flex-col">
+                <div class="bg-slate-100 p-4 border-b text-center text-black font-bold text-sm">成果预览 (小红书格式)</div>
+                <div class="flex-1 overflow-y-auto bg-white">
+                    <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=400" alt="产品图" class="w-full h-48 object-cover">
+                    <div class="p-4 text-slate-800">
+                        <h3 class="font-bold text-lg mb-2">职场人的第二台显示器？📱</h3>
+                        <p class="text-sm leading-relaxed mb-4">
+                            当你还在反复切换窗口时，我已经用折叠屏在地铁上改完 PPT 了！✨<br><br>
+                            💻 多任务处理：左边文档，右边会议，效率翻倍。<br>
+                            🕶️ 极简设计：是工具，更是你的职场名片。<br><br>
+                            #职场效率 #折叠屏手机 #好物推荐
+                        </p>
+                        <div class="flex justify-between items-center text-slate-400 text-xs">
+                            <span>刚刚发布</span>
+                            <span class="text-red-500">❤️ 赞 2.1w</span>
+                        </div>
+                    </div>
+                </div>
 
-    <div class="simple-taskbar"></div>
+<button id="submitBtn" class="m-4 bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl font-bold transition flex justify-center items-center gap-2">
+    <span>提交并获取 AI 评价</span>
+</button>
 
-    <script>
-        function startGame() {
-            // 这里可以添加跳转逻辑或动画
-            document.body.style.transition = 'opacity 1s';
-            document.body.style.opacity = '0';
-            setTimeout(() => {
-                alert('游戏正在加载中...');
-            }, 500);
-        }
-    </script>
+<script>
+document.getElementById('submitBtn').addEventListener('click', function() {
+    const btn = this;
+    // 改变按钮状态
+    btn.disabled = true;
+    btn.classList.replace('bg-blue-600', 'bg-slate-700');
+    btn.innerHTML = `
+        <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+        <span>正在深度分析并评分...</span>
+    `;
+
+    // 模拟 AI 计算延迟，2秒后跳转
+    setTimeout(() => {
+        window.location.href = 'outcome.html';
+    }, 2000);
+});
+</script>
+            </div>
+        </section>
+
+    </div>
 
 </body>
 </html>
