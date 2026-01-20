@@ -10,7 +10,7 @@
         body { font-family: "Microsoft YaHei", sans-serif; }
         .bg-gradient {
             background: linear-gradient(135deg, #003366 0%, #001a33 100%);
-            background-image: url('https://images.unsplash.com/photo-1541339907198-e08756ebafe3?w=1600'); /* 校园背景图 */
+            background-image: url('https://images.unsplash.com/photo-1541339907198-e08756ebafe3?w=1600');
             background-size: cover;
             background-position: center;
         }
@@ -20,100 +20,84 @@
             border: 1px solid rgba(255, 255, 255, 0.2);
         }
         .progress-indicator {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    background: rgba(0,0,0,0.6);
-    color: #fff;
-    padding: 6px 10px;
-    border-radius: 8px;
-    font-family: monospace;
-    font-size: 0.85rem;
-    z-index: 9999;
-}
-
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.6);
+            color: #fff;
+            padding: 6px 10px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 0.85rem;
+            z-index: 9999;
+        }
     </style>
 </head>
 
-<div class="progress-indicator">24/33</div>
 <body class="bg-gradient min-h-screen flex flex-col">
+    <div class="progress-indicator">24/33</div>
+    <div class="w-full h-1 bg-[#003366]"></div>
 
-<div class="w-full h-1 bg-[#003366]"></div>
-
-<div class="flex-1 flex items-center justify-center px-4">
-    <div class="max-w-md w-full text-center">
-
-        <!-- LOGO -->
-        <div class="flex justify-center mb-4">
-            <div class="bg-white rounded-full p-6 shadow-md">
-                <img 
-                    src="logo1.png"
-                    alt="青州大学"
-                    class="w-32 h-32 object-contain"
-                />
+    <div class="flex-1 flex items-center justify-center px-4">
+        <div class="max-w-md w-full text-center">
+            <div class="flex justify-center mb-4">
+                <div class="bg-white rounded-full p-6 shadow-md">
+                    <img src="logo1.png" alt="青州大学" class="w-32 h-32 object-contain" />
+                </div>
             </div>
-        </div>
 
-        <!-- 标题 -->
-        <h1 class="text-3xl font-bold text-gray-800 tracking-wider mb-8">
-            青州大学门户网站
-        </h1>
+            <h1 class="text-3xl font-bold text-gray-800 tracking-wider mb-8">青州大学门户网站</h1>
 
-            <div class="glass-card rounded-xl shadow-2xl p-8">
+            <div class="glass-card rounded-xl shadow-2xl p-8 text-left">
                 <div class="mb-6">
-                    <h2 class="text-xl font-bold text-gray-800border-[#003366] pl-3">统一身份认证</h2>
+                    <h2 class="text-xl font-bold text-gray-800 border-l-4 border-[#003366] pl-3">统一身份认证</h2>
                 </div>
 
                 <div class="space-y-5">
                     <div>
-               
                         <div class="relative">
                             <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400">
                                 <i class="fas fa-user text-sm"></i>
                             </span>
-                            <input type="text" id="username" 
-                                class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#003366] focus:border-[#003366] transition-all"
+                            <input type="text" id="username"
+                                class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#003366] outline-none transition-all"
                                 placeholder="请输入邮箱">
                         </div>
                     </div>
 
                     <div>
-                
                         <div class="relative">
                             <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400">
                                 <i class="fas fa-lock text-sm"></i>
                             </span>
                             <input type="password" id="password" 
-                                class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#003366] focus:border-[#003366] transition-all"
+                                class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#003366] outline-none transition-all"
                                 placeholder="请输入密码">
+                        </div>
+
+                        <div id="userError" class="hidden mt-3 text-red-600 text-sm p-2 bg-red-50 rounded border border-red-100 animate-[fadeIn_0.2s_ease-in-out]">
+                            <i class="fas fa-exclamation-circle mr-1"></i>
+                            <span id="errorText"></span>
                         </div>
                     </div>
 
                     <div class="flex items-center justify-between text-sm">
-                   <label class="flex items-center text-gray-600">
-        <input type="checkbox" class="rounded text-[#003366] focus:ring-[#003366] mr-2"> 记住账号
-    </label>
-    <a href="#" id="forgotBtn" class="text-[#003366] hover:underline">忘记密码？</a>
-</div>
+                        <label class="flex items-center text-gray-600 cursor-pointer">
+                            <input type="checkbox" class="rounded text-[#003366] focus:ring-[#003366] mr-2"> 记住账号
+                        </label>
+                        <a href="#" id="forgotBtn" class="text-[#003366] hover:underline">忘记密码？</a>
+                    </div>
 
-<div id="cakeTip" class="hidden text-center text-xl mt-2 animate-bounce">
-    🎂
-</div>
+                    <div id="cakeTip" class="hidden text-center text-xl mt-2 animate-bounce">🎂</div>
 
-                    <div class="flex items-center justify-between text-sm">
- 
                     <button onclick="handleLogin()" 
-                        class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-bold text-white bg-[#003366] hover:bg-[#004d99] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#003366] transition-colors">
+                        class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-bold text-white bg-[#003366] hover:bg-[#004d99] focus:outline-none transition-colors">
                         登 录
                     </button>
-
-                    <div id="errorMessage" class="hidden text-center text-red-600 text-sm mt-4 p-2 bg-red-50 rounded">
-                        <i class="fas fa-exclamation-circle mr-1"></i> 账号或密码错误，请重试
-                    </div>
                 </div>
             </div>
 
-            <p class="text-center text-white/60 text-xs mt-8">
+            <p class="text-center text-white/70 text-xs mt-8">
                 建议使用 Chrome、Edge、Safari 等主流浏览器访问<br>
                 版权所有 © 2025 青州大学信息化建设与管理处
             </p>
@@ -121,61 +105,53 @@
     </div>
 
     <script>
+        function handleLogin() {
+            const user = document.getElementById('username').value.trim();
+            const pass = document.getElementById('password').value.trim();
+            const errorContainer = document.getElementById('userError');
+            const errorText = document.getElementById('errorText');
 
-    function handleLogin() {
-        const user = document.getElementById('username').value.trim();
-        const pass = document.getElementById('password').value.trim();
-        const errorMsg = document.getElementById('errorMessage');
+            // 1. 特殊用户不存在处理
+            const nonexistentUsers = ['luyh@qzu.edu.cn', '2300114964@qzu.edu.cn'];
 
-        // 特殊用户不存在处理
-        const nonexistentUsers = ['luyh@qzu.edu.cn', '2300114964@qzu.edu.cn'];
-        if (nonexistentUsers.includes(user)) {
-            errorMsg.innerHTML = '<i class="fas fa-exclamation-circle mr-1"></i> 404：该用户不存在';
-            errorMsg.classList.remove('hidden');
+            if (nonexistentUsers.includes(user)) {
+                showErrorMessage('404：该用户不存在');
+                return;
+            }
+
+            // 2. 预设账号校验
+            if (user === '2300113473@qzu.edu.cn' && pass === '20010112') {
+                window.open('portal.html', '_blank');
+            } else {
+                showErrorMessage('账号或密码错误，请重试');
+            }
+
+            function showErrorMessage(msg) {
+                errorText.innerText = msg;
+                errorContainer.classList.remove('hidden');
+                // 3秒后自动隐藏
+                setTimeout(() => {
+                    errorContainer.classList.add('hidden');
+                }, 3000);
+            }
+        }
+
+        // 忘记密码点击事件
+        document.getElementById('forgotBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            const cakeTip = document.getElementById('cakeTip');
+            cakeTip.classList.remove('hidden');
             setTimeout(() => {
-                errorMsg.classList.add('hidden');
+                cakeTip.classList.add('hidden');
             }, 3000);
-            return;
-        }
+        });
 
-        // 预设账号校验
-        if (user === '2300113473@qzu.edu.cn' && pass === '20010112') {
-            // 登录成功，跳转至 portal 页面
-            window.open('portal.html', '_blank');
-        } else {
-            // 显示错误提示
-            errorMsg.innerHTML = '<i class="fas fa-exclamation-circle mr-1"></i> 账号或密码错误，请重试';
-            errorMsg.classList.remove('hidden');
-            // 3秒后自动隐藏
-            setTimeout(() => {
-                errorMsg.classList.add('hidden');
-            }, 3000);
-        }
-    }
-    // 忘记密码点击事件
-document.getElementById('forgotBtn').addEventListener('click', function(e) {
-    e.preventDefault(); // 阻止网页跳转
-    const cakeTip = document.getElementById('cakeTip');
-    
-    // 显示蛋糕提示
-    cakeTip.classList.remove('hidden');
-    
-    // 3秒后自动消失
-    setTimeout(() => {
-        cakeTip.classList.add('hidden');
-    }, 3000);
-});
-
-    // 支持回车登录
-    document.addEventListener('keypress', function (e) {
-        if (e.key === 'Enter') {
-            handleLogin();
-        }
-    });
+        // 支持回车登录
+        document.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                handleLogin();
+            }
+        });
     </script>
-        </div>
-    </div>
-    
-</div>
 </body>
 </html>
